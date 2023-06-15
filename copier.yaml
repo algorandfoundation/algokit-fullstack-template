@@ -1,0 +1,4 @@
+_subdirectory: ./template_content
+
+_tasks:
+    - ["{{ _copier_python }}", tasks.py]

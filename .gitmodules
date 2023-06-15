@@ -1,0 +1,6 @@
+[submodule "smart_contracts"]
+	path = smart_contracts
+	url = https://github.com/algorandfoundation/algokit-beaker-default-template
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/algorandfoundation/algokit-dapp-template

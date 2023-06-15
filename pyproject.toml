@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "algokit-fullstack-template"
+version = "0.1.0"
+description = ""
+authors = ["Altynbek Orumbayev <aorumbayev@protonmail.com>"]
+readme = "README.md"
+packages = [{include = "algokit_fullstack_template"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+copier = "^8.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
