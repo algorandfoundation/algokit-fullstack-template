@@ -1,0 +1,12 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+jobs:
+  contracts-pr-check:
+    name: Perform Smart contract checks
+    uses: ./.github/workflows/contract_checks.yaml
+
+  frontend-pr-check:
+    name: Perform Frontend checks
+    uses: ./.github/workflows/frontend_checks.yaml

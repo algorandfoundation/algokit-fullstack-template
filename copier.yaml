@@ -1,4 +1,84 @@
 _subdirectory: ./template_content
 
 _tasks:
-    - ["{{ _copier_python }}", tasks.py]
+    # Initializing the frontend template
+    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template.git -n frontend --no-git --UNSAFE-SECURITY-accept-template-url --no-ide
+        -a author_email {{ author_email }}
+        -a author_name {{ author_name }}
+        -a ide_vscode {{ ide_vscode }}
+        -a use_github_actions false"
+
+    # Initializing the smart contracts backend template
+    - "algokit init -t beaker_production -n backend --no-git --no-ide
+        -a author_email {{ author_email }}
+        -a author_name {{ author_name }}
+        -a ide_vscode {{ ide_vscode }}
+        -a use_github_actions false
+        -a deployment_language typescript
+        -a python_linter {{ python_linter }}
+        -a use_python_black {{ use_python_black }}
+        -a use_python_mypy {{ use_python_mypy }}
+        -a use_python_pytest {{ use_python_pytest }}
+        -a use_python_pip_audit {{ use_python_pip_audit }}"
+
+    # Perform post processing on the templates
+    - "{{ _copier_python }} inject.py"
+
+# questions
+# project_name should never get prompted, AlgoKit should always pass it by convention
+project_name:
+    type: str
+    help: Name for this project.
+    placeholder: "algorand-app"
+    default: "algorand-app"
+
+author_name:
+    type: str
+    help: Package author name
+    placeholder: "Your Name"
+    default: "Your-Name"
+
+author_email:
+    type: str
+    help: Package author email
+    placeholder: "your@email.tld"
+    default: "your@email.tld"
+
+python_linter:
+    type: str
+    help: Do you want to use a Python linter on smart contracts codebase?
+    choices:
+        Ruff: "ruff"
+        Flake8: "flake8"
+        No thanks: "none"
+    default: "ruff"
+
+use_python_black:
+    type: bool
+    help: Do you want to use a Python formatter (via Black) on smart contracts codebase?
+    default: yes
+
+use_python_mypy:
+    type: bool
+    help: Do you want to use a Python type checker (via mypy) on smart contracts codebase?
+    default: yes
+
+use_python_pytest:
+    type: bool
+    help: Do you want to include unit tests for smart contracts (via pytest)?
+    default: yes
+
+use_python_pip_audit:
+    type: bool
+    help: Do you want to include Python dependency vulnerability scanning for smart contracts (via pip-audit)?
+    default: yes
+
+ide_vscode:
+    type: bool
+    help: Do you want to add VSCode configuration?
+    default: yes
+
+use_github_actions:
+    type: bool
+    help: Do you want to include Github Actions workflows for build and testnet deployment?
+    default: yes
