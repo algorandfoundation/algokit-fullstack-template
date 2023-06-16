@@ -3,7 +3,8 @@ import os
 import shutil
 
 TYPED_CLIENT_LINKING_COMMAND = {
-    "compileTypeClient": "algokit generate client -o frontend/src/contracts/{contract_name}.ts backend"
+    "compileTypeClient": "algokit generate client -o \
+     frontend/src/contracts/{contract_name}.ts backend"
 }
 ROOT_DIR = os.getcwd()
 
@@ -47,7 +48,7 @@ def inject_npm_script(file_path, new_script):
 
 
 def replace_file(source_file, dest_file):
-    """Takes an input file and replaces file at destination (if exists) with the input"""
+    """Takes an input file and replaces file at destination with the input"""
     if os.path.isfile(dest_file):
         print(f"File {dest_file} exists and will be replaced.")
     shutil.copy2(source_file, dest_file)
