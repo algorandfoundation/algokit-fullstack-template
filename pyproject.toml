@@ -9,6 +9,10 @@ packages = [{include = "algokit_fullstack_template"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.0.260"
+black = {extras = ["d"], version = "^22.10.0"}
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
