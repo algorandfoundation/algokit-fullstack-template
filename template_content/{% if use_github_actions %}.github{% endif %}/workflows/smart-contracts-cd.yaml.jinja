@@ -8,7 +8,7 @@ concurrency: release
 jobs:
   ci-check:
     name: Perform smart contract checks
-    uses: ./.github/workflows/checks.yaml
+    uses: ./.github/workflows/smart-contracts-ci.yaml
 
   deploy-testnet:
     runs-on: 'ubuntu-latest'
