@@ -74,10 +74,8 @@ if __name__ == "__main__":
     inject_npm_script(package_json_path, TYPED_CLIENT_LINKING_COMMAND)
 
     # Replace Transact component with example integrating with HelloWorld contract
-    source_component = os.path.join(ROOT_DIR, "Transact.tsx")
-    dest_component = os.path.join(
-        ROOT_DIR, "frontend", "src", "components", "Transact.tsx"
-    )
+    source_component = os.path.join(ROOT_DIR, "App.tsx")
+    dest_component = os.path.join(ROOT_DIR, "frontend", "src", "App.tsx")
     replace_file(source_component, dest_component)
 
     # Cleanup

@@ -1,0 +1,55 @@
+{
+    "folders": [
+        {
+            "path": "./",
+            "name": "ROOT"
+        },
+        {
+            "path": "./backend"
+        },
+        {
+            "path": "./frontend"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "backend/": true,
+            "frontend/": true
+        },
+        "vite.port": 5173,
+        "jest.disabledWorkspaceFolders": ["ROOT", "backend", "frontend"],
+        "dotenv.enableAutocloaking": false
+    },
+    "extensions": {
+        "recommendations": ["joshx.workspace-terminals"]
+    },
+    "launch": {
+        "configurations": [],
+        "compounds": [
+            {
+                "name": "Run Frontend only",
+                "configurations": [
+                    { "name": "Run dApp (+ LocalNet)", "folder": "frontend" }
+                ],
+                "presentation": {
+                    "hidden": false,
+                    "group": "0. Run workspace"
+                }
+            },
+            {
+                "name": "Run Frontend (+ smart contract)",
+                "configurations": [
+                    {
+                        "name": "Build & Deploy Beaker application",
+                        "folder": "backend"
+                    },
+                    { "name": "Run dApp", "folder": "frontend" }
+                ],
+                "presentation": {
+                    "hidden": false,
+                    "group": "0. Run workspace"
+                }
+            }
+        ]
+    }
+}
