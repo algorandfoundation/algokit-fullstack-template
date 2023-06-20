@@ -23,5 +23,4 @@ jobs:
     frontend-release:
         name: Frontend Release
         secrets: inherit
-        needs: [backend-release]
         uses: ./.github/workflows/frontend-cd.yaml
