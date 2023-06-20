@@ -44,8 +44,7 @@ jobs:
       - name: Deploy to testnet
         working-directory: ./backend
         run: npm run --prefix smart_contracts deploy:ci
-
-{% raw %}
+{%- raw %}
         env:
           ALGOD_SERVER: https://testnet-api.algonode.cloud
           INDEXER_SERVER: https://testnet-idx.algonode.cloud
@@ -61,4 +60,4 @@ jobs:
 
           # Dispenser mnemonic is optional, but can be used to ensure the deployer account is funded
           DISPENSER_MNEMONIC: ${{ secrets.DISPENSER_MNEMONIC }}
-{% endraw %}
+{%- endraw %}
