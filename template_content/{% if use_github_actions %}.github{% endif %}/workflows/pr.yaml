@@ -3,10 +3,10 @@ name: Pull Request validation
 on: [pull_request]
 
 jobs:
-  contracts-pr-check:
-    name: Perform Smart contract checks
-    uses: ./.github/workflows/contract_checks.yaml
+    smart-contracts-ci:
+        name: Smart Contracts CI
+        uses: ./.github/workflows/smart-contract-ci.yaml
 
-  frontend-pr-check:
-    name: Perform Frontend checks
-    uses: ./.github/workflows/frontend_checks.yaml
+    frontend-ci:
+        name: Frontend CI
+        uses: ./.github/workflows/frontend-ci.yaml

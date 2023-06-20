@@ -4,7 +4,7 @@ import shutil
 
 TYPED_CLIENT_LINKING_COMMAND = {
     "generate:app-clients": "algokit generate client -o \
-     frontend/src/contracts/{contract_name}.ts backend"
+     src/contracts/{contract_name}.ts ../backend"
 }
 ROOT_DIR = os.getcwd()
 

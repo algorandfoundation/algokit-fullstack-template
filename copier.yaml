@@ -2,14 +2,14 @@ _subdirectory: ./template_content
 
 _tasks:
     # Initializing the frontend template
-    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template.git -n frontend --no-git --UNSAFE-SECURITY-accept-template-url --no-ide
+    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template.git -n frontend --no-git --UNSAFE-SECURITY-accept-template-url --no-ide --no-bootstrap
         -a author_email {{ author_email }}
         -a author_name {{ author_name }}
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false"
 
     # Initializing the smart contracts backend template
-    - "algokit init -t beaker_production -n backend --no-git --no-ide
+    - "algokit init -t beaker_production -n backend --no-git --no-ide --no-bootstrap
         -a author_email {{ author_email }}
         -a author_name {{ author_name }}
         -a ide_vscode {{ ide_vscode }}
@@ -82,3 +82,13 @@ use_github_actions:
     type: bool
     help: Do you want to include Github Actions workflows for build and testnet deployment?
     default: yes
+
+cloud_provider:
+    type: str
+    help: Pick your website hosting provider for continuous delivery
+    when: "{{ use_github_actions != false }}"
+    choices:
+        Netlify: "netlify"
+        Vercel: "vercel"
+        Skip CD setup: "none"
+    default: "netlify"
