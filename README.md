@@ -40,6 +40,8 @@ This template supports a multitude of features for both frontend and backend:
 - dotenv support for environment variables, as well as a local-only KMD provider that can be used for connecting the frontend component to an `algokit localnet` instance (Docker required).
 - CI/CD pipelines using GitHub Actions to deploy to Vercel or Netlify
 
+> Refer to the official [algokit-react-frontend-template](https://github.com/algorandfoundation/algokit-react-frontend-template) repository for up-to-date information on the frontend template.
+
 ### Backend
 
 - Compilation of multiple Beaker contracts to a predictable folder location and file layout where they can be deployed.
@@ -55,6 +57,8 @@ This template supports a multitude of features for both frontend and backend:
 - Automated testing of the compiled smart contracts.
 - [Output stability](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/articles/output_stability.md) tests of the TEAL output.
 - CI/CD pipeline using GitHub Actions.
+
+> Refer to the official [algokit-beaker-template](https://github.com/algorandfoundation/algokit-beaker-default-template) repository for up-to-date information on the backend template.
 
 # Getting started
 

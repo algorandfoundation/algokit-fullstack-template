@@ -3,7 +3,7 @@ import os
 import shutil
 
 TYPED_CLIENT_LINKING_COMMAND = {
-    "compileTypeClient": "algokit generate client -o \
+    "generate:app-clients": "algokit generate client -o \
      frontend/src/contracts/{contract_name}.ts backend"
 }
 ROOT_DIR = os.getcwd()

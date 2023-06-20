@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm install
+        run: npm ci
 
       - name: Run linters
         working-directory: ./frontend
