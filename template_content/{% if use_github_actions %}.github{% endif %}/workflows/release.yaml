@@ -17,9 +17,11 @@ permissions:
 jobs:
     backend-release:
         name: Backend Release
+        secrets: inherit
         uses: ./.github/workflows/smart-contracts-cd.yaml
 
     frontend-release:
         name: Frontend Release
+        secrets: inherit
         needs: [backend-release]
         uses: ./.github/workflows/frontend-cd.yaml
