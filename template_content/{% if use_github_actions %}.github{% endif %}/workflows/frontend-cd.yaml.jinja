@@ -1,14 +1,7 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - "docs/**"
-      - "**.md"
-      - ".vscode/**"
-      - ".idea/**"
+  workflow_call:
 
 permissions:
   contents: read
@@ -59,7 +52,7 @@ jobs:
       - name: Replace template vars
         uses: makerxstudio/shared-config/.github/actions/placeholder-transforms@main
         with:
-          app-artifact-path: './frontend/.vercel/output'
+          app-artifact-path: ./frontend/.vercel/output
           static-site-transforms: |-
             VITE_ALGOD_TOKEN:${{ secrets.VITE_ALGOD_TOKEN }}
             VITE_ALGOD_SERVER:${{ vars.VITE_ALGOD_SERVER }}
@@ -86,7 +79,7 @@ jobs:
       - name: Replace template vars
         uses: makerxstudio/shared-config/.github/actions/placeholder-transforms@main
         with:
-          app-artifact-path: './frontend/dist'
+          app-artifact-path: ./frontend/dist
           static-site-transforms: |-
             VITE_ALGOD_TOKEN:${{ secrets.VITE_ALGOD_TOKEN }}
             VITE_ALGOD_SERVER:${{ vars.VITE_ALGOD_SERVER }}
