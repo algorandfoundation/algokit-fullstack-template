@@ -56,5 +56,14 @@ jobs:
                 env-variable-prefix: VITE_
 
             - name: Build
+              if: ${{ inputs.run-build }}
               working-directory: ./frontend
               run: npm run build
+
+            - name: Archive
+              if: ${{ inputs.run-build }}
+              working-directory: ./frontend
+              uses: actions/upload-artifact@v3
+              with:
+                name: dist
+                path: dist/
