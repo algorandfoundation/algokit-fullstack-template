@@ -6,12 +6,12 @@ import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { HelloWorldAppClient } from '../contracts/HelloWorldApp'
 
-interface TransactInterface {
+interface AppCallsInterface {
   openModal: boolean
   setModalState: (value: boolean) => void
 }
 
-const Transact = ({ openModal, setModalState }: TransactInterface) => {
+const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
 
@@ -57,7 +57,7 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
   }
 
   return (
-    <dialog id="transact_modal" className={`modal ${openModal ? 'modal-open' : ''} bg-slate-200`}>
+    <dialog id="appcalls_modal" className={`modal ${openModal ? 'modal-open' : ''} bg-slate-200`}>
       <form method="dialog" className="modal-box">
         <h3 className="font-bold text-lg">Say hello to your Algorand smart contract</h3>
         <br />
@@ -83,4 +83,4 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
   )
 }
 
-export default Transact
+export default AppCalls

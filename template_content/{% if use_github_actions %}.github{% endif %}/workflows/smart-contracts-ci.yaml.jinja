@@ -1,7 +1,7 @@
-name: Check code base
+name: Backend CI
 
 on:
-  workflow_call:
+    workflow_call:
 
 jobs:
   checks:
@@ -38,6 +38,7 @@ jobs:
 {%- if use_python_pip_audit %}
 
       - name: Audit with pip-audit
+        working-directory: ./backend
         run: |
           # audit non dev dependencies, no exclusions
           poetry export --without=dev > requirements.txt && poetry run pip-audit -r requirements.txt
