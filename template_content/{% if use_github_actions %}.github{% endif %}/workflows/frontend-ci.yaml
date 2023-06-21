@@ -61,8 +61,7 @@ jobs:
 
             - name: Archive
               if: ${{ inputs.run-build }}
-              working-directory: ./frontend
               uses: actions/upload-artifact@v3
               with:
                 name: dist
-                path: dist/
+                path: frontend/dist/
