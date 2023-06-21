@@ -2,7 +2,7 @@ _subdirectory: ./template_content
 
 _tasks:
     # Initializing the frontend template
-    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template.git -n frontend --no-git --UNSAFE-SECURITY-accept-template-url --no-ide --no-bootstrap
+    - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
         -a author_email {{ author_email }}
         -a author_name {{ author_name }}
         -a ide_vscode {{ ide_vscode }}
