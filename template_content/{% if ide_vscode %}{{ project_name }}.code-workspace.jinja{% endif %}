@@ -27,9 +27,13 @@
         "configurations": [],
         "compounds": [
             {
-                "name": "Run Frontend only",
+                "name": "Run Frontend (+ LocalNet and Smart Contract)",
                 "configurations": [
-                    { "name": "Run dApp (+ LocalNet)", "folder": "frontend" }
+                    {
+                        "name": "Build & Deploy Beaker application",
+                        "folder": "backend"
+                    },
+                    { "name": "Run dApp", "folder": "frontend" }
                 ],
                 "presentation": {
                     "hidden": false,
@@ -37,13 +41,9 @@
                 }
             },
             {
-                "name": "Run Frontend (+ smart contract)",
+                "name": "Run Frontend (+ LocalNet)",
                 "configurations": [
-                    {
-                        "name": "Build & Deploy Beaker application",
-                        "folder": "backend"
-                    },
-                    { "name": "Run dApp", "folder": "frontend" }
+                    { "name": "Run dApp (+ LocalNet)", "folder": "frontend" }
                 ],
                 "presentation": {
                     "hidden": false,

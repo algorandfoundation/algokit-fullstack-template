@@ -1,7 +1,18 @@
-name: Frontend CD
+name: Release
 
 on:
-    workflow_call:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - ".vscode/**"
+      - ".idea/**"
+
+permissions:
+  contents: read
+  packages: read
 
 jobs:
   lint-and-build:
@@ -33,9 +44,32 @@ jobs:
         working-directory: ./frontend
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Create placeholder .env file
+        working-directory: ./frontend
+        uses: makerxstudio/shared-config/.github/actions/env-to-placeholders@main
+        with:
+          env-output-path: './.env'
+          env-template-path: './.env.template'
+          env-variable-prefix: VITE_
+
       - name: Build Project Artifacts
         working-directory: ./frontend
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Replace template vars
+        working-directory: ./frontend
+        uses: makerxstudio/shared-config/.github/actions/placeholder-transforms@main
+        with:
+          app-artifact-path: './.vercel/output'
+          static-site-transforms: |-
+            VITE_ALGOD_TOKEN:${{ secrets.VITE_ALGOD_TOKEN }}
+            VITE_ALGOD_SERVER:${{ vars.VITE_ALGOD_SERVER }}
+            VITE_ALGOD_PORT:${{ vars.VITE_ALGOD_PORT }}
+            VITE_ALGOD_NETWORK:${{ vars.VITE_ALGOD_NETWORK }}
+            VITE_INDEXER_SERVER:${{ vars.VITE_INDEXER_SERVER }}
+            VITE_INDEXER_PORT:${{ vars.VITE_INDEXER_PORT }}
+            VITE_INDEXER_TOKEN:${{ secrets.VITE_INDEXER_TOKEN }}
+            VITE_ENVIRONMENT:${{ vars.VITE_ENVIRONMENT }}
 
       - name: Deploy Project Artifacts to Vercel
         working-directory: ./frontend
@@ -50,9 +84,24 @@ jobs:
           name: dist
           path: frontend/dist
 
-      - name: Install netlify cli
-        run: npm i netlify-cli
+      - name: Replace template vars
         working-directory: ./frontend
+        uses: makerxstudio/shared-config/.github/actions/placeholder-transforms@main
+        with:
+          app-artifact-path: './dist'
+          static-site-transforms: |-
+            VITE_ALGOD_TOKEN:${{ secrets.VITE_ALGOD_TOKEN }}
+            VITE_ALGOD_SERVER:${{ vars.VITE_ALGOD_SERVER }}
+            VITE_ALGOD_PORT:${{ vars.VITE_ALGOD_PORT }}
+            VITE_ALGOD_NETWORK:${{ vars.VITE_ALGOD_NETWORK }}
+            VITE_INDEXER_SERVER:${{ vars.VITE_INDEXER_SERVER }}
+            VITE_INDEXER_PORT:${{ vars.VITE_INDEXER_PORT }}
+            VITE_INDEXER_TOKEN:${{ secrets.VITE_INDEXER_TOKEN }}
+            VITE_ENVIRONMENT:${{ vars.VITE_ENVIRONMENT }}
+
+      - name: Install netlify cli
+        working-directory: ./frontend
+        run: npm i netlify-cli
 
       - name: Publish to netlify
         working-directory: ./frontend
@@ -60,16 +109,5 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-
-          # Pass your environment variables here, e.g.,
-          # VITE_ALGOD_NODE_CONFIG_TOKEN: ${{ secrets.VITE_ALGOD_NODE_CONFIG_TOKEN }}
-          # VITE_ALGOD_NODE_CONFIG_SERVER: ${{ secrets.VITE_ALGOD_NODE_CONFIG_SERVER }}
-          # VITE_ALGOD_NODE_CONFIG_PORT: ${{ secrets.VITE_ALGOD_NODE_CONFIG_PORT }}
-
-          # VITE_INDEXER_TOKEN: ${{ secrets.VITE_INDEXER_TOKEN }}
-          # VITE_INDEXER_SERVER: ${{ secrets.VITE_INDEXER_SERVER }}
-          # VITE_INDEXER_PORT: ${{ secrets.VITE_INDEXER_PORT }}
-
-          # VITE_ALGOD_NETWORK: ${{ secrets.VITE_ALGOD_NETWORK }}
       {% endraw %}
     {%- endif %}

@@ -46,6 +46,15 @@ jobs:
               working-directory: ./frontend
               run: npm run test
 
+            - name: Create placeholder .env file
+              working-directory: ./frontend
+              if: ${{ inputs.run-build }}
+              uses: makerxstudio/shared-config/.github/actions/env-to-placeholders@main
+              with:
+                env-output-path: './.env'
+                env-template-path: './.env.template'
+                env-variable-prefix: VITE_
+
             - name: Build
               working-directory: ./frontend
               run: npm run build
