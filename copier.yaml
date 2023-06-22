@@ -21,6 +21,9 @@ _tasks:
         -a use_python_pytest {{ use_python_pytest }}
         -a use_python_pip_audit {{ use_python_pip_audit }}"
 
+    # Bootstrap package.json in smart contracts
+    - "cd backend/smart_contracts && algokit bootstrap npm"
+
     # Perform post processing on the templates
     - "{{ _copier_python }} inject.py"
 
