@@ -46,14 +46,24 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     const appClient = new HelloWorldAppClient(appDetails, algodClient)
     const isLocal = await algokit.isLocalNet(algodClient)
 
-    await appClient.deploy({
-      allowDelete: isLocal,
-      allowUpdate: isLocal,
-      onSchemaBreak: isLocal ? 'replace' : 'fail',
-      onUpdate: isLocal ? 'update' : 'fail',
-    })
+    await appClient
+      .deploy({
+        allowDelete: isLocal,
+        allowUpdate: isLocal,
+        onSchemaBreak: isLocal ? 'replace' : 'fail',
+        onUpdate: isLocal ? 'update' : 'fail',
+      })
+      .catch((e: Error) => {
+        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+        setLoading(false)
+        return
+      })
 
-    const response = await appClient.hello({ name: contractInput })
+    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+      enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
 
     enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
     setLoading(false)
