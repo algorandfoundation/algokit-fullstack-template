@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
     smart-contracts-ci:
         name: Smart Contracts CI
-        uses: ./.github/workflows/smart-contract-ci.yaml
+        uses: ./.github/workflows/smart-contracts-ci.yaml
 
     frontend-ci:
         name: Frontend CI

@@ -1,14 +1,14 @@
 _subdirectory: ./template_content
 
 _tasks:
-    # Initializing the frontend template
-    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template.git -n frontend --no-git --UNSAFE-SECURITY-accept-template-url --no-ide --no-bootstrap
+    - "echo '==== 1/4 - Initializing frontend template ===='"
+    - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
         -a author_email {{ author_email }}
         -a author_name {{ author_name }}
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false"
 
-    # Initializing the smart contracts backend template
+    - "echo '==== 2/4 - Initializing backend template ===='"
     - "algokit init -t beaker_production -n backend --no-git --no-ide --no-bootstrap
         -a author_email {{ author_email }}
         -a author_name {{ author_name }}
@@ -21,7 +21,10 @@ _tasks:
         -a use_python_pytest {{ use_python_pytest }}
         -a use_python_pip_audit {{ use_python_pip_audit }}"
 
-    # Perform post processing on the templates
+    - "echo '==== 3/4 - Bootstrapping smart contracts folder ===='"
+    - "cd backend/smart_contracts && algokit bootstrap all"
+
+    - "echo '==== 4/4 - Integrating fullstack components into frontend template ===='"
     - "{{ _copier_python }} inject.py"
 
 # questions

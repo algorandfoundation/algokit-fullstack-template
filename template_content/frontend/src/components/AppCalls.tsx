@@ -1,10 +1,11 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
 import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
-import { DEFAULT_NODE_BASEURL, DEFAULT_NODE_PORT, DEFAULT_NODE_TOKEN, useWallet } from '@txnlab/use-wallet'
+import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { HelloWorldAppClient } from '../contracts/HelloWorldApp'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromVercelEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -15,16 +16,18 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
 
+  const algodConfig = getAlgodConfigFromViteEnvironment()
   const algodClient = algokit.getAlgoClient({
-    server: import.meta.env.VITE_ALGOD_NODE_CONFIG_SERVER ?? DEFAULT_NODE_BASEURL,
-    port: import.meta.env.VITE_ALGOD_NODE_CONFIG_PORT ?? DEFAULT_NODE_PORT,
-    token: import.meta.env.VITE_ALGOD_NODE_CONFIG_TOKEN ?? DEFAULT_NODE_TOKEN,
+    server: algodConfig.server,
+    port: algodConfig.port,
+    token: algodConfig.token,
   })
 
+  const indexerConfig = getIndexerConfigFromVercelEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
-    server: import.meta.env.VITE_INDEXER_SERVER,
-    port: import.meta.env.VITE_INDEXER_PORT,
-    token: import.meta.env.VITE_INDEXER_TOKEN,
+    server: indexerConfig.server,
+    port: indexerConfig.port,
+    token: indexerConfig.token,
   })
 
   const { enqueueSnackbar } = useSnackbar()
@@ -43,14 +46,24 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     const appClient = new HelloWorldAppClient(appDetails, algodClient)
     const isLocal = await algokit.isLocalNet(algodClient)
 
-    await appClient.deploy({
-      allowDelete: isLocal,
-      allowUpdate: isLocal,
-      onSchemaBreak: isLocal ? 'replace' : 'fail',
-      onUpdate: isLocal ? 'update' : 'fail',
-    })
+    await appClient
+      .deploy({
+        allowDelete: isLocal,
+        allowUpdate: isLocal,
+        onSchemaBreak: isLocal ? 'replace' : 'fail',
+        onUpdate: isLocal ? 'update' : 'fail',
+      })
+      .catch((e: Error) => {
+        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+        setLoading(false)
+        return
+      })
 
-    const response = await appClient.hello({ name: contractInput })
+    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+      enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
 
     enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
     setLoading(false)
