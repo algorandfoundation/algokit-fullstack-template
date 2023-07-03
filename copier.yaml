@@ -19,7 +19,8 @@ _tasks:
         -a use_python_black {{ use_python_black }}
         -a use_python_mypy {{ use_python_mypy }}
         -a use_python_pytest {{ use_python_pytest }}
-        -a use_python_pip_audit {{ use_python_pip_audit }}"
+        -a use_python_pip_audit {{ use_python_pip_audit }}
+        -a use_pre_commit false"
 
     - "echo '==== 3/4 - Bootstrapping smart contracts folder ===='"
     - "cd backend/smart_contracts && algokit bootstrap all"
