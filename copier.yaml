@@ -3,15 +3,15 @@ _subdirectory: ./template_content
 _tasks:
     - "echo '==== 1/4 - Initializing frontend template ===='"
     - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
-        -a author_email {{ author_email }}
-        -a author_name {{ author_name }}
+        -a author_email '{{ author_email }}'
+        -a author_name '{{ author_name }}'
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false"
 
     - "echo '==== 2/4 - Initializing backend template ===='"
     - "algokit init -t beaker_production -n backend --no-git --no-ide --no-bootstrap
-        -a author_email {{ author_email }}
-        -a author_name {{ author_name }}
+        -a author_email '{{ author_email }}'
+        -a author_name '{{ author_name }}'
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false
         -a deployment_language typescript
