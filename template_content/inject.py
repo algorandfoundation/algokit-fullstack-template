@@ -91,12 +91,10 @@ if __name__ == "__main__":
     specified_commands = ["dev", "build"]
 
     # Inject linking command into package.json
-    # package_json_path = os.path.join(ROOT_DIR, "frontend", "package.json")
-    # inject_npm_script(
-    #     package_json_path, TYPED_CLIENT_LINKING_COMMAND, specified_commands
-    # )
-
-    # Replace Transact component with example integrating with HelloWorld contract
+    package_json_path = os.path.join(ROOT_DIR, "frontend", "package.json")
+    inject_npm_script(
+        package_json_path, TYPED_CLIENT_LINKING_COMMAND, specified_commands
+    )
 
     # Iterate over root_dir/inject_content files and inject them depending on name
     inject_folder_path = os.path.join(ROOT_DIR, "inject_content")

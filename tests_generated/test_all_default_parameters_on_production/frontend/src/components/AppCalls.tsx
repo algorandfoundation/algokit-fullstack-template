@@ -4,7 +4,7 @@ import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { HelloWorldAppClient } from '../contracts/HelloWorldApp'
+import { HelloWorldClient } from '../contracts/hello_world'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromVercelEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
@@ -43,7 +43,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       findExistingUsing: indexer,
     } as AppDetails
 
-    const appClient = new HelloWorldAppClient(appDetails, algodClient)
+    const appClient = new HelloWorldClient(appDetails, algodClient)
     const isLocal = await algokit.isLocalNet(algodClient)
 
     await appClient
