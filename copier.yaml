@@ -1,14 +1,14 @@
 _subdirectory: ./template_content
 
 _tasks:
-    - "echo '==== 1/4 - Initializing frontend template ===='"
+    - "echo '==== 1/3 - Initializing frontend template ===='"
     - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=origin/devrel_feedback -n frontend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false"
 
-    - "echo '==== 2/4 - Initializing backend template ===='"
+    - "echo '==== 2/3 - Initializing backend template ===='"
     - "algokit init --template-url https://github.com/algorandfoundation/algokit-beaker-default-template --template-url-ref=origin/simplify-template -n backend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
@@ -25,10 +25,7 @@ _tasks:
         -a deployment_language typescript
         -a use_pre_commit false"
 
-    - "echo '==== 3/4 - Bootstrapping smart contracts folder ===='"
-    - "cd backend/smart_contracts && algokit bootstrap all"
-
-    - "echo '==== 4/4 - Integrating fullstack components into frontend template ===='"
+    - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
     - "{{ _copier_python }} inject.py"
 
 # questions

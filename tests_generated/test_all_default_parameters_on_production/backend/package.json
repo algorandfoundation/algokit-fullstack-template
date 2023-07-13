@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "deploy": "ts-node-dev --transpile-only --watch .env -r dotenv/config smart_contracts/index.ts",
-    "deploy:ci": "ts-node --transpile-only .env -r dotenv/config smart_contracts/index.ts",
+    "deploy:ci": "ts-node --transpile-only -r dotenv/config smart_contracts/index.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
