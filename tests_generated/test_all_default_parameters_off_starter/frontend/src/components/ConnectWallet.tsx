@@ -37,7 +37,7 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
                   src={provider.metadata.icon}
                   style={{ objectFit: 'contain', width: '30px', height: 'auto' }}
                 />
-                <span>{provider.metadata.name}</span>
+                <span>{provider.metadata.name.toLowerCase() === 'kmd' ? 'LocalNet Wallet' : provider.metadata.name}</span>
               </button>
             ))}
         </div>

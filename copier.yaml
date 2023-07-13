@@ -2,7 +2,7 @@ _subdirectory: ./template_content
 
 _tasks:
     - "echo '==== 1/4 - Initializing frontend template ===='"
-    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=origin/simplify-template -n frontend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
+    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=origin/devrel_feedback -n frontend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
         -a ide_vscode {{ ide_vscode }}
