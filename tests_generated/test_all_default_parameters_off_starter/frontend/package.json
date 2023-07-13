@@ -1,0 +1,55 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "author": {
+    "name": "None",
+    "email": "None"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/node": "16.18.34",
+    "@types/react": "18.2.11",
+    "@types/react-dom": "18.2.4",
+    "@vitejs/plugin-react-swc": "3.3.2",
+    "autoprefixer": "10.4.14",
+    "ts-node": "10.9.1",
+    "typescript": "5.1.6",
+    "vite": "4.3.9"
+  },
+  "dependencies": {
+    "@walletconnect/modal-sign-html": "^2.5.5",
+    "@algorandfoundation/algokit-utils": "^2.2.0",
+    "@blockshake/defly-connect": "1.1.5",
+    "@daffiwallet/connect": "1.0.3",
+    "@perawallet/connect": "1.2.3",
+    "@txnlab/use-wallet": "2.0.0",
+    "algosdk": "^2.3.0",
+    "daisyui": "3.1.0",
+    "notistack": "3.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tslib": "2.5.3"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

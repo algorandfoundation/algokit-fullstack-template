@@ -1,0 +1,12 @@
+[algokit]
+min_version = "v1.2.0"
+
+[deploy]
+command = "npm run deploy:ci"
+environment_secrets = [
+  "DEPLOYER_MNEMONIC",
+  "DISPENSER_MNEMONIC",
+]
+
+[deploy.localnet]
+environment_secrets = []

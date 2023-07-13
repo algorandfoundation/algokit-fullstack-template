@@ -2,24 +2,27 @@ _subdirectory: ./template_content
 
 _tasks:
     - "echo '==== 1/4 - Initializing frontend template ===='"
-    - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
+    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=origin/main -n frontend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false"
 
     - "echo '==== 2/4 - Initializing backend template ===='"
-    - "algokit init -t beaker_production -n backend --no-git --no-ide --no-bootstrap
+    - "algokit init --template-url https://github.com/algorandfoundation/algokit-beaker-default-template --template-url-ref=origin/simplify-template -n backend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
+        -a preset_name '{{ preset_name }}'
         -a ide_vscode {{ ide_vscode }}
-        -a use_github_actions false
-        -a deployment_language typescript
         -a python_linter {{ python_linter }}
         -a use_python_black {{ use_python_black }}
         -a use_python_mypy {{ use_python_mypy }}
         -a use_python_pytest {{ use_python_pytest }}
         -a use_python_pip_audit {{ use_python_pip_audit }}
+        -a use_dispenser {{ use_dispenser }}
+        -a contract_name '{{ contract_name }}'
+        -a use_github_actions false
+        -a deployment_language typescript
         -a use_pre_commit false"
 
     - "echo '==== 3/4 - Bootstrapping smart contracts folder ===='"
@@ -36,6 +39,24 @@ project_name:
     placeholder: "algorand-app"
     default: "algorand-app"
 
+preset_name:
+    type: str
+    help: Name of the preset to use. Starter is optimal for simpler projects, Production is optimal for more complex projects that require CI/CD and other features.
+    choices:
+        Starter: "starter"
+        Production: "production"
+    default: "starter"
+
+contract_name:
+    type: str
+    help: Name of the default smart contract app.
+    placeholder: "hello_world"
+    default: "hello_world"
+    validator: >-
+        {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
+        contract_name must be formatted in snake case.
+        {% endif %}
+
 author_name:
     type: str
     help: Package author name
@@ -51,11 +72,17 @@ author_email:
 python_linter:
     type: str
     help: Do you want to use a Python linter on smart contracts codebase?
+    when: "{{ preset_name == 'production' }}"
     choices:
         Ruff: "ruff"
         Flake8: "flake8"
         No thanks: "none"
-    default: "ruff"
+    default: |-
+        {% if preset_name == 'production' -%}
+            ruff
+        {%- else -%}
+            none
+        {%- endif %}
 
 use_python_black:
     type: bool
@@ -65,7 +92,13 @@ use_python_black:
 use_python_mypy:
     type: bool
     help: Do you want to use a Python type checker (via mypy) on smart contracts codebase?
-    default: yes
+    when: "{{ preset_name == 'production' }}"
+    default: |-
+        {% if preset_name == 'production' -%}
+            yes
+        {%- else -%}
+            no
+        {%- endif %}
 
 use_python_pytest:
     type: bool
@@ -75,7 +108,14 @@ use_python_pytest:
 use_python_pip_audit:
     type: bool
     help: Do you want to include Python dependency vulnerability scanning for smart contracts (via pip-audit)?
+    when: "{{ preset_name == 'production' }}"
     default: yes
+
+use_dispenser:
+    type: bool
+    when: "{{ preset_name == 'production' }}"
+    help: Do you want to fund your deployment account using an optional dispenser account?
+    default: no
 
 ide_vscode:
     type: bool
@@ -85,14 +125,20 @@ ide_vscode:
 use_github_actions:
     type: bool
     help: Do you want to include Github Actions workflows for build and testnet deployment?
+    when: "{{ preset_name == 'production' }}"
     default: yes
 
 cloud_provider:
     type: str
     help: Pick your website hosting provider for continuous delivery
-    when: "{{ use_github_actions != false }}"
+    when: "{{ use_github_actions != false and preset_name == 'production' }}"
     choices:
         Netlify: "netlify"
         Vercel: "vercel"
         Skip CD setup: "none"
-    default: "netlify"
+    default: |-
+        {% if preset_name == 'production' -%}
+            netlify
+        {%- else -%}
+            none
+        {%- endif %}

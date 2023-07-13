@@ -48,7 +48,7 @@ def inject_npm_script(file_path, new_script, specified_commands):
         print("'scripts' key not found in package.json")
 
 
-def replace_file(source_file, dest_file):
+def inject_file(source_file, dest_file):
     """Takes an input file and replaces file at destination with the input"""
     if os.path.isfile(dest_file):
         print(f"File {dest_file} exists and will be replaced.")
@@ -64,9 +64,26 @@ def delete_file(file_path):
         print(f"Error: {file_path} : {e.strerror}")
 
 
+def delete_folder(folder_path):
+    """Deletes a folder if it exists."""
+    try:
+        shutil.rmtree(folder_path)
+        print(f"Folder {folder_path} removed successfully.")
+    except OSError as e:
+        print(f"Error: {folder_path} : {e.strerror}")
+
+
 def delete_script():
     """Deletes the current script file."""
     delete_file(os.path.realpath(__file__))
+
+
+def cleanup():
+    """Deletes the inject content folder"""
+    delete_folder(os.path.join(ROOT_DIR, "inject_content"))
+
+    # Deletes itself
+    delete_script()
 
 
 if __name__ == "__main__":
@@ -74,16 +91,25 @@ if __name__ == "__main__":
     specified_commands = ["dev", "build"]
 
     # Inject linking command into package.json
-    package_json_path = os.path.join(ROOT_DIR, "frontend", "package.json")
-    inject_npm_script(
-        package_json_path, TYPED_CLIENT_LINKING_COMMAND, specified_commands
-    )
+    # package_json_path = os.path.join(ROOT_DIR, "frontend", "package.json")
+    # inject_npm_script(
+    #     package_json_path, TYPED_CLIENT_LINKING_COMMAND, specified_commands
+    # )
 
     # Replace Transact component with example integrating with HelloWorld contract
-    source_component = os.path.join(ROOT_DIR, "App.tsx")
-    dest_component = os.path.join(ROOT_DIR, "frontend", "src", "App.tsx")
-    replace_file(source_component, dest_component)
 
-    # Cleanup
-    delete_file(source_component)
-    delete_script()
+    # Iterate over root_dir/inject_content files and inject them depending on name
+    inject_folder_path = os.path.join(ROOT_DIR, "inject_content")
+    for file in os.listdir(os.path.join(inject_folder_path)):
+        source_file = os.path.join(inject_folder_path, file)
+
+        if file == "App.tsx":
+            dest_file = os.path.join(ROOT_DIR, "frontend", "src", file)
+            inject_file(source_file, dest_file)
+        if file == "AppCalls.tsx":
+            dest_file = os.path.join(ROOT_DIR, "frontend", "src", "components", file)
+            inject_file(source_file, dest_file)
+
+        delete_file(source_file)
+
+    cleanup()
