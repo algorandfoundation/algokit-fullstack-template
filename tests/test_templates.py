@@ -58,7 +58,6 @@ def run_init(
     answers: dict[str, str] | None = None,
     child_template_default_answer: str = "no",
 ) -> subprocess.CompletedProcess:
-
     copy_to = working_dir / generated_folder / test_name
     shutil.rmtree(copy_to, ignore_errors=True)
     if template_url is None:
@@ -149,7 +148,6 @@ def get_answered_questions_from_copier_yaml(
     preset_name: str = "starter",
     allowed_questions: list[str] | None = None,
 ) -> dict[str, str]:
-
     copier_yaml = root / "copier.yaml"
     ignored_keys = {
         "_subdirectory",  # copier setting
