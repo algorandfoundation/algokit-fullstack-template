@@ -42,7 +42,7 @@ preset_name:
     choices:
         Starter: "starter"
         Production: "production"
-    default: "starter"
+    default: "production"
 
 contract_name:
     type: str
