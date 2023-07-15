@@ -28,12 +28,12 @@
     "vite": "4.3.9"
   },
   "dependencies": {
-    "@walletconnect/modal-sign-html": "^2.5.5",
-    "@algorandfoundation/algokit-utils": "^2.2.0",
-    "@blockshake/defly-connect": "1.1.5",
-    "@daffiwallet/connect": "1.0.3",
-    "@perawallet/connect": "1.2.3",
-    "@txnlab/use-wallet": "2.0.0",
+    "@walletconnect/modal-sign-html": "^2.6.0",
+    "@algorandfoundation/algokit-utils": "^2.3.1",
+    "@blockshake/defly-connect": "^1.1.5",
+    "@daffiwallet/connect": "^1.0.3",
+    "@perawallet/connect": "^1.3.1",
+    "@txnlab/use-wallet": "^2.0.0",
     "algosdk": "^2.3.0",
     "daisyui": "3.1.0",
     "notistack": "3.0.1",

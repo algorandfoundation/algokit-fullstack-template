@@ -8,10 +8,12 @@ This starter full stack project has been generated using AlgoKit. See below for 
 
 1. Clone this repository locally.
 2. Install pre-requisites:
+   - Make sure to have [Docker](https://www.docker.com/) installed and running on your machine.
    - Install `AlgoKit` - [Link](https://github.com/algorandfoundation/algokit-cli#install): The minimum required version is `1.3.0`. Ensure you can execute `algokit --version` and get `1.3.0` or later.
    - Bootstrap your local environment; run `algokit bootstrap all` within this folder, which will install Poetry, run `npm install` and `poetry install` in the root directory to install NPM and Python packages respectively, set up a `.venv` folder with a Python virtual environment and also install all Python dependencies.
      - For TypeScript projects, it will also run `npm install` to install NPM packages.
      - For all projects, it will copy `.env.template` to `.env`.
+   - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
 3. Open the project and start debugging / developing via:
    - VS Code
      1. Open the repository root in VS Code. Use backend as a root for developing contracts and frontend as a root for web app development.

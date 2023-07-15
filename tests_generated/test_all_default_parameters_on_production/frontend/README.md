@@ -8,8 +8,10 @@ This starter React project has been generated using AlgoKit. See below for defau
 
 1. Clone this repository locally
 2. Install pre-requisites:
+   - Make sure to have [Docker](https://www.docker.com/) installed and running on your machine.
    - Install `AlgoKit` - [Link](https://github.com/algorandfoundation/algokit-cli#install): The minimum required version is `1.1`. Ensure you can execute `algokit --version` and get `1.1` or later.
    - Bootstrap your local environment; run `algokit bootstrap all` within this folder, which will run `npm install` to install NPM packages and dependencies for your frontend component/webapp.
+   - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
 3. Open the project and start debugging / developing via:
    - VS Code
      1. Open the repository root in VS Code

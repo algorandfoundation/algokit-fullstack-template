@@ -1,4 +1,4 @@
-import { useWallet } from '@txnlab/use-wallet'
+import { Provider, useWallet } from '@txnlab/use-wallet'
 import Account from './Account'
 
 interface ConnectWalletInterface {
@@ -8,6 +8,8 @@ interface ConnectWalletInterface {
 
 const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
   const { providers, activeAddress } = useWallet()
+
+  const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === 'kmd'
 
   return (
     <dialog id="connect_wallet_modal" className={`modal ${openModal ? 'modal-open' : ''}`}>
@@ -32,12 +34,14 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
                   return provider.connect()
                 }}
               >
-                <img
-                  alt={`wallet_icon_${provider.metadata.id}`}
-                  src={provider.metadata.icon}
-                  style={{ objectFit: 'contain', width: '30px', height: 'auto' }}
-                />
-                <span>{provider.metadata.name.toLowerCase() === 'kmd' ? 'LocalNet Wallet' : provider.metadata.name}</span>
+                {!isKmd(provider) && (
+                  <img
+                    alt={`wallet_icon_${provider.metadata.id}`}
+                    src={provider.metadata.icon}
+                    style={{ objectFit: 'contain', width: '30px', height: 'auto' }}
+                  />
+                )}
+                <span>{isKmd(provider) ? 'LocalNet Wallet' : provider.metadata.name}</span>
               </button>
             ))}
         </div>
