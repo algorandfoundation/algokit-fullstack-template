@@ -8,11 +8,13 @@ This project has been generated using AlgoKit. See below for default getting sta
 
 1. Clone this repository locally
 2. Install pre-requisites:
+   - Make sure to have [Docker](https://www.docker.com/) installed and running on your machine.
    - Install `AlgoKit` - [Link](https://github.com/algorandfoundation/algokit-cli#install): The minimum required version is `1.1`. Ensure you can execute `algokit --version` and get `1.1` or later.
    - Bootstrap your local environment; run `algokit bootstrap all` within this folder, which will:
      - Install `Poetry` - [Link](https://python-poetry.org/docs/#installation): The minimum required version is `1.2`. Ensure you can execute `poetry -V` and get `1.2`+
      - Run `poetry install` in the root directory, which will set up a `.venv` folder with a Python virtual environment and also install all Python dependencies
      - Copy `.env.template` to `.env`
+   - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
      - Run `npm install` to install NPM packages
 
 3. Open the project and start debugging / developing via:
@@ -39,7 +41,7 @@ This project has been generated using AlgoKit. See below for default getting sta
 1. If you update to the latest source code and there are new dependencies you will need to run `algokit bootstrap all` again
 2. Follow step 3 above
 
-
+> For guidance on `smart_contracts` folder and adding new contracts to the project please see [README](smart_contracts/README.md) on the respective folder.
 
 # Tools
 
@@ -51,7 +53,6 @@ This project makes use of Python to build Algorand smart contracts. The followin
 - [PyTEAL](https://github.com/algorand/pyteal) - Python language binding for Algorand smart contracts; [docs](https://pyteal.readthedocs.io/en/stable/)
 - [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-ts) - A set of core Algorand utilities that make it easier to build solutions on Algorand.
 - [Poetry](https://python-poetry.org/): Python packaging and dependency management.
-- [mypy](https://mypy-lang.org/): Static type checker.
 - [npm](https://www.npmjs.com/): Node.js package manager
 - [TypeScript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript
 - [ts-node-dev](https://github.com/wclr/ts-node-dev): TypeScript development execution environment

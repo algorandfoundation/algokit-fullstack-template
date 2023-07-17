@@ -26,6 +26,8 @@ This starter React project has been generated using AlgoKit. See below for defau
 1. If you update to the latest source code and there are new dependencies you will need to run `algokit bootstrap all` again
 2. Follow step 3 above
 
+> Please note, by default frontend is pre configured to run against Algorand LocalNet. If you want to run against TestNet or MainNet, comment out the current environment variable and uncomment the relevant one in [`.env`](.env) file that is created after running bootstrap command and based on [`.env.template`](.env.template).
+
 # Tools
 
 This project makes use of React and Tailwind to provider a base project configuration to develop frontends for your Algorand dApps and interactions with smart contracts. The following tools are in use:

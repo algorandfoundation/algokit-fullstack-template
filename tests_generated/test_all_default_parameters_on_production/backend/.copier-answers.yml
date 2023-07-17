@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 1.6.0-33-gd139aa3
+_commit: 1.6.0-36-g8d4465f
 _src_path: https://github.com/algorandfoundation/algokit-beaker-default-template
 algod_port: 4001
 algod_server: http://localhost

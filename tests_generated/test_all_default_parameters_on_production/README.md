@@ -14,19 +14,10 @@ This starter full stack project has been generated using AlgoKit. See below for 
      - For TypeScript projects, it will also run `npm install` to install NPM packages.
      - For all projects, it will copy `.env.template` to `.env`.
    - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
-3. Open the project and start debugging / developing via:
-   - VS Code
-     1. Open the repository root in VS Code. Use backend as a root for developing contracts and frontend as a root for web app development.
-     2. Install recommended extensions.
-     3. Hit F5 (or whatever you have debug mapped to) and it should start running with breakpoint debugging. For Windows users, ensure you have the correct Python Interpreter selected.
-   - IDEA (e.g. PyCharm)
-     1. Open the repository root in the IDE. Use backend as a root for developing contracts and frontend as a root for web app development.
-     2. It should automatically detect it's a Poetry project and set up a Python interpreter and virtual environment.
-     3. Hit Shift+F9 (or whatever you have debug mapped to) and it should start running with breakpoint debugging.
-   - Other
-     1. Open the repository root in your text editor of choice. Use backend as a root for developing contracts and frontend as a root for web app development.
-     2. In a terminal run `poetry shell` or `npm run dev`, depending on the type of project.
-     3. Run `python -m smart_contracts` through your debugger of choice.
+3. Open the project and start debugging / developing on:
+   - [Backend](backend/README.md) - Refer to the README for more information on how to work with smart contracts.
+   - [Frontend](frontend/README.md) - Refer to the README for more information on how to work with the frontend application.
+
 
 ### Subsequently
 
