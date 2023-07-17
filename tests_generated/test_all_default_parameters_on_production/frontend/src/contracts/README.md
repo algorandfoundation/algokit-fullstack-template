@@ -1,13 +1,11 @@
-# How to connect my web app with Algorand smart contracts?
+## How to add new Algorand smart contracts into the frontend project?
 
 The following folder is reserved for the Algorand Application Clients. The clients are used to interact with instances of Algorand Smart Contracts (ASC1s) deployed on-chain.
 
-To integrate this react frontend template with your smart contracts codebase, perform the following steps:
+When you initially create your project the frontend starter automatically compiles (see [`generate:app-clients`](../../package.json)) the default `hello_world` contract as `HelloWorldClient` and provides the [`AppCalls.tsx`](../components/AppCalls.tsx) component showcasing how to interact with that application client.
 
-1. Generate the typed client using `algokit generate client -l typescript -o {path/to/this/folder}`
-2. The generated typescript client should be ready to be imported and used in this react frontend template, making it a full fledged dApp.
+When you create new Beaker contracts on the backend folder and build them (so that they are available under `artifacts` folder) - simply run `npm run build` to automatically:
+1. generate new typed clients based on all contracts currently available under `artifacts` folder.
+2. move them to `frontend/src/contracts` folder.
 
-## FAQ
-
-- **How to interact with the smart contract?**
-  - The generated client provides a set of functions that can be used to interact with the ABI (Application Binary Interface) compliant Algorand smart contract. For example, if the smart contract has a function called `hello`, the generated client will have a function called `hello` that can be used to interact with the smart contract. Refer to a [full-stack end-to-end starter template](https://github.com/algorandfoundation/algokit-fullstack-template) for a reference example on invoking and interacting with typescript typed clients generated.
+Afterwards you are free to use the newly generated clients in your frontend code (such as using them in your custom components, functions and etc) as you wish.
