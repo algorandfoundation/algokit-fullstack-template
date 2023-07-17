@@ -12,7 +12,7 @@ _tasks:
     - "algokit init --template-url https://github.com/algorandfoundation/algokit-beaker-default-template --template-url-ref=origin/simplify-template -n backend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
-        -a preset_name '{{ preset_name }}'
+        -a preset_name {{ preset_name }}
         -a ide_vscode {{ ide_vscode }}
         -a python_linter {{ python_linter }}
         -a use_python_black {{ use_python_black }}
@@ -20,7 +20,7 @@ _tasks:
         -a use_python_pytest {{ use_python_pytest }}
         -a use_python_pip_audit {{ use_python_pip_audit }}
         -a use_dispenser {{ use_dispenser }}
-        -a contract_name '{{ contract_name }}'
+        -a contract_name {{ contract_name }}
         -a use_github_actions false
         -a deployment_language typescript
         -a use_pre_commit false"
