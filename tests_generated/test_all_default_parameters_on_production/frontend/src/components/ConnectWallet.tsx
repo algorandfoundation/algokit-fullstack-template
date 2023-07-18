@@ -61,7 +61,18 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
               className="btn btn-warning"
               data-test-id="logout"
               onClick={() => {
-                providers?.find((p) => p.isActive)?.disconnect()
+                if (providers) {
+                  const activeProvider = providers.find((p) => p.isActive)
+                  if (activeProvider) {
+                    activeProvider.disconnect()
+                  } else {
+                    // Required for logout/cleanup of inactive providers
+                    // For instance, when you login to localnet wallet and switch network
+                    // to testnet/mainnet or vice verse.
+                    localStorage.removeItem('txnlab-use-wallet')
+                    window.location.reload()
+                  }
+                }
               }}
             >
               Logout

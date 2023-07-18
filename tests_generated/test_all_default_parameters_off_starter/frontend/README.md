@@ -39,7 +39,7 @@ The template comes with [`use-wallet`](https://github.com/txnlab/use-wallet) int
 - - [Exodus Wallet](https://www.exodus.com).
 - - [Daffi Wallet](https://www.daffi.me).
 
-Refer to official [`use-wallet`](https://github.com/txnlab/use-wallet) documentation for detailed guidelines on how to integrate with other wallet providers (such as WalletConnect v2). For implementation details of the hook included in this template refer to [`useAlgoWalletProvider.ts`](./src/hooks/useAlgoWalletProvider.ts).
+Refer to official [`use-wallet`](https://github.com/txnlab/use-wallet) documentation for detailed guidelines on how to integrate with other wallet providers (such as WalletConnect v2). Too see implementation details on the use wallet hook and initialization of extra wallet providers refer to [`App.tsx`](./src/App.tsx).
 
 # Tools
 
