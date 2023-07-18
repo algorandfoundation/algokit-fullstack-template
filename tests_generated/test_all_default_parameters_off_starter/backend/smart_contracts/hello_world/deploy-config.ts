@@ -29,13 +29,11 @@ export async function deploy() {
     },
     algod,
   )
-
   const app = await appClient.deploy({
-    allowDelete: !isMainNet,
-    allowUpdate: !isMainNet,
-    onSchemaBreak: isMainNet ? 'append' : 'replace',
-    onUpdate: isMainNet ? 'append' : 'update',
+    onSchemaBreak: 'append',
+    onUpdate: 'append',
   })
+  
 
   // If app was just created fund the app account
   if (['create', 'replace'].includes(app.operationPerformed)) {
