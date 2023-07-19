@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { HelloWorldClient } from '../contracts/hello_world'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromVercelEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -23,7 +23,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     token: algodConfig.token,
   })
 
-  const indexerConfig = getIndexerConfigFromVercelEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
     port: indexerConfig.port,
@@ -49,15 +49,13 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // you wouldn't want to use deploy directly from your frontend.
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
-    // for demonstration purposes.
-    const isLocal = await algokit.isLocalNet(algodClient)
+    // for demonstration purposes.const isLocal = await algokit.isLocalNet(algodClient)
     const deployParams = {
       allowDelete: isLocal,
       allowUpdate: isLocal,
       onSchemaBreak: isLocal ? 'replace' : 'fail',
       onUpdate: isLocal ? 'update' : 'fail',
     }
-    
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)

@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { HelloWorldClient } from '../contracts/hello_world'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromVercelEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -23,7 +23,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     token: algodConfig.token,
   })
 
-  const indexerConfig = getIndexerConfigFromVercelEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
     port: indexerConfig.port,
@@ -54,7 +54,6 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       onSchemaBreak: 'append',
       onUpdate: 'append',
     }
-    
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)

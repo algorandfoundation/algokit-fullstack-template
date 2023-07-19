@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name }}'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromVercelEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -23,7 +23,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     token: algodConfig.token,
   })
 
-  const indexerConfig = getIndexerConfigFromVercelEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
     port: indexerConfig.port,
@@ -55,7 +55,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       onSchemaBreak: 'append',
       onUpdate: 'append',
     }
-    {% elif preset_name == 'production' %}
+    {% elif preset_name == 'production' -%}
     const isLocal = await algokit.isLocalNet(algodClient)
     const deployParams = {
       allowDelete: isLocal,
@@ -63,7 +63,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       onSchemaBreak: isLocal ? 'replace' : 'fail',
       onUpdate: isLocal ? 'update' : 'fail',
     }
-    {% endif %}
+    {% endif -%}
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)

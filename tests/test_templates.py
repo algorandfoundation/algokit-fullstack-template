@@ -22,6 +22,79 @@ DEFAULT_PARAMETERS = {
 }
 
 
+def generate_fullstack_get_args(
+    copier_answers: dict[str, str]
+) -> dict[str, list[list[str]]]:
+    check_args = {
+        "backend": [
+            [
+                "black",
+                "--check",
+                "--diff",
+                "--config",
+                "pyproject.toml",
+                ".",
+            ],
+            [
+                "ruff",
+                "--diff",
+                "--config",
+                "pyproject.toml",
+                ".",
+            ],
+        ],
+        "frontend": [
+            ["npm", "install"],
+        ],
+    }
+
+    if copier_answers["preset_name"] == "production":
+        check_args["backend"].append(
+            [
+                "mypy",
+                "--ignore-missing-imports",
+                ".",
+            ]
+        )
+        check_args["frontend"].append(["npm", "run", "lint"])
+
+    return check_args
+
+
+def get_backend_black_args(config_path: str) -> list[str]:
+    return [
+        "black",
+        "--check",
+        "--diff",
+        "--config",
+        f"{config_path}/pyproject.toml",
+        ".",
+    ]
+
+
+def get_backend_ruff_args(config_path: str) -> list[str]:
+    return [
+        "ruff",
+        "--diff",
+        "--config",
+        f"{config_path}/pyproject.toml",
+        ".",
+    ]
+
+
+def get_backend_mypy_args() -> list[str]:
+    return [
+        "mypy",
+        "--ignore-missing-imports",
+        ".",
+    ]
+
+
+FRONTEND_NPM_INSTALL_ARGS = ["npm", "install"]
+FRONTEND_NPM_LINT_ARGS = ["npm", "run", "lint"]
+FRONTEND_NPM_BUILD_ARGS = ["npm", "run", "build"]
+
+
 def _load_copier_yaml(path: Path) -> dict[str, str | bool | dict]:
     with path.open("r", encoding="utf-8") as stream:
         return yaml.safe_load(stream)
@@ -132,6 +205,21 @@ def run_init(
 
     if result.returncode:
         return result
+
+    command_checks = generate_fullstack_get_args(answers)
+
+    for folder, commands in command_checks.items():
+        for command in commands:
+            print(f"Running {' '.join(command)} in {folder}")
+            result = subprocess.run(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                cwd=copy_to / folder,
+            )
+            if result.returncode:
+                break
 
     # if successful, normalize .copier-answers.yml to make observing diffs easier
     copier_answers = Path(copy_to / ".copier-answers.yml")
