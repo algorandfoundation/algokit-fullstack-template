@@ -28,8 +28,7 @@
     "vite.config.js",
     "src/utils/",
     "src/utils/",
-    "src/main.tsx.jinja",
-    "src/main.tsx.jinja"
+    "src/main.tsx",
   ],
   "references": [
     {

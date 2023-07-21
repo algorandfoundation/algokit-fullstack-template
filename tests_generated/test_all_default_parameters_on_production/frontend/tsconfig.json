@@ -28,8 +28,7 @@
     "vite.config.js",
     "src/utils/ellipseAddress.spec.tsx",
     "src/utils/ellipseAddress.spec.tsx",
-    "src/main.tsx.jinja",
-    "src/main.tsx.jinja"
+    "src/main.tsx",
   ],
   "references": [
     {

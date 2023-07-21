@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 0.7.1-17-g5a6c152
+_commit: 0.7.1-18-g8c04365
 _src_path: https://github.com/algorandfoundation/algokit-react-frontend-template
 algod_port: 4001
 algod_server: http://localhost
