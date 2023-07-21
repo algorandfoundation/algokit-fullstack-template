@@ -49,7 +49,8 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // you wouldn't want to use deploy directly from your frontend.
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
-    // for demonstration purposes.const isLocal = await algokit.isLocalNet(algodClient)
+    // for demonstration purposes.
+    const isLocal = await algokit.isLocalNet(algodClient)
     const deployParams = {
       allowDelete: isLocal,
       allowUpdate: isLocal,

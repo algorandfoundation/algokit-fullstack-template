@@ -55,7 +55,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       onSchemaBreak: 'append',
       onUpdate: 'append',
     }
-    {% elif preset_name == 'production' -%}
+    {%- elif preset_name == 'production' %}
     const isLocal = await algokit.isLocalNet(algodClient)
     const deployParams = {
       allowDelete: isLocal,
@@ -63,7 +63,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       onSchemaBreak: isLocal ? 'replace' : 'fail',
       onUpdate: isLocal ? 'update' : 'fail',
     }
-    {% endif -%}
+    {%- endif %}
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
