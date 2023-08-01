@@ -2,14 +2,14 @@ _subdirectory: ./template_content
 
 _tasks:
     - "echo '==== 1/3 - Initializing frontend template ===='"
-    - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=origin/devrel_feedback -n frontend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
+    - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
         -a ide_vscode {{ ide_vscode }}
         -a use_github_actions false"
 
     - "echo '==== 2/3 - Initializing backend template ===='"
-    - "algokit init --template-url https://github.com/algorandfoundation/algokit-beaker-default-template --template-url-ref=origin/simplify-template -n backend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
+    - "algokit init -t beaker_production -n backend --no-git --no-ide --no-bootstrap
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
         -a preset_name {{ preset_name }}
