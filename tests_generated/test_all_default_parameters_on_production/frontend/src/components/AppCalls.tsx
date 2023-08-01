@@ -4,8 +4,8 @@ import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { HelloWorldAppClient } from '../contracts/HelloWorldApp'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromVercelEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { HelloWorldClient } from '../contracts/hello_world'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -23,7 +23,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     token: algodConfig.token,
   })
 
-  const indexerConfig = getIndexerConfigFromVercelEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
     port: indexerConfig.port,
@@ -33,7 +33,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const { enqueueSnackbar } = useSnackbar()
   const { signer, activeAddress } = useWallet()
 
-  const sendHelloWordAppCall = async () => {
+  const sendAppCall = async () => {
     setLoading(true)
 
     const appDetails = {
@@ -43,21 +43,25 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       findExistingUsing: indexer,
     } as AppDetails
 
-    const appClient = new HelloWorldAppClient(appDetails, algodClient)
-    const isLocal = await algokit.isLocalNet(algodClient)
+    const appClient = new HelloWorldClient(appDetails, algodClient)
 
-    await appClient
-      .deploy({
-        allowDelete: isLocal,
-        allowUpdate: isLocal,
-        onSchemaBreak: isLocal ? 'replace' : 'fail',
-        onUpdate: isLocal ? 'update' : 'fail',
-      })
-      .catch((e: Error) => {
-        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
-        setLoading(false)
-        return
-      })
+    // Please note, in typical production scenarios,
+    // you wouldn't want to use deploy directly from your frontend.
+    // Instead, you would deploy your contract on your backend and reference it by id.
+    // Given the simplicity of the starter contract, we are deploying it on the frontend
+    // for demonstration purposes.
+    const isLocal = await algokit.isLocalNet(algodClient)
+    const deployParams = {
+      allowDelete: isLocal,
+      allowUpdate: isLocal,
+      onSchemaBreak: isLocal ? 'replace' : 'fail',
+      onUpdate: isLocal ? 'update' : 'fail',
+    }
+    await appClient.deploy(deployParams).catch((e: Error) => {
+      enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
 
     const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
@@ -65,7 +69,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       return
     })
 
-    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
+    enqueueSnackbar(`Response from the contract: ${response?.return}`, { variant: 'success' })
     setLoading(false)
   }
 
@@ -87,7 +91,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
           <button className="btn" onClick={() => setModalState(!openModal)}>
             Close
           </button>
-          <button className={`btn`} onClick={sendHelloWordAppCall}>
+          <button className={`btn`} onClick={sendAppCall}>
             {loading ? <span className="loading loading-spinner" /> : 'Send application call'}
           </button>
         </div>

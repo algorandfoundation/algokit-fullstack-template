@@ -43,21 +43,16 @@ jobs:
 
       - name: Deploy to testnet
         working-directory: ./backend
-        run: npm run --prefix smart_contracts deploy:ci
-{%- raw %}
+        run: algokit deploy testnet
         env:
-          ALGOD_SERVER: https://testnet-api.algonode.cloud
-          INDEXER_SERVER: https://testnet-idx.algonode.cloud
-          ALGOD_PORT: 443
-          INDEXER_PORT: 443
-          # Deployer mnemonic is required. If not using the dispenser mnemonic, it must also be funded with enough
-          # Algos to deploy and fund the smart contracts created
-          DEPLOYER_MNEMONIC: ${{ secrets.DEPLOYER_MNEMONIC }}
-
-          # the following secrets are not required for algonode but can also be specified if necessary
-          ALGOD_TOKEN: ${{ secrets.ALGOD_TOKEN }}
-          INDEXER_TOKEN: ${{ secrets.INDEXER_TOKEN }}
-
-          # Dispenser mnemonic is optional, but can be used to ensure the deployer account is funded
-          DISPENSER_MNEMONIC: ${{ secrets.DISPENSER_MNEMONIC }}
-{%- endraw %}
+{%- if use_dispenser %}
+          # This is the account that becomes the creator of the contract
+          DEPLOYER_MNEMONIC: {% raw %}${{ secrets.DEPLOYER_MNEMONIC }}{% endraw %}
+          # The dispenser account is used to ensure the deployer account is funded
+          DISPENSER_MNEMONIC: {% raw %}${{ secrets.DISPENSER_MNEMONIC }}{% endraw %}
+{%- else %}
+          # This is the account that becomes the creator of the contract.
+          # Since we are not using the optional dispenser account (via DISPENSER_MNEMONIC),
+          # it must also be funded with enough Algos to deploy and fund the smart contracts created
+          DEPLOYER_MNEMONIC: {% raw %}${{ secrets.DEPLOYER_MNEMONIC }}{% endraw %}
+{%- endif %}

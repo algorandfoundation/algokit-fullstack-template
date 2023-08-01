@@ -167,3 +167,7 @@ cython_debug/
 
 # NPM
 node_modules
+
+# Ignore lock files in all directories and subdirectories under tests_generated
+tests_generated/*/**/package-lock.json
+tests_generated/*/**/poetry.lock
