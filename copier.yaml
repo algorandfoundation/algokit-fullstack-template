@@ -9,7 +9,7 @@ _tasks:
         -a use_github_actions false"
 
     - "echo '==== 2/3 - Initializing backend template ===='"
-    - "algokit init -t beaker_production -n backend --no-git --no-ide --no-bootstrap
+    - "algokit init -t beaker -n backend --no-git --no-ide --no-bootstrap
         -a author_email '{{ author_email }}'
         -a author_name '{{ author_name }}'
         -a preset_name {{ preset_name }}
