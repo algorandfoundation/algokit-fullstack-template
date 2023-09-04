@@ -7,10 +7,7 @@ export async function deploy() {
 
   const algod = algokit.getAlgoClient()
   const indexer = algokit.getAlgoIndexerClient()
-  const deployer = await algokit.getAccount(
-    { config: algokit.getAccountConfigFromEnvironment('DEPLOYER'), fundWith: algokit.algos(3) },
-    algod,
-  )
+  const deployer = await algokit.mnemonicAccountFromEnvironment({ name: 'DEPLOYER', fundWith: algokit.algos(3) }, algod)
   await algokit.ensureFunded(
     {
       accountToFund: deployer,
@@ -19,7 +16,6 @@ export async function deploy() {
     },
     algod,
   )
-  const isMainNet = await algokit.isMainNet(algod)
   const appClient = new HelloWorldClient(
     {
       resolveBy: 'creatorAndName',
@@ -29,6 +25,7 @@ export async function deploy() {
     },
     algod,
   )
+  const isMainNet = await algokit.isMainNet(algod)
   const app = await appClient.deploy({
     allowDelete: !isMainNet,
     allowUpdate: !isMainNet,
