@@ -7,7 +7,7 @@ algod_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 author_email: None
 author_name: None
 contract_name: hello_world
-deployment_language: typescript
+deployment_language: python
 ide_vscode: true
 indexer_port: 8980
 indexer_server: http://localhost

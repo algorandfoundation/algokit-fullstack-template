@@ -1,141 +1,148 @@
 _subdirectory: ./template_content
 
 _tasks:
-    - "echo '==== 1/3 - Initializing frontend template ===='"
-    - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
-        -a author_email '{{ author_email }}'
-        -a author_name '{{ author_name }}'
-        -a ide_vscode {{ ide_vscode }}
-        -a use_github_actions false"
+  - "echo '==== 1/3 - Initializing frontend template ===='"
+  - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
+    -a author_email '{{ author_email }}'
+    -a author_name '{{ author_name }}'
+    -a ide_vscode {{ ide_vscode }}
+    -a use_github_actions false"
 
-    - "echo '==== 2/3 - Initializing backend template ===='"
-    - "algokit init -t beaker -n backend --no-git --no-ide --no-bootstrap
-        -a author_email '{{ author_email }}'
-        -a author_name '{{ author_name }}'
-        -a preset_name {{ preset_name }}
-        -a ide_vscode {{ ide_vscode }}
-        -a python_linter {{ python_linter }}
-        -a use_python_black {{ use_python_black }}
-        -a use_python_mypy {{ use_python_mypy }}
-        -a use_python_pytest {{ use_python_pytest }}
-        -a use_python_pip_audit {{ use_python_pip_audit }}
-        -a use_dispenser {{ use_dispenser }}
-        -a contract_name {{ contract_name }}
-        -a use_github_actions false
-        -a deployment_language typescript
-        -a use_pre_commit false"
+  - "echo '==== 2/3 - Initializing backend template ===='"
+  - "algokit init -t beaker -n backend --no-git --no-ide --no-bootstrap
+    -a author_email '{{ author_email }}'
+    -a author_name '{{ author_name }}'
+    -a preset_name {{ preset_name }}
+    -a ide_vscode {{ ide_vscode }}
+    -a python_linter {{ python_linter }}
+    -a use_python_black {{ use_python_black }}
+    -a use_python_mypy {{ use_python_mypy }}
+    -a use_python_pytest {{ use_python_pytest }}
+    -a use_python_pip_audit {{ use_python_pip_audit }}
+    -a use_dispenser {{ use_dispenser }}
+    -a contract_name {{ contract_name }}
+    -a use_github_actions false
+    -a deployment_language {{ deployment_language }}
+    -a use_pre_commit false"
 
-    - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
-    - "{{ _copier_python }} inject.py"
+  - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
+  - '{{ _copier_python }} inject.py'
 
 # questions
 # project_name should never get prompted, AlgoKit should always pass it by convention
 project_name:
-    type: str
-    help: Name for this project.
-    placeholder: "algorand-app"
-    default: "algorand-app"
+  type: str
+  help: Name for this project.
+  placeholder: 'algorand-app'
+  default: 'algorand-app'
 
 preset_name:
-    type: str
-    help: Name of the preset to use. Starter is optimal for simpler projects, Production is optimal for more complex projects that require CI/CD and other features.
-    choices:
-        Starter: "starter"
-        Production: "production"
-    default: "production"
+  type: str
+  help: Name of the preset to use. Starter is optimal for simpler projects, Production is optimal for more complex projects that require CI/CD and other features.
+  choices:
+    Starter: 'starter'
+    Production: 'production'
+  default: 'production'
 
 contract_name:
-    type: str
-    help: Name of the default smart contract app.
-    placeholder: "hello_world"
-    default: "hello_world"
-    validator: >-
-        {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
-        contract_name must be formatted in snake case.
-        {% endif %}
+  type: str
+  help: Name of the default smart contract app.
+  placeholder: 'hello_world'
+  default: 'hello_world'
+  validator: >-
+    {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
+    contract_name must be formatted in snake case.
+    {% endif %}
 
 author_name:
-    type: str
-    help: Package author name
-    placeholder: "Your Name"
-    default: "Your-Name"
+  type: str
+  help: Package author name
+  placeholder: 'Your Name'
+  default: 'Your-Name'
 
 author_email:
-    type: str
-    help: Package author email
-    placeholder: "your@email.tld"
-    default: "your@email.tld"
+  type: str
+  help: Package author email
+  placeholder: 'your@email.tld'
+  default: 'your@email.tld'
+
+deployment_language:
+  type: str
+  help: Pick language for deployment scripts in the backend?
+  choices:
+    Python: 'python'
+    TypeScript: 'typescript'
 
 python_linter:
-    type: str
-    help: Do you want to use a Python linter on smart contracts codebase?
-    when: "{{ preset_name == 'production' }}"
-    choices:
-        Ruff: "ruff"
-        Flake8: "flake8"
-        No thanks: "none"
-    default: |-
-        {% if preset_name == 'production' -%}
-            ruff
-        {%- else -%}
-            none
-        {%- endif %}
+  type: str
+  help: Do you want to use a Python linter on smart contracts codebase?
+  when: "{{ preset_name == 'production' }}"
+  choices:
+    Ruff: 'ruff'
+    Flake8: 'flake8'
+    No thanks: 'none'
+  default: |-
+    {% if preset_name == 'production' -%}
+        ruff
+    {%- else -%}
+        none
+    {%- endif %}
 
 use_python_black:
-    type: bool
-    help: Do you want to use a Python formatter (via Black) on smart contracts codebase?
-    default: yes
+  type: bool
+  help: Do you want to use a Python formatter (via Black) on smart contracts codebase?
+  default: yes
 
 use_python_mypy:
-    type: bool
-    help: Do you want to use a Python type checker (via mypy) on smart contracts codebase?
-    when: "{{ preset_name == 'production' }}"
-    default: |-
-        {% if preset_name == 'production' -%}
-            yes
-        {%- else -%}
-            no
-        {%- endif %}
+  type: bool
+  help: Do you want to use a Python type checker (via mypy) on smart contracts codebase?
+  when: "{{ preset_name == 'production' }}"
+  default: |-
+    {% if preset_name == 'production' -%}
+        yes
+    {%- else -%}
+        no
+    {%- endif %}
 
 use_python_pytest:
-    type: bool
-    help: Do you want to include unit tests for smart contracts (via pytest)?
-    default: yes
+  type: bool
+  help: Do you want to include unit tests for smart contracts (via pytest)?
+  default: yes
 
 use_python_pip_audit:
-    type: bool
-    help: Do you want to include Python dependency vulnerability scanning for smart contracts (via pip-audit)?
-    when: "{{ preset_name == 'production' }}"
-    default: yes
+  type: bool
+  help: Do you want to include Python dependency vulnerability scanning for smart contracts (via pip-audit)?
+  when: "{{ preset_name == 'production' }}"
+  default: yes
 
 use_dispenser:
-    type: bool
-    when: "{{ preset_name == 'production' }}"
-    help: Do you want to fund your deployment account using an optional dispenser account?
-    default: no
+  type: bool
+  when: "{{ preset_name == 'production' }}"
+  help: Do you want to fund your deployment account using an optional dispenser account?
+  default: no
 
 ide_vscode:
-    type: bool
-    help: Do you want to add VSCode configuration?
-    default: yes
+  type: bool
+  help: Do you want to add VSCode configuration?
+  default: yes
 
 use_github_actions:
-    type: bool
-    help: Do you want to include Github Actions workflows for build and testnet deployment?
-    when: "{{ preset_name == 'production' }}"
-    default: yes
+  type: bool
+  help: Do you want to include Github Actions workflows for build and testnet deployment?
+  when: "{{ preset_name == 'production' }}"
+  default: yes
 
 cloud_provider:
-    type: str
-    help: Pick your website hosting provider for continuous delivery
-    when: "{{ use_github_actions != false and preset_name == 'production' }}"
-    choices:
-        Netlify: "netlify"
-        Vercel: "vercel"
-        Skip CD setup: "none"
-    default: |-
-        {% if preset_name == 'production' -%}
-            netlify
-        {%- else -%}
-            none
-        {%- endif %}
+  type: str
+  help: Pick your website hosting provider for continuous delivery
+  when: "{{ use_github_actions != false and preset_name == 'production' }}"
+  choices:
+    Netlify: 'netlify'
+    Vercel: 'vercel'
+    Skip CD setup: 'none'
+  default: |-
+    {% if preset_name == 'production' -%}
+        netlify
+    {%- else -%}
+        none
+    {%- endif %}

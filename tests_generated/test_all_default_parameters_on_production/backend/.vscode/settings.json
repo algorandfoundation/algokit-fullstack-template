@@ -12,9 +12,6 @@
     ".idea": true
   },
   
-  // TypeScript
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  
   // Python
   "python.analysis.extraPaths": ["${workspaceFolder}/smart_contracts"],
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv",

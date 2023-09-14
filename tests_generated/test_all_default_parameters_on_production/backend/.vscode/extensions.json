@@ -3,7 +3,6 @@
     "ms-python.python",
     "charliermarsh.ruff",
     "matangover.mypy",
-    "esbenp.prettier-vscode",
     "bungcip.better-toml",
     "editorconfig.editorconfig"
   ]
