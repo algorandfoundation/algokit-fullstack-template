@@ -3,25 +3,20 @@
   "configurations": [
     {
       "name": "Build & Deploy Beaker application",
-      "type": "node",
+      "type": "python",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "deploy"],
-      "cwd": "${workspaceFolder}/smart_contracts",
-      "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**", "node_modules/**"],
-      "preLaunchTask": "Build Beaker application (+ LocalNet)",
+      "module": "smart_contracts",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Start AlgoKit LocalNet",
       "envFile": "${workspaceFolder}/.env.localnet"
     },
     {
       "name": "Deploy Built Beaker application",
-      "type": "node",
+      "type": "python",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "deploy"],
-      "cwd": "${workspaceFolder}/smart_contracts",
-      "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "module": "smart_contracts",
+      "args": ["deploy"],
+      "cwd": "${workspaceFolder}",
       "envFile": "${workspaceFolder}/.env.localnet"
     },
     {

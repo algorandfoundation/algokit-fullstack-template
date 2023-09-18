@@ -234,6 +234,7 @@ def run_init(
 def get_answered_questions_from_copier_yaml(
     default_state: str = "yes",
     preset_name: str = "starter",
+    deployment_language: str = "python",
     allowed_questions: list[str] | None = None,
 ) -> dict[str, str]:
     copier_yaml = root / "copier.yaml"
@@ -254,6 +255,7 @@ def get_answered_questions_from_copier_yaml(
     questions = _load_copier_yaml(copier_yaml)
     answers = {}
     answers["preset_name"] = preset_name
+    answers["deployment_language"] = deployment_language
 
     for question_name, details in questions.items():
         if question_name in ignored_keys:
@@ -287,7 +289,9 @@ def test_all_default_parameters_off_starter(working_dir: Path) -> None:
     response = run_init(
         working_dir,
         "test_all_default_parameters_off_starter",
-        answers=get_answered_questions_from_copier_yaml("no"),
+        answers=get_answered_questions_from_copier_yaml(
+            "no", deployment_language="typescript"
+        ),
         child_template_default_answer="n",
     )
 

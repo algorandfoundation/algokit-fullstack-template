@@ -5,6 +5,7 @@ author_email: None
 author_name: None
 cloud_provider: none
 contract_name: hello_world
+deployment_language: typescript
 ide_vscode: false
 preset_name: starter
 project_name: test_all_default_parameters_off_starter
