@@ -25,10 +25,10 @@ This project has been generated using AlgoKit. See below for default getting sta
         1. Open the command palette (Ctrl/Cmd + Shift + P)
         2. Search for `Python: Select Interpreter`
         3. Select `./.venv/Scripts/python.exe`
-   - IDEA (e.g. PyCharm)
+   - JetBrains IDEs (please note, this setup is primarily optimized for PyCharm Community Edition)
      1. Open the repository root in the IDE
      2. It should automatically detect it's a Poetry project and set up a Python interpreter and virtual environment.
-     3. Hit Shift+F9 (or whatever you have debug mapped to) and it should start running with breakpoint debugging.
+     3. Hit Shift+F10|Ctrl+R (or whatever you have debug mapped to) and it should start running with breakpoint debugging. Please note, JetBrains IDEs on Windows have a known bug that in some cases may prevent executing shell scripts as pre-launch tasks, for workarounds refer to [JetBrains forums](https://youtrack.jetbrains.com/issue/IDEA-277486/Shell-script-configuration-cannot-run-as-before-launch-task).
    - Other
      1. Open the repository root in your text editor of choice
      2. In a terminal run `poetry shell`

@@ -46,7 +46,19 @@ This project makes use of Python and React to build Algorand smart contracts and
 - Python dependencies including Poetry, Black, Ruff or Flake8, mypy, pytest, and pip-audit
 - React and related dependencies including AlgoKit Utils, Tailwind CSS, daisyUI, use-wallet, npm, jest, playwright, Prettier, ESLint, and Github Actions workflows for build validation
 
+{% if ide_vscode -%}
+
+### VS Code
+
 It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [backend .vscode](./backend/.vscode) and [frontend .vscode](./frontend/.vscode) folders for more details.
+
+{% elif ide_jetbrains -%}
+
+### JetBrains IDEs
+
+It has also been configured to have a productive dev experience out of the box in [JetBrains IDEs](https://www.jetbrains.com/products/), see the [backend .idea](./backend/.idea) and [frontend .idea](./frontend/.idea) folders as well as respective README.md files for more details. Please note, the backend project `runConfigurations` has been optimized and tested on `Pycharm CE` while the frontend project `runConfigurations` is aimed at `WebStorm`. While `PyCharm CE` is available for free, `WebStorm` is a paid product. If you are a student, you can get a free license for `WebStorm` [here](https://www.jetbrains.com/community/education/#students).
+
+{% endif -%}
 
 ## Integrating with smart contracts and application clients
 

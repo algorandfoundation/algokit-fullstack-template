@@ -32,6 +32,8 @@ This project makes use of Python and React to build Algorand smart contracts and
 - Python dependencies including Poetry, Black, Ruff or Flake8, mypy, pytest, and pip-audit
 - React and related dependencies including AlgoKit Utils, Tailwind CSS, daisyUI, use-wallet, npm, jest, playwright, Prettier, ESLint, and Github Actions workflows for build validation
 
+### VS Code
+
 It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [backend .vscode](./backend/.vscode) and [frontend .vscode](./frontend/.vscode) folders for more details.
 
 ## Integrating with smart contracts and application clients

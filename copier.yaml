@@ -130,7 +130,7 @@ ide_vscode:
 
 ide_jetbrains:
   type: bool
-  help: Do you want to add JetBrains configuration (frontend optimized for WebStorm)?
+  help: Do you want to add JetBrains configuration (`frontend` optimized for WebStorm, `backend` for PyCharm CE)?
   when: '{{ ide_vscode == false }}'
   default: no
 

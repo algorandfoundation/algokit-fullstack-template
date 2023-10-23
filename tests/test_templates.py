@@ -232,9 +232,12 @@ def run_init(
 
 
 def get_answered_questions_from_copier_yaml(
+    *,
     default_state: str = "yes",
     preset_name: str = "starter",
     deployment_language: str = "python",
+    ide_vscode: bool = True,
+    ide_jetbrains: bool = False,
     allowed_questions: list[str] | None = None,
 ) -> dict[str, str]:
     copier_yaml = root / "copier.yaml"
@@ -271,6 +274,10 @@ def get_answered_questions_from_copier_yaml(
                     answers[question_name] = default_value.strip()
             elif details_type == "bool":
                 answers[question_name] = default_state
+
+    answers["ide_vscode"] = "yes" if ide_vscode else "no"
+    answers["ide_jetbrains"] = "yes" if ide_jetbrains else "no"
+
     return answers
 
 
@@ -278,7 +285,9 @@ def test_all_default_parameters_on_production(working_dir: Path) -> None:
     response = run_init(
         working_dir,
         "test_all_default_parameters_on_production",
-        answers=get_answered_questions_from_copier_yaml("yes", "production"),
+        answers=get_answered_questions_from_copier_yaml(
+            default_state="yes", preset_name="production"
+        ),
         child_template_default_answer="y",
     )
 
@@ -290,7 +299,23 @@ def test_all_default_parameters_off_starter(working_dir: Path) -> None:
         working_dir,
         "test_all_default_parameters_off_starter",
         answers=get_answered_questions_from_copier_yaml(
-            "no", deployment_language="typescript"
+            default_state="no", deployment_language="typescript"
+        ),
+        child_template_default_answer="n",
+    )
+
+    assert response.returncode == 0, response.stdout
+
+
+def test_all_default_parameters_off_jetbrains(working_dir: Path) -> None:
+    response = run_init(
+        working_dir,
+        "test_all_default_parameters_off_jetbrains",
+        answers=get_answered_questions_from_copier_yaml(
+            default_state="no",
+            deployment_language="typescript",
+            ide_vscode=False,
+            ide_jetbrains=True,
         ),
         child_template_default_answer="n",
     )

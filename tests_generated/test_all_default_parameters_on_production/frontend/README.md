@@ -17,6 +17,9 @@ This starter React project has been generated using AlgoKit. See below for defau
      1. Open the repository root in VS Code
      2. Install recommended extensions
      3. Hit F5 (or whatever you have debug mapped to) and it should start running with breakpoint debugging.
+   - JetBrains WebStorm
+     1. Open the repository root in WebStorm
+     2. Hit Shift+F10|Ctrl+R (or whatever you have debug mapped to). Then Shift+CMD|Ctrl+Click on the link in the console to open the browser with debugger attached.
    - Other
      1. Open the repository root in your text editor of choice
      2. In a terminal run `npm run dev`
