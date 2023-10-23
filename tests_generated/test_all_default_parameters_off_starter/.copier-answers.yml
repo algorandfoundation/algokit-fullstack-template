@@ -6,7 +6,8 @@ author_name: None
 cloud_provider: none
 contract_name: hello_world
 deployment_language: typescript
-ide_vscode: false
+ide_jetbrains: false
+ide_vscode: true
 preset_name: starter
 project_name: test_all_default_parameters_off_starter
 python_linter: none

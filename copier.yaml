@@ -6,6 +6,7 @@ _tasks:
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a ide_vscode {{ ide_vscode }}
+    -a ide_jetbrains {{ ide_jetbrains }}
     -a use_github_actions false"
 
   - "echo '==== 2/3 - Initializing backend template ===='"
@@ -14,6 +15,7 @@ _tasks:
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a ide_vscode {{ ide_vscode }}
+    -a ide_jetbrains {{ ide_jetbrains }}
     -a python_linter {{ python_linter }}
     -a use_python_black {{ use_python_black }}
     -a use_python_mypy {{ use_python_mypy }}
@@ -125,6 +127,12 @@ ide_vscode:
   type: bool
   help: Do you want to add VSCode configuration?
   default: yes
+
+ide_jetbrains:
+  type: bool
+  help: Do you want to add JetBrains configuration (`frontend` optimized for WebStorm, `backend` for PyCharm CE)?
+  when: '{{ ide_vscode == false }}'
+  default: no
 
 use_github_actions:
   type: bool

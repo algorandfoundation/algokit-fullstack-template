@@ -27,3 +27,9 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# PyCharm
+.idea
+!.idea/
+.idea/*
+!.idea/runConfigurations/

@@ -1,0 +1,20 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: <commit>
+_src_path: <src>
+author_email: None
+author_name: None
+cloud_provider: none
+contract_name: hello_world
+deployment_language: typescript
+ide_jetbrains: true
+ide_vscode: false
+preset_name: starter
+project_name: test_all_default_parameters_off_jetbrains
+python_linter: none
+use_dispenser: false
+use_github_actions: false
+use_python_black: false
+use_python_mypy: false
+use_python_pip_audit: false
+use_python_pytest: false
+

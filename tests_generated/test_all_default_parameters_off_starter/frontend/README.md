@@ -17,6 +17,9 @@ This starter React project has been generated using AlgoKit. See below for defau
      1. Open the repository root in VS Code
      2. Install recommended extensions
      3. Hit F5 (or whatever you have debug mapped to) and it should start running with breakpoint debugging.
+   - JetBrains WebStorm
+     1. Open the repository root in WebStorm
+     2. Hit Shift+F10|Ctrl+R (or whatever you have debug mapped to). Then Shift+CMD|Ctrl+Click on the link in the console to open the browser with debugger attached.
    - Other
      1. Open the repository root in your text editor of choice
      2. In a terminal run `npm run dev`
@@ -50,6 +53,7 @@ This project makes use of React and Tailwind to provider a base project configur
 - [daisyUI](https://daisyui.com/) - A component library for Tailwind CSS.
 - [use-wallet](https://github.com/txnlab/use-wallet) - A React hook for connecting to an Algorand wallet providers.
 - [npm](https://www.npmjs.com/): Node.js package manager
+It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [.vscode](./.vscode) folder.
 # Integrating with smart contracts and application clients
 
 Refer to the detailed guidance on [integrating with smart contracts and application clients](./src/contracts/README.md). In essence, for any smart contract codebase generated with AlgoKit or other tools that produce compile contracts into ARC34 compliant app specifications, you can use the `algokit generate` command to generate TypeScript or Python typed client. Once generated simply drag and drop the generated client into `./src/contracts` and import it into your React components as you see fit.
