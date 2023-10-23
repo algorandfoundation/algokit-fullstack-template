@@ -286,7 +286,9 @@ def test_all_default_parameters_on_production(working_dir: Path) -> None:
         working_dir,
         "test_all_default_parameters_on_production",
         answers=get_answered_questions_from_copier_yaml(
-            default_state="yes", preset_name="production"
+            default_state="yes",
+            preset_name="production",
+            ide_jetbrains=False,
         ),
         child_template_default_answer="y",
     )
