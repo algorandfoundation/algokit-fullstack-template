@@ -2,18 +2,20 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== 1/3 - Initializing frontend template ===='"
-  - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
+  - "algokit init --template-url https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=origin/jetbrains -n frontend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a ide_vscode {{ ide_vscode }}
+    -a ide_jetbrains {{ ide_jetbrains }}
     -a use_github_actions false"
 
   - "echo '==== 2/3 - Initializing backend template ===='"
-  - "algokit init -t beaker -n backend --no-git --no-ide --no-bootstrap
+  - "algokit init --template-url https://github.com/algorandfoundation/algokit-beaker-default-template --template-url-ref=origin/add-jetbrains-compatibility -n backend --no-git --no-ide --no-bootstrap --UNSAFE-SECURITY-accept-template-url
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a ide_vscode {{ ide_vscode }}
+    -a ide_jetbrains {{ ide_jetbrains }}
     -a python_linter {{ python_linter }}
     -a use_python_black {{ use_python_black }}
     -a use_python_mypy {{ use_python_mypy }}
@@ -125,6 +127,12 @@ ide_vscode:
   type: bool
   help: Do you want to add VSCode configuration?
   default: yes
+
+ide_jetbrains:
+  type: bool
+  help: Do you want to add JetBrains configuration (frontend optimized for WebStorm)?
+  when: '{{ ide_vscode == false }}'
+  default: no
 
 use_github_actions:
   type: bool
