@@ -15,8 +15,7 @@ This project has been generated using AlgoKit. See below for default getting sta
      - Run `poetry install` in the root directory, which will set up a `.venv` folder with a Python virtual environment and also install all Python dependencies
      - Copy `.env.template` to `.env`
    - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
-     - Run `npm install` to install NPM packages
-
+   - Run `npm install` to install NPM packages
 3. Open the project and start debugging / developing via:
    - VS Code
      1. Open the repository root in VS Code
