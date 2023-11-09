@@ -6,14 +6,11 @@ algod_server: http://localhost
 algod_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 author_email: None
 author_name: None
-cloud_provider: netlify
-ide_jetbrains: false
 ide_vscode: true
 indexer_port: 8980
 indexer_server: http://localhost
 indexer_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 project_name: frontend
-use_daisy_ui: true
 use_eslint_prettier: false
 use_github_actions: false
 use_jest: false

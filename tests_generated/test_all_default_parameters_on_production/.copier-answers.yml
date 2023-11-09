@@ -6,7 +6,6 @@ author_name: None
 cloud_provider: netlify
 contract_name: hello_world
 deployment_language: python
-ide_jetbrains: false
 ide_vscode: true
 preset_name: production
 project_name: test_all_default_parameters_on_production

@@ -6,8 +6,6 @@ algod_server: http://localhost
 algod_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 author_email: None
 author_name: None
-cloud_provider: netlify
-ide_jetbrains: false
 ide_vscode: true
 indexer_port: 8980
 indexer_server: http://localhost
