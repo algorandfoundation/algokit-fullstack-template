@@ -51,7 +51,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
     const isLocal = await algokit.isLocalNet(algodClient)
-    const deployParams = {
+    const deployParams: Parameters<typeof appClient.deploy>[0] = {
       allowDelete: isLocal,
       allowUpdate: isLocal,
       onSchemaBreak: isLocal ? 'replace' : 'fail',
