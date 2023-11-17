@@ -57,7 +57,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     }
     {%- elif preset_name == 'production' %}
     const isLocal = await algokit.isLocalNet(algodClient)
-    const deployParams = {
+    const deployParams: Parameters<typeof appClient.deploy>[0] = {
       allowDelete: isLocal,
       allowUpdate: isLocal,
       onSchemaBreak: isLocal ? 'replace' : 'fail',
