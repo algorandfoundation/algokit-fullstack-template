@@ -3,7 +3,8 @@
     "ms-python.python",
     "charliermarsh.ruff",
     "matangover.mypy",
-    "bungcip.better-toml",
+    "ms-python.black-formatter",
+    "tamasfe.even-better-toml",
     "editorconfig.editorconfig"
   ]
 }
