@@ -21,11 +21,22 @@
       // Prevent default import sorting from running; Ruff will sort imports for us anyway
       "source.organizeImports": false
     },
-    "editor.defaultFormatter": null
-  },
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    },
+  "black-formatter.args": ["--config=pyproject.toml"],
   "python.testing.pytestEnabled": true,
-  "python.formatting.provider": "black",
-  "python.linting.pylintEnabled": false,
+  "ruff.enable": true,
+  "ruff.lint.run": "onSave",
+  "ruff.lint.args": ["--config=pyproject.toml"],
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.fixAll": true, //lint and fix all files in workspace
+  "ruff.organizeImports": true, //organize imports on save
+  "ruff.codeAction.disableRuleComment": {
+    "enable": true
+  },
+  "ruff.codeAction.fixViolation": {
+    "enable": true
+  },
   "python.analysis.typeCheckingMode": "off",
   "mypy.configFile": "pyproject.toml",
   // set to empty array to use config from project

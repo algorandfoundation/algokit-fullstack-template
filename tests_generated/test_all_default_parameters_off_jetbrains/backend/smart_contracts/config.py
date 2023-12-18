@@ -59,6 +59,6 @@ contracts = [
 
 ## Comment the above and uncomment the below and define contracts manually if you want to build and specify them
 ## manually otherwise the above code will always include all contracts under contract.py file for any subdirectory
-## in the smart_contracts directory. Optionally it will also grab the deploy function from deploy_config.py if it exists.
+## in the smart_contracts directory. Optionally it will grab the deploy function from deploy_config.py if it exists.
 
 # contracts = []

@@ -19,12 +19,13 @@ _tasks:
     -a python_linter {{ python_linter }}
     -a use_python_black {{ use_python_black }}
     -a use_python_mypy {{ use_python_mypy }}
+    -a deployment_language {{ deployment_language }}
     -a use_python_pytest {{ use_python_pytest }}
+    -a use_typescript_jest {{ use_typescript_jest }}
     -a use_python_pip_audit {{ use_python_pip_audit }}
     -a use_dispenser {{ use_dispenser }}
     -a contract_name {{ contract_name }}
     -a use_github_actions false
-    -a deployment_language {{ deployment_language }}
     -a use_pre_commit false"
 
   - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
@@ -75,6 +76,28 @@ deployment_language:
     Python: 'python'
     TypeScript: 'typescript'
 
+use_python_pytest:
+  type: bool
+  when: "{{ deployment_language == 'python' }}"
+  help: Do you want to include unit tests for smart contracts (via pytest)?
+  default: |-
+    {% if deployment_language == 'python' -%}
+        yes
+    {%- else -%}
+        no
+    {%- endif %}
+
+use_typescript_jest:
+  type: bool
+  when: "{{ deployment_language == 'typescript' }}"
+  help: Do you want to include unit tests for smart contracts (via jest)?
+  default: |-
+    {% if deployment_language == 'typescript' -%}
+        yes
+    {%- else -%}
+        no
+    {%- endif %}
+
 python_linter:
   type: str
   help: Do you want to use a Python linter on smart contracts codebase?
@@ -105,11 +128,6 @@ use_python_mypy:
     {%- else -%}
         no
     {%- endif %}
-
-use_python_pytest:
-  type: bool
-  help: Do you want to include unit tests for smart contracts (via pytest)?
-  default: yes
 
 use_python_pip_audit:
   type: bool

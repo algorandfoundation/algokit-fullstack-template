@@ -8,12 +8,12 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 beaker-pyteal = "^1.1.1"
-algokit-utils = "^2.0.1"
+algokit-utils = "^2.2.0"
 python-dotenv = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = {extras = ["d"], version = "*"}
-ruff = ">=0.0.260"
+ruff = "^0.1.6"
 mypy = "*"
 pytest = "*"
 pytest-cov = "*"
@@ -24,6 +24,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
+line-length = 120
 select = ["E", "F", "ANN", "UP", "N", "C4", "B", "A", "YTT", "W", "FBT", "Q", "RUF", "I"]
 ignore = [
   "ANN101", # no type for self

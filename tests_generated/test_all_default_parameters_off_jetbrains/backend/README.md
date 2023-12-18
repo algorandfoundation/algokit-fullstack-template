@@ -4,6 +4,8 @@ This project has been generated using AlgoKit. See below for default getting sta
 
 # Setup
 
+For an interactive guided walkthrough of the project install [CodeTour](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.codetour) in VS Code and run the `Getting Started with Your AlgoKit Project` tour in the `CodeTour` in Explorer panel in your VSCode instance.
+
 ### Initial setup
 
 1. Clone this repository locally
@@ -52,7 +54,7 @@ This project makes use of Python to build Algorand smart contracts. The followin
 - [PyTEAL](https://github.com/algorand/pyteal) - Python language binding for Algorand smart contracts; [docs](https://pyteal.readthedocs.io/en/stable/)
 - [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-ts) - A set of core Algorand utilities that make it easier to build solutions on Algorand.
 - [Poetry](https://python-poetry.org/): Python packaging and dependency management.
-- [npm](https://www.npmjs.com/): Node.js package manager
-- [TypeScript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript
-- [ts-node-dev](https://github.com/wclr/ts-node-dev): TypeScript development execution environment
+- [npm](https://www.npmjs.com/): Node.js package manager.
+- [TypeScript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript.
+- [ts-node-dev](https://github.com/wclr/ts-node-dev): TypeScript development execution environment.
 
