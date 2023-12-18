@@ -10,5 +10,5 @@ ide_vscode: false
 preset_name: starter
 project_name: test_all_default_parameters_off_jetbrains
 use_python_black: false
-use_python_pytest: false
+use_typescript_jest: false
 

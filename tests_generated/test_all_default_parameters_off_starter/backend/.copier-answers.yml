@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 1.9.2
+_commit: 1.11.0
 _src_path: gh:algorandfoundation/algokit-beaker-default-template
 algod_port: 4001
 algod_server: http://localhost
@@ -15,5 +15,5 @@ indexer_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 preset_name: starter
 project_name: backend
 use_python_black: false
-use_python_pytest: false
+use_typescript_jest: false
 

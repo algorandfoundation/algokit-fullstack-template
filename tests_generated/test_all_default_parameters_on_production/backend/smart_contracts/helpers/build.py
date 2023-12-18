@@ -34,7 +34,7 @@ def build(output_dir: Path, app: beaker.Application) -> Path:
     if result.returncode:
         if "No such command" in result.stdout:
             raise Exception(
-                "Could not generate typed client, requires AlgoKit 1.1 or "
+                "Could not generate typed client, requires AlgoKit 1.8.0 or "
                 "later. Please update AlgoKit"
             )
         else:
