@@ -101,7 +101,7 @@ if __name__ == "__main__":
     for file in os.listdir(os.path.join(inject_folder_path)):
         source_file = os.path.join(inject_folder_path, file)
 
-        if file == "App.tsx":
+        if file == "Home.tsx":
             dest_file = os.path.join(ROOT_DIR, "frontend", "src", file)
             inject_file(source_file, dest_file)
         if file == "AppCalls.tsx":

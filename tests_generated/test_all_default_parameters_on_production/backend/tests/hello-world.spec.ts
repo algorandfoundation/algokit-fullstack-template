@@ -29,6 +29,7 @@ describe('hello world contract', () => {
       onSchemaBreak: 'replace',
       onUpdate: 'update',
     })
+    
     return { client }
   }
 

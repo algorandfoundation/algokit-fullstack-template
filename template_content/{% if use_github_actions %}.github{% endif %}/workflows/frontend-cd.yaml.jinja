@@ -73,7 +73,7 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         working-directory: ./frontend
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        # Set your vercel project env variables on your site instance on https://vercel.com/dashboard
+        # Set your vercel project env variables on your github repository (see README in frontend folder for more info)
       {% endraw %}
     {%- else %}
       {% raw %}
@@ -107,5 +107,6 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          # Set your vercel project env variables on your github repository (see README in frontend folder for more info)
       {% endraw %}
     {%- endif %}
