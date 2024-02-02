@@ -43,7 +43,6 @@ project_name:
 system_path:
   type: str
   help: Path to the sys.executable.
-  default: "python3"
 
 preset_name:
   type: str
