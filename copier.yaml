@@ -29,7 +29,6 @@ _tasks:
     -a use_pre_commit false"
 
   - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
-  - "echo {{ system_path }}"
   - '{{ system_path }} inject.py'
 
 # questions
