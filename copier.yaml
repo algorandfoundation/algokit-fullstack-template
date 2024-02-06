@@ -29,7 +29,7 @@ _tasks:
     -a use_pre_commit false"
 
   - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
-  - '{{ system_path }} inject.py'
+  - '{{ python_path }} inject.py'
 
 # questions
 # project_name should never get prompted, AlgoKit should always pass it by convention
@@ -39,7 +39,7 @@ project_name:
   placeholder: 'algorand-app'
   default: 'algorand-app'
 
-system_path:
+python_path:
   type: str
   help: Path to the sys.executable.
 
