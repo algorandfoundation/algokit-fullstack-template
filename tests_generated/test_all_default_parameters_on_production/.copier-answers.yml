@@ -10,6 +10,7 @@ ide_vscode: true
 preset_name: production
 project_name: test_all_default_parameters_on_production
 python_linter: ruff
+python_path: python
 use_dispenser: true
 use_github_actions: true
 use_python_black: true

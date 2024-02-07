@@ -19,6 +19,7 @@ generated_root = root / generated_folder
 DEFAULT_PARAMETERS = {
     "author_name": "None",
     "author_email": "None",
+    "python_path": "python",
 }
 
 

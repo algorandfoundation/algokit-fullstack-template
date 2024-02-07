@@ -59,3 +59,8 @@ This project makes use of Python to build Algorand smart contracts. The followin
 - [ts-node-dev](https://github.com/wclr/ts-node-dev): TypeScript development execution environment.
 
 It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [.vscode](./.vscode) folder.
+- [AlgoKit Tealer Integration](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/tasks/analyze.md): AlgoKit Tealer Integration is a feature in the CLI that allows you to run [Tealer](https://github.com/crytic/tealer) static analyzer on your TEAL
+source code. The invocation of this command is included in:
+- The github actions workflow file.
+- A VSCode task ('Shift+CMD|CTRL+P' and search for 'Tasks: Run Task' and select 'Analyze TEAL contracts with AlgoKit Tealer integration').
+- A `pre-commit` hook (if you have enabled `pre-commit` in your project). 
