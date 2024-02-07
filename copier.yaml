@@ -42,7 +42,7 @@ project_name:
 python_path:
   type: str
   help: Path to the sys.executable.
-  default: 'python'
+  default: '{{ _copier_python }}'
 
 preset_name:
   type: str
