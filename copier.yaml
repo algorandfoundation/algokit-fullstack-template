@@ -29,7 +29,7 @@ _tasks:
     -a use_pre_commit false"
 
   - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
-  - '{{ python_path }} inject.py'
+  - '{{ python_path if python_path else "python3" }} inject.py'
 
 # questions
 # project_name should never get prompted, AlgoKit should always pass it by convention
@@ -41,8 +41,7 @@ project_name:
 
 python_path:
   type: str
-  help: Path to the sys.executable.
-  default: '{{ _copier_python }}'
+  help: Path to the sys.executable. If running on algokit versions lower than v1.11.3, skip this question.
 
 preset_name:
   type: str
