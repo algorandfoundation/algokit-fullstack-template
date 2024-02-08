@@ -31,6 +31,10 @@ _tasks:
   - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
   - '{{ python_path if python_path else _copier_python }} inject.py'
 
+  - 'echo {{ python_path if python_path else _copier_python }}'
+  - 'echo {{ python_path }}'
+  - 'echo {{ _copier_python }}'
+
 # questions
 # project_name should never get prompted, AlgoKit should always pass it by convention
 project_name:
