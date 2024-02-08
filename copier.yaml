@@ -46,7 +46,6 @@ project_name:
 python_path:
   type: str
   help: Path to the sys.executable. If running on algokit versions lower than v1.11.3, skip this question.
-  default: ''
   when: false
 
 preset_name:
