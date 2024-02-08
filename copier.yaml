@@ -30,10 +30,7 @@ _tasks:
 
   - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
   - '{{ python_path if python_path else _copier_python }} inject.py'
-
-  - 'echo {{ python_path if python_path else _copier_python }}'
-  - 'echo {{ python_path }}'
-  - 'echo {{ _copier_python }}'
+  # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
 # questions
 # project_name should never get prompted, AlgoKit should always pass it by convention
@@ -43,9 +40,11 @@ project_name:
   placeholder: 'algorand-app'
   default: 'algorand-app'
 
+# Auto determined by algokit-cli from v1.11.3 to allow execution of python script 
+# in binary mode. 
 python_path:
   type: str
-  help: Path to the sys.executable. If running on algokit versions lower than v1.11.3, skip this question.
+  help: Path to the sys.executable. 
   when: false
 
 preset_name:
