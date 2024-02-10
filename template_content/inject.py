@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 import shutil
 
 TYPED_CLIENT_LINKING_COMMAND = {
@@ -91,7 +92,7 @@ if __name__ == "__main__":
     specified_commands = ["dev", "build"]
 
     # Inject linking command into package.json
-    package_json_path = os.path.join(ROOT_DIR, "frontend", "package.json")
+    package_json_path = Path(ROOT_DIR).parent.parent / "contracts" / puya
     inject_npm_script(
         package_json_path, TYPED_CLIENT_LINKING_COMMAND, specified_commands
     )
