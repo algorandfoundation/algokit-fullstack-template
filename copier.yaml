@@ -2,14 +2,14 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== 1/3 - Initializing frontend template ===='"
-  - "algokit init -t react -n frontend --no-git --no-ide --no-bootstrap
+  - "algokit init -t react -n sites/{{ project_name }}-app --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a use_github_actions false"
 
   - "echo '==== 2/3 - Initializing backend template ===='"
-  - "algokit init -t {{ contract_template }} -n backend --no-git --no-ide --no-bootstrap
+  - "algokit init -t {{ contract_template }} -n contracts/{{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
