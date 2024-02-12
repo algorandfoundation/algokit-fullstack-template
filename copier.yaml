@@ -18,13 +18,14 @@ _tasks:
     -a use_pre_commit false"
 
   - "echo '==== 3/3 - Finishing touches ===='"
-  - 'cd sites/{{ project_name }}-app && algokit generate import-contract -a contract_name {{ project_name }}'
+  - 'cd sites/{{ project_name }}-app && algokit generate import-contract -a contract_name {{ project_name }}-contracts'
   # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
 # questions
 contract_template:
   type: str
   help: Choose the contract template.
+  when: false
   choices:
     - puya
     - tealscript
