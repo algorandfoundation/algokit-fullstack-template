@@ -2,14 +2,14 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== 1/3 - Initializing frontend template ===='"
-  - "mkdir -p sites && cd sites && algokit init --template-url git+https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
+  - "mkdir -p src && cd src && algokit init --template-url git+https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a use_github_actions false"
 
   - "echo '==== 2/3 - Initializing backend template ===='"
-  - "mkdir -p contracts && cd contracts && algokit init --template-url git+https://github.com/algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+  - "mkdir -p src && cd src && algokit init --template-url git+https://github.com/algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
@@ -18,7 +18,7 @@ _tasks:
     -a use_pre_commit false"
 
   - "echo '==== 3/3 - Finishing touches ===='"
-  - 'cd sites/{{ project_name }}-app && algokit generate import-contract -a contract_name {{ project_name }}-contracts'
+  - 'cd src/{{ project_name }}-app && algokit generate import-contract -a contract_name {{ project_name }}'
   # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
 # questions
@@ -36,7 +36,7 @@ project_name:
   type: str
   help: Name for this project.
   placeholder: 'algorand-app'
-  default: 'algorand-app'
+  default: 'myproject'
 
 # Auto determined by algokit-cli from v1.11.3 to allow execution of python script
 # in binary mode.
