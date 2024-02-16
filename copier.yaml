@@ -2,14 +2,16 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== 1/3 - Initializing frontend template ===='"
-  - "mkdir -p src && cd src && algokit init --template-url git+https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
+  # TODO: temporary changes below, revert back to official branch upon merging
+  - "algokit init --template-url git+https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a use_github_actions false"
 
   - "echo '==== 2/3 - Initializing backend template ===='"
-  - "mkdir -p src && cd src && algokit init --template-url git+https://github.com/algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+  # TODO: temporary changes below, revert back to official branch upon merging
+  - "algokit init --template-url git+{% if contract_template == 'tealscript' %}https://github.com/algorand-devrel/tealscript-algokit-template{% else %}https://github.com/algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
@@ -17,8 +19,8 @@ _tasks:
     -a use_github_actions false
     -a use_pre_commit false"
 
-  - "echo '==== 3/3 - Finishing touches ===='"
-  - 'cd src/{{ project_name }}-app && algokit generate import-contract -a contract_name {{ project_name }}'
+  - "echo '==== 3/3 - Integrating fullstack components into frontend template ===='"
+  - '{{ python_path if python_path else _copier_python }} inject.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-app"'
   # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
 # questions
@@ -29,6 +31,7 @@ contract_template:
   choices:
     - puya
     - tealscript
+    - beaker
   default: puya
 
 # project_name should never get prompted, AlgoKit should always pass it by convention
