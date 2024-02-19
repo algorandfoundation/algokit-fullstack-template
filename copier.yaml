@@ -14,7 +14,7 @@ _tasks:
 
   - "echo '==== 3/4 - Initializing backend template ===='"
   # TODO: temporary changes below, revert back to official branch upon merging
-  - "algokit init --template-url gh:{% if contract_template == 'tealscript' %}algorand-devrel/tealscript-algokit-template{% else %}algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+  - "algokit init --template-url gh:{% if contract_template == 'tealscript' %}algorand-devrel/tealscript-algokit-template{% elif contract_template == 'beaker' %}algorandfoundation/algokit-beaker-default-template{% else %}algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
@@ -32,9 +32,9 @@ contract_template:
   help: Choose the contract template.
   when: false
   choices:
-    - puya
-    - tealscript
-    - beaker
+    'Puya Template': puya
+    'TealScript Template': tealscript
+    'Beaker Framework': beaker
   default: puya
 
 # project_name should never get prompted, AlgoKit should always pass it by convention

@@ -25,7 +25,7 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "Build artifacts (+ LocalNet)",
+        "label": "Build+LocalNet",
         "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/bin/python",
         "windows": {
           "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/Scripts/python.exe"
@@ -34,11 +34,11 @@
         "options": {
           "cwd": "${workspaceFolder}/projects/{{ project_name }}-contracts"
         },
-        "dependsOn": "Start AlgoKit LocalNet",
+        "dependsOn": "Init LocalNet",
         "problemMatcher": []
       },
       {
-        "label": "Start AlgoKit LocalNet",
+        "label": "Init LocalNet",
         "command": "algokit",
         "args": ["localnet", "start"],
         "type": "shell",
@@ -53,11 +53,11 @@
     "configurations": [],
     "compounds": [
       {
-        "preLaunchTask": "Build artifacts (+ LocalNet)",
-        "name": "Run Frontend (+ LocalNet and Smart Contract)",
+        "preLaunchTask": "Build+LocalNet",
+        "name": "Launch dApp",
         "configurations": [
           {
-            "name": "Deploy Built Beaker application",
+            "name": "Deploy Beaker Contracts",
             "folder": "projects/{{ project_name }}-contracts"
           },
           { "name": "Run dApp", "folder": "projects/{{ project_name }}-app" }
