@@ -1,28 +1,28 @@
 _subdirectory: ./template_content
 
 _tasks:
-  - "echo '==== 1/4 - Installing Algokit ===='"
-  - 'algokit init --template-url git+https://github.com/algorandfoundation/algokit-base-template -n . --no-git --no-ide --no-bootstrap -a use_default_readme false'
+  - "echo '==== 1/4 - Initializing base template ===='"
+  - 'algokit init --template-url gh:algorandfoundation/algokit-base-template -n . --no-git --no-ide --no-bootstrap -a use_default_readme false'
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
   # TODO: temporary changes below, revert back to official branch upon merging
-  - "algokit init --template-url git+https://github.com/algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
+  - "algokit init --template-url gh:algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
-    -a use_github_actions false"
+    -a use_github_actions 'no'"
 
   - "echo '==== 3/4 - Initializing backend template ===='"
   # TODO: temporary changes below, revert back to official branch upon merging
-  - "algokit init --template-url git+{% if contract_template == 'tealscript' %}https://github.com/algorand-devrel/tealscript-algokit-template{% else %}https://github.com/algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+  - "algokit init --template-url gh:{% if contract_template == 'tealscript' %}algorand-devrel/tealscript-algokit-template{% else %}algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a contract_name {{ contract_name }}
-    -a use_github_actions false
-    -a use_pre_commit false"
+    -a use_github_actions 'no'
+    -a use_pre_commit 'no'"
 
-  - "echo '==== 4/4 - Integrating fullstack components into frontend template ===='"
+  - "echo '==== 4/4 - Finalizing setup ===='"
   - '{{ python_path if python_path else _copier_python }} inject.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-app"'
   # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
@@ -94,7 +94,7 @@ ide_vscode:
   type: bool
   help: Do you want to add VSCode configuration?
   when: "{{ preset_name == 'custom' }}"
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 ide_jetbrains:
   type: bool
@@ -106,13 +106,13 @@ use_python_pytest:
   type: bool
   when: "{{ deployment_language == 'python' and preset_name == 'custom' }}"
   help: Do you want to include unit tests for smart contracts (via pytest)?
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 use_typescript_jest:
   type: bool
   when: "{{ deployment_language == 'typescript' and preset_name == 'custom' }}"
   help: Do you want to include unit tests for smart contracts (via jest)?
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 python_linter:
   type: str
@@ -122,43 +122,43 @@ python_linter:
     Ruff: 'ruff'
     Flake8: 'flake8'
     No thanks: 'none'
-  default: 'none'
+  default: "{{ 'ruff' if preset_name == 'production' else 'none' }}"
 
 use_python_black:
   type: bool
   help: Do you want to use a Python formatter (via Black) on smart contracts codebase?
   when: "{{ preset_name == 'custom' }}"
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 use_python_mypy:
   type: bool
   help: Do you want to use a Python type checker (via mypy) on smart contracts codebase?
   when: "{{ preset_name == 'custom' }}"
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 use_python_pip_audit:
   type: bool
   help: Do you want to include Python dependency vulnerability scanning for smart contracts (via pip-audit)?
   when: "{{ preset_name == 'custom' }}"
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 use_dispenser:
   type: bool
   when: "{{ preset_name == 'custom' }}"
   help: Do you want to fund your deployment account using an optional dispenser account?
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 use_github_actions:
   type: bool
   help: Do you want to include Github Actions workflows for build and testnet deployment?
   when: "{{ preset_name == 'custom' }}"
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 use_pre_commit:
   type: bool
   when: "{{ preset_name == 'custom' }}"
   help: Do you want to include pre-commit for linting, type checking and formatting?
-  default: no
+  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 cloud_provider:
   type: str
@@ -168,7 +168,7 @@ cloud_provider:
     Netlify: 'netlify'
     Vercel: 'vercel'
     Skip CD setup: 'none'
-  default: 'none'
+  default: "{{ 'netlify' if preset_name == 'production' else 'none' }}"
 
 algod_token:
   type: str

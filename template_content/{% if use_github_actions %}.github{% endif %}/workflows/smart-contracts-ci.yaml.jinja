@@ -27,18 +27,18 @@ jobs:
 
       - name: Bootstrap dependencies
         run: algokit bootstrap all
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
 
       - name: Configure git
         shell: bash
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # set git user and email as test invoke git
           git config --global user.email "actions@github.com" && git config --global user.name "github-actions"
 {%- if use_python_pip_audit %}
 
       - name: Audit with pip-audit
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # audit non dev dependencies, no exclusions
           poetry export --without=dev > requirements.txt && poetry run pip-audit -r requirements.txt
@@ -52,7 +52,7 @@ jobs:
 {%- if use_python_black %}
 
       - name: Check formatting with Black
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # stop the build if there are files that don't meet formatting requirements
           poetry run black --check .
@@ -60,14 +60,14 @@ jobs:
 {%- if python_linter == 'ruff' %}
 
       - name: Check linting with Ruff
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # stop the build if there are Python syntax errors or undefined names
           poetry run ruff .
 {%- elif python_linter == 'flake8' %}
 
       - name: Check linting with flake8
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # stop the build if there are Python syntax errors or undefined names
           poetry run flake8 .
@@ -75,13 +75,13 @@ jobs:
 {%- if use_python_mypy %}
 
       - name: Check types with mypy
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: poetry run mypy
 {%- endif %}
 {%- if use_python_pytest %}
 
       - name: Run tests
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         shell: bash
         run: |
           set -o pipefail
@@ -89,12 +89,12 @@ jobs:
 {%- endif %}
 
       - name: Build smart contracts
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: poetry run python -m smart_contracts build
 
       - name: Check output stability of the smart contracts
         shell: bash
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # Add untracked files as empty so they come up in diff
           git add -N ./smart_contracts/artifacts

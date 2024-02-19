@@ -31,18 +31,18 @@ jobs:
         run: pipx install algokit
 
       - name: Bootstrap dependencies
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: algokit bootstrap all
 
       - name: Configure git
         shell: bash
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: |
           # set git user and email as test invoke git
           git config --global user.email "actions@github.com" && git config --global user.name "github-actions"
 
       - name: Deploy to testnet
-        working-directory: ./backend
+        working-directory: ./projects/{{ project_name }}-contracts
         run: algokit deploy testnet
         env:
 {%- if use_dispenser %}

@@ -38,28 +38,28 @@ jobs:
         run: pipx install algokit
 
       - name: Install Vercel CLI
-        working-directory: ./frontend
+        working-directory: ./projects/{{ project_name }}-app
         run: npm install --global vercel@latest
 
       - name: Pull Vercel Environment Information
-        working-directory: ./frontend
+        working-directory: ./projects/{{ project_name }}-app
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Create placeholder .env file
         uses: makerxstudio/shared-config/.github/actions/env-to-placeholders@main
         with:
-          env-output-path: ./frontend/.env
-          env-template-path: ./frontend/.env.template
+          env-output-path: ./projects/{{ project_name }}-app/.env
+          env-template-path: ./projects/{{ project_name }}-app/.env.template
           env-variable-prefix: VITE_
 
       - name: Build Project Artifacts
-        working-directory: ./frontend
+        working-directory: ./projects/{{ project_name }}-app
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Replace template vars
         uses: makerxstudio/shared-config/.github/actions/placeholder-transforms@main
         with:
-          app-artifact-path: ./frontend/.vercel/output
+          app-artifact-path: ./projects/{{ project_name }}-app/.vercel/output
           static-site-transforms: |-
             VITE_ALGOD_TOKEN:${{ secrets.VITE_ALGOD_TOKEN }}
             VITE_ALGOD_SERVER:${{ vars.VITE_ALGOD_SERVER }}
@@ -71,7 +71,7 @@ jobs:
             VITE_ENVIRONMENT:${{ vars.VITE_ENVIRONMENT }}
 
       - name: Deploy Project Artifacts to Vercel
-        working-directory: ./frontend
+        working-directory: ./projects/{{ project_name }}-app
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         # Set your vercel project env variables on your github repository (see README in frontend folder for more info)
       {% endraw %}
@@ -86,7 +86,7 @@ jobs:
       - name: Replace template vars
         uses: makerxstudio/shared-config/.github/actions/placeholder-transforms@main
         with:
-          app-artifact-path: ./frontend/dist
+          app-artifact-path: ./projects/{{ project_name }}-app/dist
           static-site-transforms: |-
             VITE_ALGOD_TOKEN:${{ secrets.VITE_ALGOD_TOKEN }}
             VITE_ALGOD_SERVER:${{ vars.VITE_ALGOD_SERVER }}
@@ -98,11 +98,11 @@ jobs:
             VITE_ENVIRONMENT:${{ vars.VITE_ENVIRONMENT }}
 
       - name: Install netlify cli
-        working-directory: ./frontend
+        working-directory: ./projects/{{ project_name }}-app
         run: npm i netlify-cli
 
       - name: Publish to netlify
-        working-directory: ./frontend
+        working-directory: ./projects/{{ project_name }}-app
         run: netlify deploy --prod --dir "dist"
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
