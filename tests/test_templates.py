@@ -162,6 +162,7 @@ def run_init(
         "--no-ide",
         "--no-git",
         "--no-bootstrap",
+        "--no-workspace",
     ]
     answers = {**DEFAULT_PARAMETERS, **(answers or {})}
 
@@ -285,12 +286,14 @@ def get_answered_questions_from_copier_yaml(
     return answers
 
 
-def test_production_preset(working_dir: Path) -> None:
+@pytest.mark.parametrize("contract_language", ["tealscript", "puya", "beaker"])
+def test_production_preset(contract_language: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        "test_all_default_parameters_on_production",
+        f"production_{contract_language}_react",
         answers=get_answered_questions_from_copier_yaml(
             preset_name="production",
+            deployment_language="python",
             ide_jetbrains=False,
         ),
         child_template_default_answer="y",
