@@ -5,21 +5,21 @@ _tasks:
   - 'algokit init --template-url gh:algorandfoundation/algokit-base-template -n . --no-git --no-ide --no-bootstrap -a use_default_readme false'
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
-  # TODO: temporary changes below, revert back to official branch upon merging
   - "algokit init -t react -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
+    -a ide_vscode '{{ ide_vscode }}'
     -a use_github_actions 'no'"
 
   - "echo '==== 3/4 - Initializing backend template ===='"
-  # TODO: temporary changes below, revert back to official branch upon merging
   - "algokit init -t {{ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a contract_name {{ contract_name }}
     -a deployment_language {{ deployment_language }}
+    -a ide_vscode '{{ ide_vscode }}'
     -a use_github_actions 'no'
     -a use_pre_commit 'no'"
 
