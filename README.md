@@ -29,18 +29,6 @@ And the following backend template:
 - [algokit-tealscript-template](https://github.com/algorand-devrel/tealscript-algokit-template) - An official starter for developing and deploying TealScript smart contracts.
 - [algokit-beaker-default-template](https://github.com/algorandfoundation/algokit-beaker-default-template) - A production-ready baseline for developing and deploying Beaker smart contracts. Please note this template option is to be deprecated upon initial release of `puya`.
 
-### Interactive wizard
-
-Prefer to run the interactive wizard directly from the `algokit-cli`?
-
-Run `algokit init` to get started. The wizard will guide you through the process of selecting the template that best suits your needs.
-
-Prefer to try out any of the official templates interactively on `GitHub Codespaces`? Follow the steps below to get started:
-
-1. Navigate to [algokit-base-template](https://github.com/algorandfoundation/algokit-base-template)
-2. Click `Create codespace on main` by clicking on `Code` button under `Codespaces` tab.
-3. Once the codespace is ready, algokit will automatically invoke an interactive prompt to help you choose the template best suited for your needs.
-
 ### Frontend
 
 - React web app with [Tailwind CSS](https://tailwindcss.com/) and [TypeScript](https://www.typescriptlang.org/)
@@ -72,6 +60,18 @@ Prefer to try out any of the official templates interactively on `GitHub Codespa
 
 > Refer to the respective backend repository mentioned in [features](#features) for up-to-date information.
 
-# Getting started
+## Getting started
 
 Once the template is instantiated you can follow the [README.md](template_content/README.md.jinja) file to see instructions for how to use the template.
+
+### Interactive wizard
+
+Prefer to run the interactive wizard directly from the `algokit-cli`?
+
+Run `algokit init` to get started. The wizard will guide you through the process of selecting the template that best suits your needs.
+
+Prefer to try out any of the official templates interactively on `GitHub Codespaces`? Follow the steps below to get started:
+
+1. Navigate to [algokit-base-template](https://github.com/algorandfoundation/algokit-base-template)
+2. Click `Create codespace on main` by clicking on `Code` button under `Codespaces` tab.
+3. Once the codespace is ready, algokit will automatically invoke an interactive prompt to help you choose the template best suited for your needs.
