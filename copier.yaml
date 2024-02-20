@@ -14,7 +14,7 @@ _tasks:
 
   - "echo '==== 3/4 - Initializing backend template ===='"
   # TODO: temporary changes below, revert back to official branch upon merging
-  - "algokit init --template-url gh:{% if contract_template == 'tealscript' %}algorand-devrel/tealscript-algokit-template{% elif contract_template == 'beaker' %}algorandfoundation/algokit-beaker-default-template{% else %}algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+  - "algokit init --template-url gh:{% if contract_template == 'tealscript' %}algorand-devrel/tealscript-algokit-template{% elif contract_template == 'beaker' %}algorandfoundation/algokit-beaker-default-template --template-url-ref=feat/wizard_v2{% else %}algorandfoundation/algokit-puya-template --template-url-ref=poc/wizard_v2{% endif %} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
@@ -107,12 +107,6 @@ use_python_pytest:
   type: bool
   when: "{{ deployment_language == 'python' and preset_name == 'custom' }}"
   help: Do you want to include unit tests for smart contracts (via pytest)?
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
-use_typescript_jest:
-  type: bool
-  when: "{{ deployment_language == 'typescript' and preset_name == 'custom' }}"
-  help: Do you want to include unit tests for smart contracts (via jest)?
   default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
 python_linter:
