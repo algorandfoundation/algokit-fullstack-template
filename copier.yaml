@@ -19,6 +19,7 @@ _tasks:
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
     -a contract_name {{ contract_name }}
+    -a deployment_language {{ deployment_language }}
     -a use_github_actions 'no'
     -a use_pre_commit 'no'"
 
