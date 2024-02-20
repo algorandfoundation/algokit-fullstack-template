@@ -6,7 +6,7 @@ _tasks:
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
   # TODO: temporary changes below, revert back to official branch upon merging
-  - "algokit init --template-url gh:algorandfoundation/algokit-react-frontend-template --template-url-ref=poc/wizard_v2 -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
+  - "algokit init -t react -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
     -a author_email '{{ author_email }}'
     -a author_name '{{ author_name }}'
     -a preset_name {{ preset_name }}
@@ -31,7 +31,7 @@ _tasks:
 contract_template:
   type: str
   help: Choose the contract template.
-  when: false
+  # when: false
   choices:
     Puya: puya
     TealScript: tealscript
@@ -86,6 +86,7 @@ author_email:
 deployment_language:
   type: str
   help: Pick language for deployment scripts in the backend?
+  when: "{{ contract_template != 'tealscript' }}"
   choices:
     Python: 'python'
     TypeScript: 'typescript'

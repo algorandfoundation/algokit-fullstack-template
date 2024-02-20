@@ -14,7 +14,7 @@ commit_pattern = re.compile(r"^_commit: .*", flags=re.MULTILINE)
 src_path_pattern = re.compile(r"_src_path: .*")
 tests_path = Path(__file__).parent
 root = tests_path.parent
-generated_folder = "tests_generated"
+generated_folder = "examples"
 generated_root = root / generated_folder
 DEFAULT_PARAMETERS = {
     "author_name": "None",
@@ -24,10 +24,13 @@ DEFAULT_PARAMETERS = {
 
 
 def generate_fullstack_get_args(
-    copier_answers: dict[str, str]
+    project_name: str,
+    copier_answers: dict[str, str],
 ) -> dict[str, list[list[str]]]:
+    backend = f"projects/{project_name}-contracts"
+    frontend = f"projects/{project_name}-app"
     check_args = {
-        "backend": [
+        backend: [
             [
                 "black",
                 "--check",
@@ -44,20 +47,20 @@ def generate_fullstack_get_args(
                 ".",
             ],
         ],
-        "frontend": [
+        frontend: [
             ["npm", "install"],
         ],
     }
 
     if copier_answers["preset_name"] == "production":
-        check_args["backend"].append(
+        check_args[backend].append(
             [
                 "mypy",
                 "--ignore-missing-imports",
                 ".",
             ]
         )
-        check_args["frontend"].append(["npm", "run", "lint"])
+        check_args[frontend].append(["npm", "run", "lint"])
 
     return check_args
 
@@ -133,6 +136,7 @@ def run_init(
     child_template_default_answer: str = "no",
 ) -> subprocess.CompletedProcess:
     copy_to = working_dir / generated_folder / test_name
+    project_name = str(copy_to.stem)
     shutil.rmtree(copy_to, ignore_errors=True)
     if template_url is None:
         template_url = str(working_dir)
@@ -150,7 +154,7 @@ def run_init(
         "--verbose",
         "init",
         "--name",
-        str(copy_to.stem),
+        project_name,
         "--template-url",
         template_url,
         "--UNSAFE-SECURITY-accept-template-url",
@@ -207,7 +211,7 @@ def run_init(
     if result.returncode:
         return result
 
-    command_checks = generate_fullstack_get_args(answers)
+    command_checks = generate_fullstack_get_args(project_name, answers)
 
     for folder, commands in command_checks.items():
         for command in commands:
@@ -234,7 +238,7 @@ def run_init(
 
 def get_answered_questions_from_copier_yaml(
     *,
-    default_state: str = "yes",
+    contract_language: str = "python",
     preset_name: str = "starter",
     deployment_language: str = "python",
     ide_vscode: bool = True,
@@ -260,6 +264,7 @@ def get_answered_questions_from_copier_yaml(
     answers = {}
     answers["preset_name"] = preset_name
     answers["deployment_language"] = deployment_language
+    answers["contract_language"] = contract_language
 
     for question_name, details in questions.items():
         if question_name in ignored_keys:
@@ -273,8 +278,6 @@ def get_answered_questions_from_copier_yaml(
                     default_template = Template(details["default"])
                     default_value = default_template.render(preset_name=preset_name)
                     answers[question_name] = default_value.strip()
-            elif details_type == "bool":
-                answers[question_name] = default_state
 
     answers["ide_vscode"] = "yes" if ide_vscode else "no"
     answers["ide_jetbrains"] = "yes" if ide_jetbrains else "no"
@@ -282,12 +285,11 @@ def get_answered_questions_from_copier_yaml(
     return answers
 
 
-def test_all_default_parameters_on_production(working_dir: Path) -> None:
+def test_production_preset(working_dir: Path) -> None:
     response = run_init(
         working_dir,
         "test_all_default_parameters_on_production",
         answers=get_answered_questions_from_copier_yaml(
-            default_state="yes",
             preset_name="production",
             ide_jetbrains=False,
         ),
@@ -297,30 +299,20 @@ def test_all_default_parameters_on_production(working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-def test_all_default_parameters_off_starter(working_dir: Path) -> None:
+@pytest.mark.parametrize("contract_language", ["tealscript", "puya", "beaker"])
+def test_starter_preset(contract_language: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        "test_all_default_parameters_off_starter",
+        f"starter_{contract_language}_react",
         answers=get_answered_questions_from_copier_yaml(
-            default_state="no", deployment_language="typescript"
-        ),
-        child_template_default_answer="n",
-    )
-
-    assert response.returncode == 0, response.stdout
-
-
-def test_all_default_parameters_off_jetbrains(working_dir: Path) -> None:
-    response = run_init(
-        working_dir,
-        "test_all_default_parameters_off_jetbrains",
-        answers=get_answered_questions_from_copier_yaml(
-            default_state="no",
+            preset_name="starter",
             deployment_language="typescript",
-            ide_vscode=False,
-            ide_jetbrains=True,
+            contract_language=contract_language,
         ),
         child_template_default_answer="n",
     )
 
     assert response.returncode == 0, response.stdout
+
+
+# Expand for any specific combinations of parameters

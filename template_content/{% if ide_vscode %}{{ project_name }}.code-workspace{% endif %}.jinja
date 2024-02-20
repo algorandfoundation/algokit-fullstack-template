@@ -5,7 +5,7 @@
       "name": "ROOT"
     },
     {
-      "path": "./projects/{{ project_name }}-contracts",
+      "path": "./projects/{{ project_name }}-contracts"
     },
     {
       "path": "./projects/{{ project_name }}-app"
@@ -13,7 +13,7 @@
   ],
   "settings": {
     "files.exclude": {
-      "projects/": true,
+      "projects/": true
     },
     "jest.disabledWorkspaceFolders": ["ROOT", "projects"],
     "dotenv.enableAutocloaking": false
@@ -21,6 +21,7 @@
   "extensions": {
     "recommendations": ["joshx.workspace-terminals"]
   },
+  {% if contract_template != 'tealscript' %}
   "tasks": {
     "version": "2.0.0",
     "tasks": [
@@ -69,4 +70,13 @@
       }
     ]
   }
+  {% else %}
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": []
+  },
+  "launch": {
+    "configurations": []
+  }
+  {% endif -%}
 }
