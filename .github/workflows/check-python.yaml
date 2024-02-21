@@ -6,6 +6,8 @@ on:
 jobs:
   check-python:
     runs-on: 'ubuntu-latest'
+    permissions:
+      contents: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
