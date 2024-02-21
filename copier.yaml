@@ -74,8 +74,8 @@ contract_name:
 author_name:
   type: str
   help: Package author name
-  placeholder: 'Your Name'
-  default: 'Your Name'
+  placeholder: 'Your-Name'
+  default: 'Your-Name'
 
 author_email:
   type: str

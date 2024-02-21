@@ -10,7 +10,7 @@ python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 ruff = ">=0.0.260"
-black = {extras = ["d"], version = "^22.10.0"}
+black = { extras = ["d"], version = "^22.10.0" }
 mypy = "^1.1.1"
 jinja2 = ">=3.1.1"
 pytest = "^7.2.2"
@@ -23,11 +23,23 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-select = ["E", "F", "ANN", "UP", "N", "C4", "B", "A", "YTT", "W", "FBT", "Q", "RUF", "I"]
-extend-exclude = [
-  "tests_generated/*",
-  "template_content"
-  ]
+select = [
+  "E",
+  "F",
+  "ANN",
+  "UP",
+  "N",
+  "C4",
+  "B",
+  "A",
+  "YTT",
+  "W",
+  "FBT",
+  "Q",
+  "RUF",
+  "I",
+]
+extend-exclude = ["examples/*", "template_content"]
 ignore = [
   "ANN101", # no type for self
   "ANN102", # no type for cls
@@ -36,9 +48,7 @@ unfixable = ["B", "RUF"]
 
 [tool.pytest.ini_options]
 pythonpath = ["tests"]
-testpaths = [
-    "tests",
-]
+testpaths = ["tests"]
 
 [tool.mypy]
 python_version = "3.10"
@@ -47,7 +57,4 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 allow_untyped_defs = false
 strict_equality = true
-exclude = [
-    "tests_generated/*",
-    "template_content"
-]
+exclude = ["examples/*", "template_content"]
