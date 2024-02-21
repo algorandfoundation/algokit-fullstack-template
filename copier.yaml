@@ -5,23 +5,23 @@ _tasks:
   - 'algokit init --template-url gh:algorandfoundation/algokit-base-template -n . --no-git --no-ide --no-bootstrap -a include_readme false -a include_algokit_toml false'
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
-  - "algokit init -t react -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
-    -a author_email '{{ author_email }}'
-    -a author_name '{{ author_name }}'
+  - 'algokit init -t react -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
+    -a author_email "{{ author_email }}"
+    -a author_name "{{ author_name }}"
     -a preset_name {{ preset_name }}
-    -a ide_vscode '{{ ide_vscode }}'
-    -a use_github_actions 'no'"
+    -a ide_vscode "{{ ide_vscode }}"
+    -a use_github_actions "no"'
 
   - "echo '==== 3/4 - Initializing backend template ===='"
-  - "algokit init -t {{ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
-    -a author_email '{{ author_email }}'
-    -a author_name '{{ author_name }}'
+  - 'algokit init -t {{ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+    -a author_email "{{ author_email }}"
+    -a author_name "{{ author_name }}"
     -a preset_name {{ preset_name }}
     -a contract_name {{ contract_name }}
     -a deployment_language {{ deployment_language }}
-    -a ide_vscode '{{ ide_vscode }}'
-    -a use_github_actions 'no'
-    -a use_pre_commit 'no'"
+    -a ide_vscode "{{ ide_vscode }}"
+    -a use_github_actions "no"
+    -a use_pre_commit "no"'
 
   - "echo '==== 4/4 - Finalizing setup ===='"
   - '{{ python_path if python_path else _copier_python }} inject.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-app"'
