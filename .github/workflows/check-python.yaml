@@ -43,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # set git user and email as test invoke git
-          git config --global user.email "actions@github.com" && git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
           # set up git credentials to allow pushing dummy commits
           git config --global credential.helper '!f() { echo "username=x-access-token"; echo "password=${GITHUB_TOKEN}"; }; f'
 
