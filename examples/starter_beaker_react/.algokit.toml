@@ -1,5 +1,5 @@
 [algokit]
-min_version = "v1.8.0"
+min_version = "v1.11.3"
 
 [project]
 type = 'workspace'

@@ -43,7 +43,7 @@ jobs:
         run: npm run test
 
       - name: Create placeholder .env file
-        if: ${{ inputs.run-build }}
+        if: ${{ "{{" }} inputs.run-build {{ "}}" }}
         uses: makerxstudio/shared-config/.github/actions/env-to-placeholders@main
         with:
           env-output-path: ./projects/{{ project_name }}-app/.env
@@ -51,12 +51,12 @@ jobs:
           env-variable-prefix: VITE_
 
       - name: Build
-        if: ${{ inputs.run-build }}
+        if: ${{ "{{" }} inputs.run-build {{ "}}" }}
         working-directory: ./projects/{{ project_name }}-app
         run: npm run build
 
       - name: Archive
-        if: ${{ inputs.run-build }}
+        if: ${{ "{{" }} inputs.run-build {{ "}}" }}
         uses: actions/upload-artifact@v3
         with:
           name: dist
