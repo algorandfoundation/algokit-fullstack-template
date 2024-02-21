@@ -1,3 +1,4 @@
+import json
 import re
 import shutil
 import subprocess
@@ -21,6 +22,30 @@ DEFAULT_PARAMETERS = {
     "author_email": "None",
     "python_path": "python",
 }
+
+# Below is a patch to replace non static patch component inside the path in package.json
+# in react templates this is to be mitigated with orchestration
+# functionality implemented on algokit cli
+def _update_package_json_paths(package_json_path: Path, project_name: str) -> None:
+    if package_json_path.exists():
+        with open(package_json_path, encoding="utf-8") as file:
+            data = json.load(file)
+
+        def replace_last_path(command: str, new_path: str) -> str:
+            parts = command.split(" ")
+            parts[-1] = new_path
+            return " ".join(parts)
+
+        for key, value in data.get("scripts", {}).items():
+            if isinstance(value, str) and "algokit generate client" in value:
+                modified_command = replace_last_path(
+                    value, f"../{project_name}-contracts"
+                )
+                data["scripts"][key] = modified_command
+                break
+
+        with open(package_json_path, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=2)
 
 
 def generate_fullstack_get_args(
@@ -211,6 +236,9 @@ def run_init(
 
     if result.returncode:
         return result
+
+    package_json_path = copy_to / "projects" / f"{project_name}-app" / "package.json"
+    _update_package_json_paths(package_json_path, project_name)
 
     command_checks = generate_fullstack_get_args(project_name, answers)
 

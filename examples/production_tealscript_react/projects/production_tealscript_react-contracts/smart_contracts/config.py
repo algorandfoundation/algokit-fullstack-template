@@ -12,9 +12,10 @@ from algosdk.v2client.indexer import IndexerClient
 class SmartContract:
     path: Path
     name: str
-    deploy: Callable[
-        [AlgodClient, IndexerClient, ApplicationSpecification, Account], None
-    ] | None = None
+    deploy: (
+        Callable[[AlgodClient, IndexerClient, ApplicationSpecification, Account], None]
+        | None
+    ) = None
 
 
 def import_contract(folder: Path) -> Path:

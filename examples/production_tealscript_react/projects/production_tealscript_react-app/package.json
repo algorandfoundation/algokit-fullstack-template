@@ -46,7 +46,7 @@
     "tslib": "^2.6.2"
   },
   "scripts": {
-    "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts /private/var/folders/t6/57q65mk543l7xw6_bdgx1bmc0000gn/T/tmp3rixz923/template/examples/production_tealscript_react/projects/production_tealscript_react-contracts",
+    "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts /private/var/folders/t6/57q65mk543l7xw6_bdgx1bmc0000gn/T/tmpo8u3xjw3/template/examples/production_tealscript_react/projects/production_tealscript_react-contracts",
     "dev": "npm run generate:app-clients && vite",
     "build": "npm run generate:app-clients && tsc && vite build",
     "test": "jest --coverage --passWithNoTests",
