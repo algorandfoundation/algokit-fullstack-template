@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 0.4.0-9-gb60f4c2
+_src_path: gh:algorandfoundation/algokit-puya-template
+author_email: None
+author_name: None
+contract_name: hello_world
+deployment_language: python
+preset_name: production
+project_name: production_tealscript_react-contracts
+
