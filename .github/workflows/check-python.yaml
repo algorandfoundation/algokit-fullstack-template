@@ -6,8 +6,6 @@ on:
 jobs:
   check-python:
     runs-on: 'ubuntu-latest'
-    permissions:
-      contents: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -39,13 +37,9 @@ jobs:
 
       - name: Configure git
         shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # set git user and email as test invoke git
-          git config --global user.email "actions@github.com" && git config --global user.name "x-access-token"
-          # set up git credentials to allow pushing dummy commits
-          git config --global credential.helper '!f() { echo "username=x-access-token"; echo "password=${GITHUB_TOKEN}"; }; f'
+          git config --global user.email "actions@github.com" && git config --global user.name "github-actions"
 
       - name: Run tests
         shell: bash
