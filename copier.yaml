@@ -54,7 +54,7 @@ python_path:
 
 preset_name:
   type: str
-  help: Name of the preset to use. Starter is optimal for simpler projects, Production is optimal for more complex projects that require CI/CD and other features, Custom for user-defined settings.
+  help: Name of the template preset to use.
   choices:
     'Starter - for simpler starting point ideal for prototyping': 'starter'
     'Production - for confidently deploying to MainNet and/or more complex projects': 'production'
