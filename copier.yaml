@@ -56,9 +56,9 @@ preset_name:
   type: str
   help: Name of the preset to use. Starter is optimal for simpler projects, Production is optimal for more complex projects that require CI/CD and other features, Custom for user-defined settings.
   choices:
-    Starter: 'starter'
-    Production: 'production'
-    Custom: 'custom'
+    'Starter - for simpler starting point ideal for prototyping': 'starter'
+    'Production - for confidently deploying to MainNet and/or more complex projects': 'production'
+    'Custom - for tailoring of the template output to your needs': 'custom'
   default: 'starter'
 
 contract_name:
