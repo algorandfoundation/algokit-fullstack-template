@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-import { HelloWorldClient } from '../contracts/HelloWorld'
+import { HelloWorldClient } from '../contracts/hello_world'
 
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
@@ -52,9 +52,12 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
-    const deployParams = {
-      onSchemaBreak: 'append',
-      onUpdate: 'append',
+    const isLocal = await algokit.isLocalNet(algodClient)
+    const deployParams: Parameters<typeof appClient.deploy>[0] = {
+      allowDelete: isLocal,
+      allowUpdate: isLocal,
+      onSchemaBreak: isLocal ? 'replace' : 'fail',
+      onUpdate: isLocal ? 'update' : 'fail',
     }
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })

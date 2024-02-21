@@ -1,7 +1,10 @@
-from puyapy import ARC4Contract, arc4
+import beaker
+import pyteal as pt
 
 
-class HelloWorld(ARC4Contract):
-    @arc4.abimethod()
-    def hello(self, name: arc4.String) -> arc4.String:
-        return "Hello, " + name
+app = beaker.Application("hello_world")
+
+
+@app.external
+def hello(name: pt.abi.String, *, output: pt.abi.String) -> pt.Expr:
+    return output.set(pt.Concat(pt.Bytes("Hello, "), name.get()))

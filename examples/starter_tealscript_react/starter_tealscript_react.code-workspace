@@ -24,50 +24,9 @@
   
   "tasks": {
     "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "Build artifacts (+ LocalNet)",
-        "command": "${workspaceFolder}/projects/starter_tealscript_react-contracts/.venv/bin/python",
-        "windows": {
-          "command": "${workspaceFolder}/projects/starter_tealscript_react-contracts/.venv/Scripts/python.exe"
-        },
-        "args": ["-m", "smart_contracts", "build"],
-        "options": {
-          "cwd": "${workspaceFolder}/projects/starter_tealscript_react-contracts"
-        },
-        "dependsOn": "Start AlgoKit LocalNet",
-        "problemMatcher": []
-      },
-      {
-        "label": "Start AlgoKit LocalNet",
-        "command": "algokit",
-        "args": ["localnet", "start"],
-        "type": "shell",
-        "options": {
-          "cwd": "${workspaceFolder}"
-        },
-        "problemMatcher": []
-      }
-    ]
+    "tasks": []
   },
   "launch": {
-    "configurations": [],
-    "compounds": [
-      {
-        "preLaunchTask": "Build artifacts (+ LocalNet)",
-        "name": "Run Frontend (+ LocalNet and Smart Contract)",
-        "configurations": [
-          {
-            "name": "Deploy contracts",
-            "folder": "starter_tealscript_react-contracts"
-          },
-          { "name": "Run dApp", "folder": "starter_tealscript_react-app" }
-        ],
-        "presentation": {
-          "hidden": false,
-          "group": "0. Run workspace"
-        }
-      }
-    ]
+    "configurations": []
   }
   }

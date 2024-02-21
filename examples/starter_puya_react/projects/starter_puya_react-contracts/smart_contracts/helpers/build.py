@@ -4,7 +4,7 @@ from pathlib import Path
 from shutil import rmtree
 
 logger = logging.getLogger(__name__)
-deployment_extension = "py"
+deployment_extension = "ts"
 
 
 def build(output_dir: Path, contract_path: Path) -> Path:

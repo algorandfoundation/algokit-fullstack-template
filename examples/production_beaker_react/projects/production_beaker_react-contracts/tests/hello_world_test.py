@@ -24,8 +24,10 @@ def hello_world_client(
     )
 
     client.deploy(
-        on_schema_break=algokit_utils.OnSchemaBreak.AppendApp,
-        on_update=algokit_utils.OnUpdate.AppendApp,
+        on_schema_break=algokit_utils.OnSchemaBreak.ReplaceApp,
+        on_update=algokit_utils.OnUpdate.UpdateApp,
+        allow_delete=True,
+        allow_update=True,
     )
     return client
 

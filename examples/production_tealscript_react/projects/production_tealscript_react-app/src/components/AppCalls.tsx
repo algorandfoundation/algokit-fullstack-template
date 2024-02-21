@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-import { HelloWorldClient } from '../contracts/HelloWorld'
+import { HelloWorldClient } from '../contracts/ProductionTealscriptReactContracts'
 
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 

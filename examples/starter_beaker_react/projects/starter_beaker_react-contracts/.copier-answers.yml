@@ -1,10 +1,10 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 0.4.0-20-gfaa6d61
-_src_path: gh:algorandfoundation/algokit-puya-template
+_commit: 1.12.0-25-gbe89a2c
+_src_path: gh:algorandfoundation/algokit-beaker-default-template
 author_email: None
 author_name: None
 contract_name: hello_world
-deployment_language: python
+deployment_language: typescript
 preset_name: starter
 project_name: starter_beaker_react-contracts
 

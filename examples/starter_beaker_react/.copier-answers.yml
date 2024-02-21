@@ -4,7 +4,7 @@ _src_path: <src>
 author_email: None
 author_name: None
 contract_name: hello_world
-deployment_language: python
+deployment_language: typescript
 preset_name: starter
 project_name: starter_beaker_react
 

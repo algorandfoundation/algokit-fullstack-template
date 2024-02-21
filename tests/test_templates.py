@@ -267,7 +267,7 @@ def run_init(
 
 def get_answered_questions_from_copier_yaml(
     *,
-    contract_language: str = "python",
+    contract_template: str = "python",
     preset_name: str = "starter",
     deployment_language: str = "python",
     ide_vscode: bool = True,
@@ -291,9 +291,6 @@ def get_answered_questions_from_copier_yaml(
 
     questions = _load_copier_yaml(copier_yaml)
     answers = {}
-    answers["preset_name"] = preset_name
-    answers["deployment_language"] = deployment_language
-    answers["contract_language"] = contract_language
 
     for question_name, details in questions.items():
         if question_name in ignored_keys:
@@ -308,21 +305,25 @@ def get_answered_questions_from_copier_yaml(
                     default_value = default_template.render(preset_name=preset_name)
                     answers[question_name] = default_value.strip()
 
+    answers["preset_name"] = preset_name
+    answers["deployment_language"] = deployment_language
+    answers["contract_template"] = contract_template
     answers["ide_vscode"] = "yes" if ide_vscode else "no"
     answers["ide_jetbrains"] = "yes" if ide_jetbrains else "no"
 
     return answers
 
 
-@pytest.mark.parametrize("contract_language", ["tealscript", "puya", "beaker"])
-def test_production_preset(contract_language: str, working_dir: Path) -> None:
+@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        f"production_{contract_language}_react",
+        f"production_{contract_template}_react",
         answers=get_answered_questions_from_copier_yaml(
             preset_name="production",
             deployment_language="python",
             ide_jetbrains=False,
+            contract_template=contract_template,
         ),
         child_template_default_answer="y",
     )
@@ -330,15 +331,15 @@ def test_production_preset(contract_language: str, working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-@pytest.mark.parametrize("contract_language", ["tealscript", "puya", "beaker"])
-def test_starter_preset(contract_language: str, working_dir: Path) -> None:
+@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        f"starter_{contract_language}_react",
+        f"starter_{contract_template}_react",
         answers=get_answered_questions_from_copier_yaml(
             preset_name="starter",
             deployment_language="typescript",
-            contract_language=contract_language,
+            contract_template=contract_template,
         ),
         child_template_default_answer="n",
     )

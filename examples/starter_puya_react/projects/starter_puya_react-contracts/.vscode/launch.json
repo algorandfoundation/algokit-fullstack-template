@@ -3,20 +3,25 @@
   "configurations": [
     {
       "name": "Build & Deploy contracts",
-      "type": "python",
+      "type": "node",
       "request": "launch",
-      "module": "smart_contracts",
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "Start AlgoKit LocalNet",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "deploy"],
+      "cwd": "${workspaceFolder}/smart_contracts",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "preLaunchTask": "Build contracts (+ LocalNet)",
       "envFile": "${workspaceFolder}/.env.localnet"
     },
     {
       "name": "Deploy contracts",
-      "type": "python",
+      "type": "node",
       "request": "launch",
-      "module": "smart_contracts",
-      "args": ["deploy"],
-      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "deploy"],
+      "cwd": "${workspaceFolder}/smart_contracts",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "envFile": "${workspaceFolder}/.env.localnet"
     },
     {

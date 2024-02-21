@@ -27,19 +27,19 @@ def main(action: str) -> None:
     match action:
         case "build":
             for contract in contracts:
-                logger.info(f"Building app at {contract.path}")
-                build(artifact_path / contract.name, contract.path)
+                logger.info(f"Building app {contract.app.name}")
+                build(artifact_path / contract.app.name, contract.app)
         case "deploy":
             for contract in contracts:
-                logger.info(f"Deploying app {contract.name}")
-                app_spec_path = artifact_path / contract.name / "application.json"
+                logger.info(f"Deploying app {contract.app.name}")
+                app_spec_path = artifact_path / contract.app.name / "application.json"
                 if contract.deploy:
                     deploy(app_spec_path, contract.deploy)
         case "all":
             for contract in contracts:
-                logger.info(f"Building app at {contract.path}")
-                app_spec_path = build(artifact_path / contract.name, contract.path)
-                logger.info(f"Deploying {contract.path.name}")
+                logger.info(f"Building app {contract.app.name}")
+                app_spec_path = build(artifact_path / contract.app.name, contract.app)
+                logger.info(f"Deploying {contract.app.name}")
                 if contract.deploy:
                     deploy(app_spec_path, contract.deploy)
 

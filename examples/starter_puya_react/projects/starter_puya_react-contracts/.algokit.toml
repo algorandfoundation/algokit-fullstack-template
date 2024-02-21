@@ -2,7 +2,7 @@
 min_version = "v1.8.0"
 
 [deploy]
-command = "poetry run python -m smart_contracts deploy"
+command = "npm run deploy:ci"
 environment_secrets = [
   "DEPLOYER_MNEMONIC",
 ]
