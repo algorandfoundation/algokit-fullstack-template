@@ -31,7 +31,7 @@ _tasks:
 contract_template:
   type: str
   help: Choose the contract template.
-  # when: false
+  when: false
   choices:
     Puya: puya
     TealScript: tealscript
