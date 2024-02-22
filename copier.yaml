@@ -2,7 +2,7 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== 1/4 - Initializing base template ===='"
-  - 'algokit init --template-url gh:algorandfoundation/algokit-base-template -n . --no-git --no-ide --no-bootstrap -a include_readme false -a include_algokit_toml false'
+  - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap -a include_readme false -a include_algokit_toml false'
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
   - 'algokit init -t react -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
