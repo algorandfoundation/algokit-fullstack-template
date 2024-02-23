@@ -13,3 +13,7 @@ environment_secrets = []
 [generate.smart_contract]
 description = "Adds new smart contract to existing project"
 path = ".algokit/generators/create_contract"
+
+[project]
+type = 'contract'
+name = 'starter_beaker_react-contracts'

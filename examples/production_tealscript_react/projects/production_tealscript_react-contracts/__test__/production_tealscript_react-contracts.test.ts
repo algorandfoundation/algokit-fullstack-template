@@ -1,6 +1,7 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
 import { ProductionTealscriptReactContractsClient } from '../contracts/clients/ProductionTealscriptReactContractsClient';
+import * as algokit from '@algorandfoundation/algokit-utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
