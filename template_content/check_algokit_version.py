@@ -7,7 +7,7 @@ import sys
 logger = logging.getLogger(__name__)
 
 # algokit cli version that in which support for wizard v2 was first introduced
-ALGOKIT_MIN_VERSION = "1.11.4"
+ALGOKIT_MIN_VERSION = "1.12.0b1"
 
 
 def get_algokit_version():
@@ -22,7 +22,26 @@ def get_algokit_version():
 
 
 def is_smaller(version, min_version):
-    return tuple(map(int, version.split("."))) < tuple(map(int, min_version.split(".")))
+    def parse_version(v):
+        # Extract main version and pre-release, adjusting for the new format
+        main, _, pre = re.match(r"(\d+\.\d+\.\d+)(-?b(\d+))?", v).groups()
+        main_parts = list(map(int, main.split(".")))
+        pre_parts = (
+            [int(pre)] if pre else [9999]  # Assume a high number for release version
+        )
+        return main_parts, pre_parts
+
+    version_main, version_pre = parse_version(version)
+    min_version_main, min_version_pre = parse_version(min_version)
+
+    # Compare main version parts
+    if version_main < min_version_main:
+        return True
+    elif version_main > min_version_main:
+        return False
+
+    # If main versions are equal, compare pre-release versions
+    return version_pre < min_version_pre
 
 
 def delete_file(file_path):
