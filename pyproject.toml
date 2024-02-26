@@ -6,16 +6,16 @@ authors = ["MakerX <cto@makerx.com.au>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.12"
 
 [tool.poetry.group.dev.dependencies]
-ruff = ">=0.0.260"
+ruff = "^0.1.6"
 black = { extras = ["d"], version = "^22.10.0" }
 mypy = "^1.1.1"
 jinja2 = ">=3.1.1"
 pytest = "^7.2.2"
-types-pyyaml = "^6.0.12.9"
-pyyaml = ">=5.1"
+types-pyyaml = "^6.0.12.12"
+pyyaml = ">=6.0.1"
 pytest-xdist = "^3.3.1"
 
 [build-system]
