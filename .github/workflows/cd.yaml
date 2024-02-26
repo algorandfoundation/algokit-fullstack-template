@@ -13,20 +13,20 @@ jobs:
     uses: ./.github/workflows/check-python.yaml
 
   tag-release:
-    runs-on: "ubuntu-latest"
+    runs-on: 'ubuntu-latest'
     needs: ci-check-python
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Tag release
         id: tag
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
-          skip-commit: "true"
-          tag-prefix: ""
-          skip-on-empty: "false"
-          
+          skip-commit: 'true'
+          tag-prefix: ''
+          skip-on-empty: 'false'
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: ${{ steps.tag.outputs.skipped == 'false' }}

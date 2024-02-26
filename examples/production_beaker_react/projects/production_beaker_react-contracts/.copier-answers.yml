@@ -1,0 +1,10 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 1.12.0-28-gd8a09f0
+_src_path: gh:algorandfoundation/algokit-beaker-default-template
+author_email: None
+author_name: None
+contract_name: hello_world
+deployment_language: python
+preset_name: production
+project_name: production_beaker_react-contracts
+

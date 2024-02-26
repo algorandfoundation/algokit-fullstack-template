@@ -4,7 +4,13 @@ import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
+{% if contract_template == 'beaker' %}
 import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name }}'
+{% elif contract_template == 'tealscript' %}
+import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ project_name.split('_')|map('capitalize')|join }}Contracts'
+{% else %}
+import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name.split('_')|map('capitalize')|join }}'
+{% endif %}
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
@@ -50,12 +56,12 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
-    {%- if preset_name == 'starter' %}
+    {%- if preset_name == 'starter' or contract_template != 'beaker' %}
     const deployParams = {
       onSchemaBreak: 'append',
       onUpdate: 'append',
     }
-    {%- elif preset_name == 'production' %}
+    {%- elif preset_name == 'production' and contract_template == 'beaker' %}
     const isLocal = await algokit.isLocalNet(algodClient)
     const deployParams: Parameters<typeof appClient.deploy>[0] = {
       allowDelete: isLocal,

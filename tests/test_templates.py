@@ -1,3 +1,4 @@
+import json
 import re
 import shutil
 import subprocess
@@ -14,7 +15,7 @@ commit_pattern = re.compile(r"^_commit: .*", flags=re.MULTILINE)
 src_path_pattern = re.compile(r"_src_path: .*")
 tests_path = Path(__file__).parent
 root = tests_path.parent
-generated_folder = "tests_generated"
+generated_folder = "examples"
 generated_root = root / generated_folder
 DEFAULT_PARAMETERS = {
     "author_name": "None",
@@ -22,12 +23,39 @@ DEFAULT_PARAMETERS = {
     "python_path": "python",
 }
 
+# Below is a patch to replace non static patch component inside the path in package.json
+# in react templates this is to be mitigated with orchestration
+# functionality implemented on algokit cli
+def _update_package_json_paths(package_json_path: Path, project_name: str) -> None:
+    if package_json_path.exists():
+        with open(package_json_path, encoding="utf-8") as file:
+            data = json.load(file)
+
+        def replace_last_path(command: str, new_path: str) -> str:
+            parts = command.split(" ")
+            parts[-1] = new_path
+            return " ".join(parts)
+
+        for key, value in data.get("scripts", {}).items():
+            if isinstance(value, str) and "algokit generate client" in value:
+                modified_command = replace_last_path(
+                    value, f"../{project_name}-contracts"
+                )
+                data["scripts"][key] = modified_command
+                break
+
+        with open(package_json_path, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=2)
+
 
 def generate_fullstack_get_args(
-    copier_answers: dict[str, str]
+    project_name: str,
+    copier_answers: dict[str, str],
 ) -> dict[str, list[list[str]]]:
+    backend = f"projects/{project_name}-contracts"
+    frontend = f"projects/{project_name}-app"
     check_args = {
-        "backend": [
+        backend: [
             [
                 "black",
                 "--check",
@@ -44,20 +72,20 @@ def generate_fullstack_get_args(
                 ".",
             ],
         ],
-        "frontend": [
+        frontend: [
             ["npm", "install"],
         ],
     }
 
     if copier_answers["preset_name"] == "production":
-        check_args["backend"].append(
+        check_args[backend].append(
             [
                 "mypy",
                 "--ignore-missing-imports",
                 ".",
             ]
         )
-        check_args["frontend"].append(["npm", "run", "lint"])
+        check_args[frontend].append(["npm", "run", "lint"])
 
     return check_args
 
@@ -133,6 +161,7 @@ def run_init(
     child_template_default_answer: str = "no",
 ) -> subprocess.CompletedProcess:
     copy_to = working_dir / generated_folder / test_name
+    project_name = str(copy_to.stem)
     shutil.rmtree(copy_to, ignore_errors=True)
     if template_url is None:
         template_url = str(working_dir)
@@ -150,7 +179,7 @@ def run_init(
         "--verbose",
         "init",
         "--name",
-        str(copy_to.stem),
+        project_name,
         "--template-url",
         template_url,
         "--UNSAFE-SECURITY-accept-template-url",
@@ -158,6 +187,7 @@ def run_init(
         "--no-ide",
         "--no-git",
         "--no-bootstrap",
+        "--no-workspace",
     ]
     answers = {**DEFAULT_PARAMETERS, **(answers or {})}
 
@@ -207,7 +237,10 @@ def run_init(
     if result.returncode:
         return result
 
-    command_checks = generate_fullstack_get_args(answers)
+    package_json_path = copy_to / "projects" / f"{project_name}-app" / "package.json"
+    _update_package_json_paths(package_json_path, project_name)
+
+    command_checks = generate_fullstack_get_args(project_name, answers)
 
     for folder, commands in command_checks.items():
         for command in commands:
@@ -234,7 +267,7 @@ def run_init(
 
 def get_answered_questions_from_copier_yaml(
     *,
-    default_state: str = "yes",
+    contract_template: str = "python",
     preset_name: str = "starter",
     deployment_language: str = "python",
     ide_vscode: bool = True,
@@ -258,8 +291,6 @@ def get_answered_questions_from_copier_yaml(
 
     questions = _load_copier_yaml(copier_yaml)
     answers = {}
-    answers["preset_name"] = preset_name
-    answers["deployment_language"] = deployment_language
 
     for question_name, details in questions.items():
         if question_name in ignored_keys:
@@ -273,23 +304,26 @@ def get_answered_questions_from_copier_yaml(
                     default_template = Template(details["default"])
                     default_value = default_template.render(preset_name=preset_name)
                     answers[question_name] = default_value.strip()
-            elif details_type == "bool":
-                answers[question_name] = default_state
 
+    answers["preset_name"] = preset_name
+    answers["deployment_language"] = deployment_language
+    answers["contract_template"] = contract_template
     answers["ide_vscode"] = "yes" if ide_vscode else "no"
     answers["ide_jetbrains"] = "yes" if ide_jetbrains else "no"
 
     return answers
 
 
-def test_all_default_parameters_on_production(working_dir: Path) -> None:
+@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        "test_all_default_parameters_on_production",
+        f"production_{contract_template}_react",
         answers=get_answered_questions_from_copier_yaml(
-            default_state="yes",
             preset_name="production",
+            deployment_language="python",
             ide_jetbrains=False,
+            contract_template=contract_template,
         ),
         child_template_default_answer="y",
     )
@@ -297,30 +331,20 @@ def test_all_default_parameters_on_production(working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-def test_all_default_parameters_off_starter(working_dir: Path) -> None:
+@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        "test_all_default_parameters_off_starter",
+        f"starter_{contract_template}_react",
         answers=get_answered_questions_from_copier_yaml(
-            default_state="no", deployment_language="typescript"
-        ),
-        child_template_default_answer="n",
-    )
-
-    assert response.returncode == 0, response.stdout
-
-
-def test_all_default_parameters_off_jetbrains(working_dir: Path) -> None:
-    response = run_init(
-        working_dir,
-        "test_all_default_parameters_off_jetbrains",
-        answers=get_answered_questions_from_copier_yaml(
-            default_state="no",
+            preset_name="starter",
             deployment_language="typescript",
-            ide_vscode=False,
-            ide_jetbrains=True,
+            contract_template=contract_template,
         ),
         child_template_default_answer="n",
     )
 
     assert response.returncode == 0, response.stdout
+
+
+# Expand for any specific combinations of parameters

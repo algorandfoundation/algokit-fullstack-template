@@ -169,5 +169,9 @@ cython_debug/
 node_modules
 
 # Ignore lock files in all directories and subdirectories under tests_generated
-tests_generated/*/**/package-lock.json
-tests_generated/*/**/poetry.lock
+examples/*/**/package-lock.json
+examples/*/**/poetry.lock
+
+# playground folder for previewing templates
+.playground/*
+!.playground/.gitkeep

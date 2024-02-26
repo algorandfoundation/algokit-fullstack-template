@@ -5,35 +5,35 @@
       "name": "ROOT"
     },
     {
-      "path": "./backend"
+      "path": "./projects/{{ project_name }}-contracts"
     },
     {
-      "path": "./frontend"
+      "path": "./projects/{{ project_name }}-app"
     }
   ],
   "settings": {
     "files.exclude": {
-      "backend/": true,
-      "frontend/": true
+      "projects/": true
     },
-    "jest.disabledWorkspaceFolders": ["ROOT", "backend"],
+    "jest.disabledWorkspaceFolders": ["ROOT", "projects"],
     "dotenv.enableAutocloaking": false
   },
   "extensions": {
     "recommendations": ["joshx.workspace-terminals"]
   },
+  {% if contract_template != 'tealscript' %}
   "tasks": {
     "version": "2.0.0",
     "tasks": [
       {
         "label": "Build artifacts (+ LocalNet)",
-        "command": "${workspaceFolder}/backend/.venv/bin/python",
+        "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/bin/python",
         "windows": {
-          "command": "${workspaceFolder}/backend/.venv/Scripts/python.exe"
+          "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/Scripts/python.exe"
         },
         "args": ["-m", "smart_contracts", "build"],
         "options": {
-          "cwd": "${workspaceFolder}/backend"
+          "cwd": "${workspaceFolder}/projects/{{ project_name }}-contracts"
         },
         "dependsOn": "Start AlgoKit LocalNet",
         "problemMatcher": []
@@ -58,10 +58,10 @@
         "name": "Run Frontend (+ LocalNet and Smart Contract)",
         "configurations": [
           {
-            "name": "Deploy Built Beaker application",
-            "folder": "backend"
+            "name": "Deploy contracts",
+            "folder": "{{ project_name }}-contracts"
           },
-          { "name": "Run dApp", "folder": "frontend" }
+          { "name": "Run dApp", "folder": "{{ project_name }}-app" }
         ],
         "presentation": {
           "hidden": false,
@@ -70,4 +70,13 @@
       }
     ]
   }
+  {% else %}
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": []
+  },
+  "launch": {
+    "configurations": []
+  }
+  {% endif -%}
 }

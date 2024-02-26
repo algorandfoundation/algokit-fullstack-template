@@ -1,10 +1,12 @@
 import json
 import os
+from pathlib import Path
 import shutil
+import sys
+import logging
 
-TYPED_CLIENT_LINKING_COMMAND = {
-    "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts ../backend"  # noqa: E501
-}
+logger = logging.getLogger(__name__)
+
 ROOT_DIR = os.getcwd()
 
 
@@ -45,13 +47,13 @@ def inject_npm_script(file_path, new_script, specified_commands):
         # Save the modified package.json back to file
         write_back_to_file(file_path, data)
     else:
-        print("'scripts' key not found in package.json")
+        logger.debug("'scripts' key not found in package.json")
 
 
 def inject_file(source_file, dest_file):
     """Takes an input file and replaces file at destination with the input"""
     if os.path.isfile(dest_file):
-        print(f"File {dest_file} exists and will be replaced.")
+        logger.debug(f"File {dest_file} exists and will be replaced.")
     shutil.copy2(source_file, dest_file)
 
 
@@ -59,18 +61,18 @@ def delete_file(file_path):
     """Deletes a file if it exists."""
     try:
         os.remove(file_path)
-        print(f"File {file_path} removed successfully.")
+        logger.debug(f"File {file_path} removed successfully.")
     except OSError as e:
-        print(f"Error: {file_path} : {e.strerror}")
+        logger.error(f"Error: {file_path} : {e.strerror}")
 
 
 def delete_folder(folder_path):
     """Deletes a folder if it exists."""
     try:
         shutil.rmtree(folder_path)
-        print(f"Folder {folder_path} removed successfully.")
+        logger.debug(f"Folder {folder_path} removed successfully.")
     except OSError as e:
-        print(f"Error: {folder_path} : {e.strerror}")
+        logger.error(f"Error: {folder_path} : {e.strerror}")
 
 
 def delete_script():
@@ -87,13 +89,26 @@ def cleanup():
 
 
 if __name__ == "__main__":
+    # Check if the correct number of arguments are passed
+    if len(sys.argv) != 3:
+        print("Usage: python inject.py <backend_root> <frontend_root>")
+        sys.exit(1)
+
+    # Assign command-line arguments to variables
+    backend_root = Path(sys.argv[1]).absolute()
+    frontend_root = Path(sys.argv[2]).absolute()
+
     # Specify commands to inject the script into
     specified_commands = ["dev", "build"]
 
     # Inject linking command into package.json
-    package_json_path = os.path.join(ROOT_DIR, "frontend", "package.json")
+    package_json_path = os.path.join(frontend_root, "package.json")
+    typed_client_linking_command = {
+        "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts "
+        + f"{str(backend_root)}"  # noqa: E501
+    }
     inject_npm_script(
-        package_json_path, TYPED_CLIENT_LINKING_COMMAND, specified_commands
+        package_json_path, typed_client_linking_command, specified_commands
     )
 
     # Iterate over root_dir/inject_content files and inject them depending on name
@@ -102,15 +117,17 @@ if __name__ == "__main__":
         source_file = os.path.join(inject_folder_path, file)
 
         if file == "Home.tsx":
-            dest_file = os.path.join(ROOT_DIR, "frontend", "src", file)
+            dest_file = os.path.join(frontend_root, "src", file)
             inject_file(source_file, dest_file)
         if file == "AppCalls.tsx":
-            dest_file = os.path.join(ROOT_DIR, "frontend", "src", "components", file)
+            dest_file = os.path.join(frontend_root, "src", "components", file)
             inject_file(source_file, dest_file)
         if file == "README.md":
-            dest_file = os.path.join(ROOT_DIR, "frontend", "src", "contracts", file)
+            dest_file = os.path.join(frontend_root, "src", "contracts", file)
             inject_file(source_file, dest_file)
 
         delete_file(source_file)
 
     cleanup()
+
+    logger.info("Template completed successfully!")
