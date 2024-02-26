@@ -7,7 +7,7 @@ import sys
 logger = logging.getLogger(__name__)
 
 # algokit cli version that in which support for wizard v2 was first introduced
-ALGOKIT_MIN_VERSION = "1.12.0b1"
+ALGOKIT_MIN_VERSION = "1.11.4"
 
 
 def get_algokit_version():
