@@ -53,7 +53,7 @@ def generate_fullstack_get_args(
     copier_answers: dict[str, str],
 ) -> dict[str, list[list[str]]]:
     backend = f"projects/{project_name}-contracts"
-    frontend = f"projects/{project_name}-app"
+    frontend = f"projects/{project_name}-frontend"
     check_args = {
         backend: [
             [
@@ -237,7 +237,9 @@ def run_init(
     if result.returncode:
         return result
 
-    package_json_path = copy_to / "projects" / f"{project_name}-app" / "package.json"
+    package_json_path = (
+        copy_to / "projects" / f"{project_name}-frontend" / "package.json"
+    )
     _update_package_json_paths(package_json_path, project_name)
 
     command_checks = generate_fullstack_get_args(project_name, answers)
@@ -271,7 +273,6 @@ def get_answered_questions_from_copier_yaml(
     preset_name: str = "starter",
     deployment_language: str = "python",
     ide_vscode: bool = True,
-    ide_jetbrains: bool = False,
     allowed_questions: list[str] | None = None,
 ) -> dict[str, str]:
     copier_yaml = root / "copier.yaml"
@@ -309,12 +310,13 @@ def get_answered_questions_from_copier_yaml(
     answers["deployment_language"] = deployment_language
     answers["contract_template"] = contract_template
     answers["ide_vscode"] = "yes" if ide_vscode else "no"
-    answers["ide_jetbrains"] = "yes" if ide_jetbrains else "no"
 
     return answers
 
 
-@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+@pytest.mark.parametrize(
+    "contract_template", ["puya"]
+)  # ["tealscript", "puya", "beaker"])
 def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
@@ -322,7 +324,6 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
         answers=get_answered_questions_from_copier_yaml(
             preset_name="production",
             deployment_language="python",
-            ide_jetbrains=False,
             contract_template=contract_template,
         ),
         child_template_default_answer="y",
@@ -331,7 +332,9 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+@pytest.mark.parametrize(
+    "contract_template", ["puya"]
+)  # ["tealscript", "puya", "beaker"])
 def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,

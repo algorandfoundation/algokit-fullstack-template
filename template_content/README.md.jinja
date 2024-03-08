@@ -16,7 +16,7 @@ This starter full stack project has been generated using AlgoKit. See below for 
    - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
 3. Open the project and start debugging / developing on:
    - [{{ project_name }}-contracts](projects/{{ project_name }}-contracts/README.md) - Refer to the README for more information on how to work with smart contracts.
-   - [{{ project_name }}-app](projects/{{ project_name }}-app/README.md) - Refer to the README for more information on how to work with the frontend application.
+   - [{{ project_name }}-frontend](projects/{{ project_name }}-frontend/README.md) - Refer to the README for more information on how to work with the frontend application.
 
 
 ### Subsequently
@@ -62,10 +62,10 @@ It has also been configured to have a productive dev experience out of the box i
 
 ## Integrating with smart contracts and application clients
 
-Refer to the [{{ project_name }}-contracts](projects/{{ project_name }}-contracts/README.md) folder for overview of working with smart contracts, [projects/{{ project_name }}-app](projects/{{ project_name }}-app/README.md) for overview of the React project and the [projects/{{ project_name }}-app/contracts](projects/{{ project_name }}-app/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
-When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/{{ project_name }}-app/package.json). Afterwards, you are free to import and use them in your frontend application.
+Refer to the [{{ project_name }}-contracts](projects/{{ project_name }}-contracts/README.md) folder for overview of working with smart contracts, [projects/{{ project_name }}-frontend](projects/{{ project_name }}-frontend/README.md) for overview of the React project and the [projects/{{ project_name }}-frontend/contracts](projects/{{ project_name }}-frontend/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
+When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/{{ project_name }}-frontend/package.json). Afterwards, you are free to import and use them in your frontend application.
 
-The frontend starter also provides an example of interactions with your {{ contract_name.split('_')|map('capitalize')|join }}Client in [`AppCalls.tsx`](projects/{{ project_name }}-app/src/components/AppCalls.tsx) component by default.
+The frontend starter also provides an example of interactions with your {{ contract_name.split('_')|map('capitalize')|join }}Client in [`AppCalls.tsx`](projects/{{ project_name }}-frontend/src/components/AppCalls.tsx) component by default.
 
 ## Next Steps
 

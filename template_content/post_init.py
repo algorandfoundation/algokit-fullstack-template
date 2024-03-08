@@ -10,44 +10,10 @@ logger = logging.getLogger(__name__)
 ROOT_DIR = os.getcwd()
 
 
-def modify_scripts(scripts, new_script, specified_commands):
-    """Modifies the existing scripts to run the new script first."""
-    # Prepend the new script to the old ones
-    combined_scripts = {**new_script, **scripts}
-
-    # Modify only specified old scripts to run the new script first
-    for key in scripts.keys():
-        if key not in new_script and key in specified_commands:
-            combined_scripts[
-                key
-            ] = f"npm run {list(new_script.keys())[0]} && {combined_scripts[key]}"
-
-    return combined_scripts
-
-
 def write_back_to_file(file_path, data):
     """Writes the modified package data back to the file."""
     with open(file_path, "w") as f:
         json.dump(data, f, indent=2)
-
-
-def inject_npm_script(file_path, new_script, specified_commands):
-    """Injects a new script into the existing scripts in a package.json file."""
-    # Load the existing package.json file
-    with open(file_path) as f:
-        data = json.load(f)
-
-    # Check if scripts key exists
-    if "scripts" in data:
-        # Modify scripts to run the new script first
-        data["scripts"] = modify_scripts(
-            data["scripts"], new_script, specified_commands
-        )
-
-        # Save the modified package.json back to file
-        write_back_to_file(file_path, data)
-    else:
-        logger.debug("'scripts' key not found in package.json")
 
 
 def inject_file(source_file, dest_file):
@@ -97,19 +63,6 @@ if __name__ == "__main__":
     # Assign command-line arguments to variables
     backend_root = Path(sys.argv[1]).absolute()
     frontend_root = Path(sys.argv[2]).absolute()
-
-    # Specify commands to inject the script into
-    specified_commands = ["dev", "build"]
-
-    # Inject linking command into package.json
-    package_json_path = os.path.join(frontend_root, "package.json")
-    typed_client_linking_command = {
-        "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts "
-        + f"{str(backend_root)}"  # noqa: E501
-    }
-    inject_npm_script(
-        package_json_path, typed_client_linking_command, specified_commands
-    )
 
     # Iterate over root_dir/inject_content files and inject them depending on name
     inject_folder_path = os.path.join(ROOT_DIR, "inject_content")

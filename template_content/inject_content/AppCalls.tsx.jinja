@@ -11,6 +11,7 @@ import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../
 {% else %}
 import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name.split('_')|map('capitalize')|join }}'
 {% endif %}
+import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
@@ -58,16 +59,16 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // for demonstration purposes.
     {%- if preset_name == 'starter' or contract_template != 'beaker' %}
     const deployParams = {
-      onSchemaBreak: 'append',
-      onUpdate: 'append',
+      onSchemaBreak: OnSchemaBreak.AppendApp,
+      onUpdate: OnUpdate.AppendApp,
     }
     {%- elif preset_name == 'production' and contract_template == 'beaker' %}
     const isLocal = await algokit.isLocalNet(algodClient)
     const deployParams: Parameters<typeof appClient.deploy>[0] = {
       allowDelete: isLocal,
       allowUpdate: isLocal,
-      onSchemaBreak: isLocal ? 'replace' : 'fail',
-      onUpdate: isLocal ? 'update' : 'fail',
+      onSchemaBreak: isLocal ? OnSchemaBreak.ReplaceApp : OnSchemaBreak.Fail,
+      onUpdate: isLocal ? OnUpdate.UpdateApp : OnUpdate.Fail,
     }
     {%- endif %}
     await appClient.deploy(deployParams).catch((e: Error) => {
