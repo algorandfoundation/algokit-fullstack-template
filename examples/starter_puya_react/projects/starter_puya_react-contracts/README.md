@@ -58,10 +58,7 @@ This project makes use of Python to build Algorand smart contracts. The followin
 - [Puya](https://github.com/algorand-foundation/puya) - Smart contract development framework for developing Algorand smart contracts in pure Python; [docs](https://github.com/algorandfoundation/puya), [examples](https://github.com/algorandfoundation/puya/tree/main/examples)
 - [PyTEAL](https://github.com/algorand/pyteal) - Python language binding for Algorand smart contracts; [docs](https://pyteal.readthedocs.io/en/stable/)
 - [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-ts) - A set of core Algorand utilities that make it easier to build solutions on Algorand.
-- [Poetry](https://python-poetry.org/): Python packaging and dependency management.- [Black](https://github.com/psf/black): A Python code formatter.- [Ruff](https://github.com/charliermarsh/ruff): An extremely fast Python linter.
-
-- [mypy](https://mypy-lang.org/): Static type checker.
-- [pip-audit](https://pypi.org/project/pip-audit/): Tool for scanning Python environments for packages with known vulnerabilities.
+- [Poetry](https://python-poetry.org/): Python packaging and dependency management.
 - [npm](https://www.npmjs.com/): Node.js package manager
 - [TypeScript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript
 - [ts-node-dev](https://github.com/wclr/ts-node-dev): TypeScript development execution environment

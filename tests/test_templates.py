@@ -317,6 +317,7 @@ def get_answered_questions_from_copier_yaml(
 @pytest.mark.parametrize(
     "contract_template", ["puya"]
 )  # ["tealscript", "puya", "beaker"])
+# TODO: revert upon tealscript and beaker supporting latest
 def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
@@ -335,6 +336,7 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
 @pytest.mark.parametrize(
     "contract_template", ["puya"]
 )  # ["tealscript", "puya", "beaker"])
+# TODO: revert upon tealscript and beaker supporting latest
 def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,

@@ -1,4 +1,4 @@
-# starter_puya_react-app
+# starter_puya_react-frontend
 
 This starter React project has been generated using AlgoKit. See below for default getting started instructions.
 

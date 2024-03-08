@@ -1,5 +1,5 @@
 {
-  "name": "starter_puya_react-app",
+  "name": "starter_puya_react-frontend",
   "version": "0.1.0",
   "author": {
     "name": "None",
@@ -34,9 +34,8 @@
     "tslib": "^2.6.2"
   },
   "scripts": {
-    "generate:app-clients": "algokit generate client -o src/contracts/{contract_name}.ts ../starter_puya_react-contracts",
-    "dev": "npm run generate:app-clients && vite",
-    "build": "npm run generate:app-clients && tsc && vite build",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "eslintConfig": {

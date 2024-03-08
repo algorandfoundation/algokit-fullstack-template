@@ -1,8 +1,9 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 0.9.4-23-g1e4b544
+_commit: 0.10.1-2-gc6fde70
 _src_path: gh:algorandfoundation/algokit-react-frontend-template
 author_email: None
 author_name: None
+cloud_provider: netlify
 preset_name: production
-project_name: production_puya_react-app
+project_name: production_puya_react-frontend
 

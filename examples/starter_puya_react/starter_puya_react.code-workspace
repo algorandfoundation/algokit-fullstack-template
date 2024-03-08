@@ -8,7 +8,7 @@
       "path": "./projects/starter_puya_react-contracts"
     },
     {
-      "path": "./projects/starter_puya_react-app"
+      "path": "./projects/starter_puya_react-frontend"
     }
   ],
   "settings": {
@@ -61,7 +61,7 @@
             "name": "Deploy contracts",
             "folder": "starter_puya_react-contracts"
           },
-          { "name": "Run dApp", "folder": "starter_puya_react-app" }
+          { "name": "Run dApp", "folder": "starter_puya_react-frontend" }
         ],
         "presentation": {
           "hidden": false,
