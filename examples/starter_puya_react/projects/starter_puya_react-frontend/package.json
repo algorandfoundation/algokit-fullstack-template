@@ -34,8 +34,9 @@
     "tslib": "^2.6.2"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "generate:app-clients": "algokit project link --all",
+    "dev": "npm run generate:app-clients && vite",
+    "build": "npm run generate:app-clients && tsc && vite build",
     "preview": "vite preview"
   },
   "eslintConfig": {

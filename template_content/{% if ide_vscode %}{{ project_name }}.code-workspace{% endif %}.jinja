@@ -27,13 +27,10 @@
     "tasks": [
       {
         "label": "Build artifacts (+ LocalNet)",
-        "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/bin/python",
-        "windows": {
-          "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/Scripts/python.exe"
-        },
-        "args": ["-m", "smart_contracts", "build"],
+        "command": "algokit",
+        "args": ["project", "run", "build"],
         "options": {
-          "cwd": "${workspaceFolder}/projects/{{ project_name }}-contracts"
+          "cwd": "${workspaceFolder}"
         },
         "dependsOn": "Start AlgoKit LocalNet",
         "problemMatcher": []

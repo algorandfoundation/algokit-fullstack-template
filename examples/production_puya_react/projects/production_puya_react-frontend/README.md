@@ -33,13 +33,15 @@ This starter React project has been generated using AlgoKit. See below for defau
 
 ### Continuous Integration
 
-This project uses [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions) to define CI workflows, which are located in the [`.github/workflows`](./.github/workflows) folder.
+This project uses [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions) to define CI workflows, which are located in the [.github/workflows](`../../.github/workflows`) folder.
 
 For pull requests and pushes to `main` branch against this repository the following checks are automatically performed by GitHub Actions:
 
 - `install`: Installs dependencies using `npm`
 - `lint`: Lints the codebase using `ESLint`
 - `build`: Builds the codebase using `vite`
+
+> Please note, if you instantiated the project with --workspace flag in `algokit init` it will automatically attempt to move the contents of the `.github` folder to the root of the workspace.
 
 ### Continuous Deployment
 
@@ -64,7 +66,7 @@ For Netlify:
 2. Inside your folder run `netlify login`
 3. Inside your folder run `netlify sites:create` to create a new site, obtain NETLIFY_SITE_ID from the output
 4. Inside GitHub, add `NETLIFY_AUTH_TOKEN` and `NETLIFY_SITE_ID` as [secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
-5. Create an .env file containing ENV vars for the project (pointing to testnet or mainnet), define the VITE_ prefixed environment variables in netlify environment variables under site settings.
+5. Define the VITE_ prefixed environment variables in netlify environment variables under site settings.
 6. Upon invocation, CD pipeline will build the project and deploy to the specified environment.
 
 > If you prefer alternative deployment methods, you can modify the relevant workflow files from the [`.github/workflows`](./.github/workflows) folder or modify deploy scripts in `.algokit.toml`.

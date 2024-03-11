@@ -75,9 +75,6 @@ if __name__ == "__main__":
         if file == "AppCalls.tsx":
             dest_file = os.path.join(frontend_root, "src", "components", file)
             inject_file(source_file, dest_file)
-        if file == "README.md":
-            dest_file = os.path.join(frontend_root, "src", "contracts", file)
-            inject_file(source_file, dest_file)
 
         delete_file(source_file)
 
