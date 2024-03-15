@@ -8,7 +8,7 @@
       "path": "./projects/production_beaker_react-contracts"
     },
     {
-      "path": "./projects/production_beaker_react-app"
+      "path": "./projects/production_beaker_react-frontend"
     }
   ],
   "settings": {
@@ -27,13 +27,10 @@
     "tasks": [
       {
         "label": "Build artifacts (+ LocalNet)",
-        "command": "${workspaceFolder}/projects/production_beaker_react-contracts/.venv/bin/python",
-        "windows": {
-          "command": "${workspaceFolder}/projects/production_beaker_react-contracts/.venv/Scripts/python.exe"
-        },
-        "args": ["-m", "smart_contracts", "build"],
+        "command": "algokit",
+        "args": ["project", "run", "build"],
         "options": {
-          "cwd": "${workspaceFolder}/projects/production_beaker_react-contracts"
+          "cwd": "${workspaceFolder}"
         },
         "dependsOn": "Start AlgoKit LocalNet",
         "problemMatcher": []
@@ -61,7 +58,7 @@
             "name": "Deploy contracts",
             "folder": "production_beaker_react-contracts"
           },
-          { "name": "Run dApp", "folder": "production_beaker_react-app" }
+          { "name": "Run dApp", "folder": "production_beaker_react-frontend" }
         ],
         "presentation": {
           "hidden": false,

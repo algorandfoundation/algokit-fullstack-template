@@ -1,0 +1,14 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+
+jobs:
+  production_beaker_react-contracts-ci:
+    name: Run production_beaker_react-contracts validation
+    uses: ./.github/workflows/production_beaker_react-contracts-ci.yaml
+
+  production_beaker_react-frontend-ci:
+    name: Run production_beaker_react-frontend validation
+    uses: ./.github/workflows/production_beaker_react-frontend-ci.yaml
+

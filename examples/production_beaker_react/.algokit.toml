@@ -6,4 +6,4 @@ type = 'workspace'
 projects_root_path = 'projects'
 
 [project.run]
-build = ['starter_beaker_react-contracts', 'starter_beaker_react-frontend']
+build = ['production_beaker_react-contracts', 'production_beaker_react-frontend']
