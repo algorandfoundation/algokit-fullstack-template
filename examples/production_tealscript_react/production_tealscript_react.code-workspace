@@ -8,7 +8,7 @@
       "path": "./projects/production_tealscript_react-contracts"
     },
     {
-      "path": "./projects/production_tealscript_react-app"
+      "path": "./projects/production_tealscript_react-frontend"
     }
   ],
   "settings": {

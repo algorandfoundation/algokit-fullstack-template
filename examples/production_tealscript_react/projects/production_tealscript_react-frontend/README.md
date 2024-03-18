@@ -1,4 +1,4 @@
-# starter_tealscript_react-app
+# production_tealscript_react-frontend
 
 This starter React project has been generated using AlgoKit. See below for default getting started instructions.
 
@@ -31,6 +31,47 @@ This starter React project has been generated using AlgoKit. See below for defau
 
 > Please note, by default frontend is pre configured to run against Algorand LocalNet. If you want to run against TestNet or MainNet, comment out the current environment variable and uncomment the relevant one in [`.env`](.env) file that is created after running bootstrap command and based on [`.env.template`](.env.template).
 
+### Continuous Integration
+
+This project uses [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions) to define CI workflows, which are located in the [.github/workflows](`../../.github/workflows`) folder.
+
+For pull requests and pushes to `main` branch against this repository the following checks are automatically performed by GitHub Actions:
+
+- `install`: Installs dependencies using `npm`
+- `lint`: Lints the codebase using `ESLint`
+- `build`: Builds the codebase using `vite`
+
+> Please note, if you instantiated the project via `algokit init` without explicitly specifying the `--no-workspace` flag, we will automatically attempt to move the contents of the `.github` folder to the root of the workspace.
+
+### Continuous Deployment
+
+The project template provides base Github Actions workflows for continuous deployment to [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com/). These workflows are located in the [`.github/workflows`](./.github/workflows) folder.
+
+**Please note**: when configuring the github repository for the first time. Depending on selected provider you will need to set the provider secrets in the repository settings. Default setup provided by the template allows you to manage the secrets via environment variables and secrets on your github repository.
+
+
+#### Setting up environment variables and secrets for webapp deployment
+
+For Vercel:
+1. Retrieve your [Vercel Access Token](https://vercel.com/support/articles/how-do-i-use-a-vercel-api-access-token)
+2. Install the [Vercel CLI](https://vercel.com/cli) and run `vercel login`
+3. Inside your folder, run `vercel link` to create a new Vercel project
+4. Inside the generated `.vercel` folder, save the `projectId` and `orgId` from the `project.json`
+5. Inside GitHub, add `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` as [secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+6. Create an .env file containing ENV vars for the project (pointing to testnet or mainnet), drag and drop the .env file to upload initial batch of default environment variables to your vercel project.
+7. Upon invocation, CD pipeline will pull the VITE_ prefixed environment variables, build the project and deploy to the specified environment.
+
+For Netlify:
+1. Retrieve your [Netlify Access Token](https://docs.netlify.com/cli/get-started/#obtain-a-token-in-the-netlify-ui)
+2. Inside your folder run `netlify login`
+3. Inside your folder run `netlify sites:create` to create a new site, obtain NETLIFY_SITE_ID from the output
+4. Inside GitHub, add `NETLIFY_AUTH_TOKEN` and `NETLIFY_SITE_ID` as [secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+5. Define the VITE_ prefixed environment variables in netlify environment variables under site settings.
+6. Upon invocation, CD pipeline will build the project and deploy to the specified environment.
+
+> If you prefer alternative deployment methods, you can modify the relevant workflow files from the [`.github/workflows`](./.github/workflows) folder or modify deploy scripts in `.algokit.toml`.
+
+
 # Algorand Wallet integrations
 
 The template comes with [`use-wallet`](https://github.com/txnlab/use-wallet) integration, which provides a React hook for connecting to an Algorand wallet providers. The following wallet providers are included by default:
@@ -50,8 +91,15 @@ This project makes use of React and Tailwind to provider a base project configur
 
 - [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-ts) - Various TypeScript utilities to simplify interactions with Algorand and AlgoKit.
 - [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs.
+- [daisyUI](https://daisyui.com/) - A component library for Tailwind CSS.
 - [use-wallet](https://github.com/txnlab/use-wallet) - A React hook for connecting to an Algorand wallet providers.
 - [npm](https://www.npmjs.com/): Node.js package manager
+- [jest](https://jestjs.io/): JavaScript testing framework
+- [playwright](https://playwright.dev/): Browser automation library
+- [Prettier](https://prettier.io/): Opinionated code formatter
+- [ESLint](https://eslint.org/): Tool for identifying and reporting on patterns in JavaScript
+- Github Actions workflows for build validation
 It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [.vscode](./.vscode) folder.
 # Integrating with smart contracts and application clients
 

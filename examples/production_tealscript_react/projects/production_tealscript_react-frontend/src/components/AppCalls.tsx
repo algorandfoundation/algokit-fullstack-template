@@ -5,8 +5,9 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-import { HelloWorldClient } from '../contracts/StarterTealscriptReactContracts'
+import { HelloWorldClient } from '../contracts/ProductionTealscriptReactContracts'
 
+import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
@@ -53,8 +54,8 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
     const deployParams = {
-      onSchemaBreak: 'append',
-      onUpdate: 'append',
+      onSchemaBreak: OnSchemaBreak.AppendApp,
+      onUpdate: OnUpdate.AppendApp,
     }
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
