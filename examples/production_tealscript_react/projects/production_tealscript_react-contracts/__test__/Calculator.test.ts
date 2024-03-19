@@ -1,21 +1,21 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
-import { ProductionTealscriptReactContractsClient } from '../contracts/clients/ProductionTealscriptReactContractsClient';
+import { CalculatorClient } from '../contracts/clients/CalculatorClient';
 import * as algokit from '@algorandfoundation/algokit-utils';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
 
-let appClient: ProductionTealscriptReactContractsClient;
+let appClient: CalculatorClient;
 
-describe('ProductionTealscriptReactContracts', () => {
+describe('Calculator', () => {
   beforeEach(fixture.beforeEach);
 
   beforeAll(async () => {
     await fixture.beforeEach();
     const { algod, testAccount } = fixture.context;
 
-    appClient = new ProductionTealscriptReactContractsClient(
+    appClient = new CalculatorClient(
       {
         sender: testAccount,
         resolveBy: 'id',
@@ -39,5 +39,10 @@ describe('ProductionTealscriptReactContracts', () => {
     const b = 37;
     const diff = await appClient.doMath({ a, b, operation: 'difference' });
     expect(diff.return?.valueOf()).toBe(BigInt(a >= b ? a - b : b - a));
+  });
+
+  test('hello', async () => {
+    const diff = await appClient.hello({ name: 'world!' });
+    expect(diff.return?.valueOf()).toBe('Hello, world!');
   });
 });

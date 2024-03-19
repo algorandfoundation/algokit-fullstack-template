@@ -1,12 +1,10 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
-import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-
+import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { HelloWorldClient } from '../contracts/hello_world'
-
 import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
@@ -25,7 +23,6 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     port: algodConfig.port,
     token: algodConfig.token,
   })
-
   const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
@@ -39,6 +36,11 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const sendAppCall = async () => {
     setLoading(true)
 
+    // Please note, in typical production scenarios,
+    // you wouldn't want to use deploy directly from your frontend.
+    // Instead, you would deploy your contract on your backend and reference it by id.
+    // Given the simplicity of the starter contract, we are deploying it on the frontend
+    // for demonstration purposes.
     const appDetails = {
       resolveBy: 'creatorAndName',
       sender: { signer, addr: activeAddress } as TransactionSignerAccount,
@@ -47,12 +49,6 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     } as AppDetails
 
     const appClient = new HelloWorldClient(appDetails, algodClient)
-
-    // Please note, in typical production scenarios,
-    // you wouldn't want to use deploy directly from your frontend.
-    // Instead, you would deploy your contract on your backend and reference it by id.
-    // Given the simplicity of the starter contract, we are deploying it on the frontend
-    // for demonstration purposes.
     const deployParams = {
       onSchemaBreak: OnSchemaBreak.AppendApp,
       onUpdate: OnUpdate.AppendApp,

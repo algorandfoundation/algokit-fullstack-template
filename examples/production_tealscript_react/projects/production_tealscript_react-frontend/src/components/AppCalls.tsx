@@ -1,14 +1,10 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
-import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-
-import { CalculatorClient } from '../contracts/ProductionTealscriptReactContracts'
-
-import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { CalculatorClient } from '../contracts/Calculator'
+import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -26,38 +22,26 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     token: algodConfig.token,
   })
 
-  const indexerConfig = getIndexerConfigFromViteEnvironment()
-  const indexer = algokit.getAlgoIndexerClient({
-    server: indexerConfig.server,
-    port: indexerConfig.port,
-    token: indexerConfig.token,
-  })
-
   const { enqueueSnackbar } = useSnackbar()
   const { signer, activeAddress } = useWallet()
 
   const sendAppCall = async () => {
     setLoading(true)
 
-    const appDetails = {
-      resolveBy: 'creatorAndName',
-      sender: { signer, addr: activeAddress } as TransactionSignerAccount,
-      creatorAddress: activeAddress,
-      findExistingUsing: indexer,
-    } as AppDetails
-
-    const appClient = new CalculatorClient(appDetails, algodClient)
-
     // Please note, in typical production scenarios,
     // you wouldn't want to use deploy directly from your frontend.
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
-    const deployParams = {
-      onSchemaBreak: OnSchemaBreak.AppendApp,
-      onUpdate: OnUpdate.AppendApp,
-    }
-    await appClient.deploy(deployParams).catch((e: Error) => {
+    const appClient = new CalculatorClient(
+      {
+        sender: { signer, addr: activeAddress } as TransactionSignerAccount,
+        resolveBy: 'id',
+        id: 0,
+      },
+      algodClient,
+    )
+    await appClient.create.createApplication({}).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
       return
