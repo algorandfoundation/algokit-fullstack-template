@@ -75,11 +75,17 @@ preset_name:
 contract_name:
   type: str
   help: Name of the default smart contract app.
-  placeholder: 'hello_world'
-  default: 'hello_world'
+  placeholder: '{{ "HelloWorld" if contract_template == "tealscript" else "hello_world" }}'
+  default: '{{ "HelloWorld" if contract_template == "tealscript" else "hello_world" }}'
   validator: >-
-    {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
-    contract_name must be formatted in snake case.
+    {% if contract_template == 'tealscript' %}
+      {% if not (contract_name | regex_search('^[A-Z][a-zA-Z]*(?:[A-Z][a-zA-Z]*)*$')) %}
+        contract_name must be formatted in PascalCase.
+      {% endif %}
+    {% else %}
+      {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
+        contract_name must be formatted in snake case.
+      {% endif %}
     {% endif %}
 
 author_name:

@@ -5,7 +5,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-import { HelloWorldClient } from '../contracts/StarterTealscriptReactContracts'
+import { CalculatorClient } from '../contracts/StarterTealscriptReactContracts'
 
 import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
@@ -46,7 +46,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       findExistingUsing: indexer,
     } as AppDetails
 
-    const appClient = new HelloWorldClient(appDetails, algodClient)
+    const appClient = new CalculatorClient(appDetails, algodClient)
 
     // Please note, in typical production scenarios,
     // you wouldn't want to use deploy directly from your frontend.

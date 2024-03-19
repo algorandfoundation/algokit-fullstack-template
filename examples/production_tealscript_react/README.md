@@ -51,7 +51,7 @@ It has also been configured to have a productive dev experience out of the box i
 Refer to the [production_tealscript_react-contracts](projects/production_tealscript_react-contracts/README.md) folder for overview of working with smart contracts, [projects/production_tealscript_react-frontend](projects/production_tealscript_react-frontend/README.md) for overview of the React project and the [projects/production_tealscript_react-frontend/contracts](projects/production_tealscript_react-frontend/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
 When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/production_tealscript_react-frontend/package.json). Afterwards, you are free to import and use them in your frontend application.
 
-The frontend starter also provides an example of interactions with your HelloWorldClient in [`AppCalls.tsx`](projects/production_tealscript_react-frontend/src/components/AppCalls.tsx) component by default.
+The frontend starter also provides an example of interactions with your CalculatorClient in [`AppCalls.tsx`](projects/production_tealscript_react-frontend/src/components/AppCalls.tsx) component by default.
 
 ## Next Steps
 

@@ -189,7 +189,15 @@ def run_init(
         "--no-bootstrap",
         "--no-workspace",
     ]
-    answers = {**DEFAULT_PARAMETERS, **(answers or {})}
+
+    contract_template = (answers or {}).get("contract_template", "default")
+    answers = {
+        **DEFAULT_PARAMETERS,
+        **(answers or {}),
+        "contract_name": "Calculator"
+        if contract_template == "tealscript"
+        else "hello_world",
+    }
 
     for question, answer in answers.items():
         init_args.extend(["-a", question, answer])
