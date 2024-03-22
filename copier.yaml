@@ -8,6 +8,7 @@ _tasks:
   - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace
     -a include_readme "no"
     -a include_algokit_toml "no"
+    -a include_vscode_code_workspace "no"
     -a include_github_workflow_template "no"'
     # CLI auto sets include_github_workflow_template to false for any blessed template
     # however still defining explicitly for clarity
