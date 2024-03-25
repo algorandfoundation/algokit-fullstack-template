@@ -9,19 +9,35 @@
     },
     {
       "path": "./projects/starter_tealscript_react-frontend"
+    },
+    {
+      "path": "."
+    },
+    {
+      "path": "projects/starter_tealscript_react-frontend"
+    },
+    {
+      "path": "projects/starter_tealscript_react-contracts"
+    },
+    {
+      "path": "."
     }
   ],
   "settings": {
     "files.exclude": {
       "projects/": true
     },
-    "jest.disabledWorkspaceFolders": ["ROOT", "projects"],
+    "jest.disabledWorkspaceFolders": [
+      "ROOT",
+      "projects"
+    ],
     "dotenv.enableAutocloaking": false
   },
   "extensions": {
-    "recommendations": ["joshx.workspace-terminals"]
+    "recommendations": [
+      "joshx.workspace-terminals"
+    ]
   },
-  
   "tasks": {
     "version": "2.0.0",
     "tasks": []
@@ -29,4 +45,4 @@
   "launch": {
     "configurations": []
   }
-  }
+}

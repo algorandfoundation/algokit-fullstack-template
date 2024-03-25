@@ -1,10 +1,10 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 1.13.1-3-g2215bf7
-_src_path: gh:algorandfoundation/algokit-beaker-default-template
+_commit: 0.5.1-11-g49dc5db
+_src_path: gh:algorandfoundation/algokit-python-template
 author_email: None
 author_name: None
 contract_name: hello_world
 deployment_language: typescript
 preset_name: starter
-project_name: starter_beaker_react-contracts
+project_name: starter_python_react-contracts
 

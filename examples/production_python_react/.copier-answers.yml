@@ -1,10 +1,11 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 1.13.1-3-g2215bf7
-_src_path: gh:algorandfoundation/algokit-beaker-default-template
+_commit: <commit>
+_src_path: <src>
 author_email: None
 author_name: None
+cloud_provider: netlify
 contract_name: hello_world
 deployment_language: python
 preset_name: production
-project_name: production_beaker_react-contracts
+project_name: production_python_react
 

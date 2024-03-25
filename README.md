@@ -25,9 +25,9 @@ This template supports a multitude of features for developing full-stack applica
 
 And the following backend templates:
 
-- [algokit-puya-template](https://github.com/algorandfoundation/algokit-puya-template) - An official starter for developing and deploying Puya smart contracts.
+- [algokit-python-template](https://github.com/algorandfoundation/algokit-python-template) - An official starter for developing and deploying Puya smart contracts.
 - [algokit-tealscript-template](https://github.com/algorand-devrel/tealscript-algokit-template) - An official starter for developing and deploying TealScript smart contracts.
-- [algokit-beaker-default-template](https://github.com/algorandfoundation/algokit-beaker-default-template) - A production-ready baseline for developing and deploying Beaker smart contracts. Please note this template option is to be deprecated after `puya` is ready for production use.
+- [algokit-beaker-default-template](https://github.com/algorandfoundation/algokit-beaker-default-template) - A production-ready baseline for developing and deploying Beaker smart contracts.
 
 ### Frontend
 
@@ -44,7 +44,7 @@ And the following backend templates:
 
 ### Backend
 
-- Compilation of multiple `puya`, `tealscript`, `beaker` contracts to a predictable folder location and file layout where they can be deployed.
+- Compilation of multiple `python`, `tealscript`, `beaker` contracts to a predictable folder location and file layout where they can be deployed.
 - Deploy-time immutability and permanence control.
 - [Poetry](https://python-poetry.org/) for Python dependency management and virtual environment management.
 - Linting via [Ruff](https://github.com/charliermarsh/ruff) or [Flake8](https://flake8.pycqa.org/en/latest/).

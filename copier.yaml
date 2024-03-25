@@ -45,10 +45,10 @@ contract_template:
   help: Choose the contract template.
   when: false
   choices:
-    Puya: puya
+    Python: python
     TealScript: tealscript
     Beaker: beaker
-  default: puya
+  default: python
 
 # project_name should never get prompted, AlgoKit should always pass it by convention
 project_name:
