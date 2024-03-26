@@ -65,7 +65,13 @@ def working_dir() -> Iterator[Path]:
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp:
         working_dir = Path(temp) / "template"
         working_generated_root = working_dir / generated_folder
-        shutil.copytree(root, working_dir)
+        shutil.copytree(
+            root,
+            working_dir,
+            ignore=shutil.ignore_patterns(
+                ".*_cache", ".venv", "__pycache__", "node_modules"
+            ),
+        )
         subprocess.run(["git", "add", "-A"], cwd=working_dir)
         subprocess.run(
             ["git", "commit", "-m", "draft changes", "--no-verify"], cwd=working_dir
@@ -78,8 +84,18 @@ def working_dir() -> Iterator[Path]:
                 continue
 
             dest_dir = generated_root / src_dir.stem
-            shutil.rmtree(dest_dir, ignore_errors=True)
-            shutil.copytree(src_dir, dest_dir, dirs_exist_ok=True)
+            shutil.rmtree(
+                dest_dir,
+                ignore_errors=True,
+            )
+            shutil.copytree(
+                src_dir,
+                dest_dir,
+                dirs_exist_ok=True,
+                ignore=shutil.ignore_patterns(
+                    ".*_cache", ".venv", "__pycache__", "node_modules"
+                ),
+            )
 
 
 def run_init(
@@ -93,7 +109,10 @@ def run_init(
 ) -> subprocess.CompletedProcess:
     copy_to = working_dir / generated_folder / test_name
     project_name = str(copy_to.stem)
-    shutil.rmtree(copy_to, ignore_errors=True)
+    shutil.rmtree(
+        copy_to,
+        ignore_errors=True,
+    )
     if template_url is None:
         template_url = str(working_dir)
 
