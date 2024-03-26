@@ -171,6 +171,9 @@ node_modules
 # Ignore lock files in all directories and subdirectories under tests_generated
 examples/*/**/package-lock.json
 examples/*/**/poetry.lock
+examples/**/smart_contracts/artifacts
+examples/**/contracts/artifacts
+examples/**/.algokit/sources
 
 # playground folder for previewing templates
 .playground/*

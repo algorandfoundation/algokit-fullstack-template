@@ -1,4 +1,3 @@
-import json
 import re
 import shutil
 import subprocess
@@ -22,30 +21,10 @@ DEFAULT_PARAMETERS = {
     "author_email": "None",
     "python_path": "python",
 }
-
-# Below is a patch to replace non static patch component inside the path in package.json
-# in react templates this is to be mitigated with orchestration
-# functionality implemented on algokit cli
-def _update_package_json_paths(package_json_path: Path, project_name: str) -> None:
-    if package_json_path.exists():
-        with open(package_json_path, encoding="utf-8") as file:
-            data = json.load(file)
-
-        def replace_last_path(command: str, new_path: str) -> str:
-            parts = command.split(" ")
-            parts[-1] = new_path
-            return " ".join(parts)
-
-        for key, value in data.get("scripts", {}).items():
-            if isinstance(value, str) and "algokit generate client" in value:
-                modified_command = replace_last_path(
-                    value, f"../{project_name}-contracts"
-                )
-                data["scripts"][key] = modified_command
-                break
-
-        with open(package_json_path, "w", encoding="utf-8") as file:
-            json.dump(data, file, indent=2)
+INSTALL_ARGS = ["algokit", "project", "bootstrap", "all"]
+BUILD_ARGS = ["algokit", "project", "run", "build"]
+TEST_ARGS = ["algokit", "project", "run", "test"]
+LINT_ARGS = ["algokit", "project", "run", "lint"]
 
 
 def generate_fullstack_get_args(
@@ -56,21 +35,7 @@ def generate_fullstack_get_args(
     frontend = f"projects/{project_name}-frontend"
     check_args = {
         backend: [
-            [
-                "black",
-                "--check",
-                "--diff",
-                "--config",
-                "pyproject.toml",
-                ".",
-            ],
-            [
-                "ruff",
-                "--diff",
-                "--config",
-                "pyproject.toml",
-                ".",
-            ],
+            BUILD_ARGS,
         ],
         frontend: [
             ["npm", "install"],
@@ -88,40 +53,6 @@ def generate_fullstack_get_args(
         check_args[frontend].append(["npm", "run", "lint"])
 
     return check_args
-
-
-def get_backend_black_args(config_path: str) -> list[str]:
-    return [
-        "black",
-        "--check",
-        "--diff",
-        "--config",
-        f"{config_path}/pyproject.toml",
-        ".",
-    ]
-
-
-def get_backend_ruff_args(config_path: str) -> list[str]:
-    return [
-        "ruff",
-        "--diff",
-        "--config",
-        f"{config_path}/pyproject.toml",
-        ".",
-    ]
-
-
-def get_backend_mypy_args() -> list[str]:
-    return [
-        "mypy",
-        "--ignore-missing-imports",
-        ".",
-    ]
-
-
-FRONTEND_NPM_INSTALL_ARGS = ["npm", "install"]
-FRONTEND_NPM_LINT_ARGS = ["npm", "run", "lint"]
-FRONTEND_NPM_BUILD_ARGS = ["npm", "run", "build"]
 
 
 def _load_copier_yaml(path: Path) -> dict[str, str | bool | dict]:
@@ -194,9 +125,9 @@ def run_init(
     answers = {
         **DEFAULT_PARAMETERS,
         **(answers or {}),
-        "contract_name": "Calculator"
-        if contract_template == "tealscript"
-        else "hello_world",
+        "contract_name": (
+            "Calculator" if contract_template == "tealscript" else "hello_world"
+        ),
     }
 
     for question, answer in answers.items():
@@ -222,7 +153,7 @@ def run_init(
             output, end=""
         )  # print stdout in real-time, without adding an extra newline
 
-        if "y/n" in output:  # adjust this as needed based on the exact prompt text
+        if "y/n" in output.lower():  # adjust this as needed based on the exact prompt
             answer = (
                 "y" if "continue anyway?" in output else child_template_default_answer
             )
@@ -245,25 +176,21 @@ def run_init(
     if result.returncode:
         return result
 
-    package_json_path = (
-        copy_to / "projects" / f"{project_name}-frontend" / "package.json"
-    )
-    _update_package_json_paths(package_json_path, project_name)
+    check_args = [INSTALL_ARGS, BUILD_ARGS]
 
-    command_checks = generate_fullstack_get_args(project_name, answers)
+    if answers["preset_name"] == "production":
+        check_args.extend([TEST_ARGS, LINT_ARGS])
 
-    for folder, commands in command_checks.items():
-        for command in commands:
-            print(f"Running {' '.join(command)} in {folder}")
-            result = subprocess.run(
-                command,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                cwd=copy_to / folder,
-            )
-            if result.returncode:
-                break
+    for check_arg in check_args:
+        result = subprocess.run(
+            check_arg,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            cwd=copy_to,
+        )
+        if result.returncode:
+            break
 
     # if successful, normalize .copier-answers.yml to make observing diffs easier
     copier_answers = Path(copy_to / ".copier-answers.yml")

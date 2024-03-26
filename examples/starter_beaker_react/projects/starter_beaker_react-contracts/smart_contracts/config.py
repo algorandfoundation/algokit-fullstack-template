@@ -12,9 +12,10 @@ from beaker import Application
 @dataclasses.dataclass
 class SmartContract:
     app: Application
-    deploy: Callable[
-        [AlgodClient, IndexerClient, ApplicationSpecification, Account], None
-    ] | None = None
+    deploy: (
+        Callable[[AlgodClient, IndexerClient, ApplicationSpecification, Account], None]
+        | None
+    ) = None
 
 
 def import_contract(folder: Path) -> Application:

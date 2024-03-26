@@ -1,4 +1,5 @@
-from puyapy import ARC4Contract, arc4
+# pyright: reportMissingModuleSource=false
+from algopy import ARC4Contract, arc4
 
 
 class HelloWorld(ARC4Contract):
