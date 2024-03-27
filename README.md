@@ -11,7 +11,7 @@
 
 ---
 
-This full-stack template provides both a baseline React web app and a production-ready baseline for developing and deploying `Puya`, `TealScript` and `Beaker` smart contracts. It's suitable for developing and integrating with any [ARC32](https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0032.md) compliant Algorand smart contracts.
+This full-stack template provides both a baseline React web app and a production-ready baseline for developing and deploying `Algorand Python`, `TealScript` and `Beaker` smart contracts. It's suitable for developing and integrating with any [ARC32](https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0032.md) compliant Algorand smart contracts.
 
 To use this template, [install AlgoKit](https://github.com/algorandfoundation/algokit-cli#readme) and then either pass in `-t fullstack` to `algokit init` or select the relevant template interactively during `algokit init`.
 
@@ -25,7 +25,7 @@ This template supports a multitude of features for developing full-stack applica
 
 And the following backend templates:
 
-- [algokit-python-template](https://github.com/algorandfoundation/algokit-python-template) - An official starter for developing and deploying Puya smart contracts.
+- [algokit-python-template](https://github.com/algorandfoundation/algokit-python-template) - An official starter for developing and deploying Algorand Python smart contracts.
 - [algokit-tealscript-template](https://github.com/algorand-devrel/tealscript-algokit-template) - An official starter for developing and deploying TealScript smart contracts.
 - [algokit-beaker-default-template](https://github.com/algorandfoundation/algokit-beaker-default-template) - A production-ready baseline for developing and deploying Beaker smart contracts.
 
