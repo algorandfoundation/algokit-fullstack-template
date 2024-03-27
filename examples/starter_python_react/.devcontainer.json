@@ -14,6 +14,6 @@
       "label": "vite"
     }
   },
-  "postCreateCommand": "mkdir -p ~/.config/algokit && pipx install algokit && rm -rf template_content copier.yaml && sudo chown -R codespace:codespace ~/.config/algokit",
-  "postStartCommand": "until algokit localnet status > /dev/null 2>&1; do algokit localnet reset && sleep 20; done;"
+  "postCreateCommand": "mkdir -p ~/.config/algokit && pipx install algokit && sudo chown -R codespace:codespace ~/.config/algokit",
+  "postStartCommand": "for i in {1..5}; do algokit localnet status > /dev/null 2>&1 && break || sleep 30; algokit localnet reset; done"
 }
