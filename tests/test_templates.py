@@ -1,4 +1,3 @@
-import json
 import re
 import shutil
 import subprocess
@@ -22,30 +21,10 @@ DEFAULT_PARAMETERS = {
     "author_email": "None",
     "python_path": "python",
 }
-
-# Below is a patch to replace non static patch component inside the path in package.json
-# in react templates this is to be mitigated with orchestration
-# functionality implemented on algokit cli
-def _update_package_json_paths(package_json_path: Path, project_name: str) -> None:
-    if package_json_path.exists():
-        with open(package_json_path, encoding="utf-8") as file:
-            data = json.load(file)
-
-        def replace_last_path(command: str, new_path: str) -> str:
-            parts = command.split(" ")
-            parts[-1] = new_path
-            return " ".join(parts)
-
-        for key, value in data.get("scripts", {}).items():
-            if isinstance(value, str) and "algokit generate client" in value:
-                modified_command = replace_last_path(
-                    value, f"../{project_name}-contracts"
-                )
-                data["scripts"][key] = modified_command
-                break
-
-        with open(package_json_path, "w", encoding="utf-8") as file:
-            json.dump(data, file, indent=2)
+INSTALL_ARGS = ["algokit", "project", "bootstrap", "all"]
+BUILD_ARGS = ["algokit", "project", "run", "build"]
+TEST_ARGS = ["algokit", "project", "run", "test"]
+LINT_ARGS = ["algokit", "project", "run", "lint"]
 
 
 def generate_fullstack_get_args(
@@ -53,24 +32,10 @@ def generate_fullstack_get_args(
     copier_answers: dict[str, str],
 ) -> dict[str, list[list[str]]]:
     backend = f"projects/{project_name}-contracts"
-    frontend = f"projects/{project_name}-app"
+    frontend = f"projects/{project_name}-frontend"
     check_args = {
         backend: [
-            [
-                "black",
-                "--check",
-                "--diff",
-                "--config",
-                "pyproject.toml",
-                ".",
-            ],
-            [
-                "ruff",
-                "--diff",
-                "--config",
-                "pyproject.toml",
-                ".",
-            ],
+            BUILD_ARGS,
         ],
         frontend: [
             ["npm", "install"],
@@ -90,40 +55,6 @@ def generate_fullstack_get_args(
     return check_args
 
 
-def get_backend_black_args(config_path: str) -> list[str]:
-    return [
-        "black",
-        "--check",
-        "--diff",
-        "--config",
-        f"{config_path}/pyproject.toml",
-        ".",
-    ]
-
-
-def get_backend_ruff_args(config_path: str) -> list[str]:
-    return [
-        "ruff",
-        "--diff",
-        "--config",
-        f"{config_path}/pyproject.toml",
-        ".",
-    ]
-
-
-def get_backend_mypy_args() -> list[str]:
-    return [
-        "mypy",
-        "--ignore-missing-imports",
-        ".",
-    ]
-
-
-FRONTEND_NPM_INSTALL_ARGS = ["npm", "install"]
-FRONTEND_NPM_LINT_ARGS = ["npm", "run", "lint"]
-FRONTEND_NPM_BUILD_ARGS = ["npm", "run", "build"]
-
-
 def _load_copier_yaml(path: Path) -> dict[str, str | bool | dict]:
     with path.open("r", encoding="utf-8") as stream:
         return yaml.safe_load(stream)
@@ -134,7 +65,13 @@ def working_dir() -> Iterator[Path]:
     with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp:
         working_dir = Path(temp) / "template"
         working_generated_root = working_dir / generated_folder
-        shutil.copytree(root, working_dir)
+        shutil.copytree(
+            root,
+            working_dir,
+            ignore=shutil.ignore_patterns(
+                ".*_cache", ".venv", "__pycache__", "node_modules"
+            ),
+        )
         subprocess.run(["git", "add", "-A"], cwd=working_dir)
         subprocess.run(
             ["git", "commit", "-m", "draft changes", "--no-verify"], cwd=working_dir
@@ -147,8 +84,18 @@ def working_dir() -> Iterator[Path]:
                 continue
 
             dest_dir = generated_root / src_dir.stem
-            shutil.rmtree(dest_dir, ignore_errors=True)
-            shutil.copytree(src_dir, dest_dir, dirs_exist_ok=True)
+            shutil.rmtree(
+                dest_dir,
+                ignore_errors=True,
+            )
+            shutil.copytree(
+                src_dir,
+                dest_dir,
+                dirs_exist_ok=True,
+                ignore=shutil.ignore_patterns(
+                    ".*_cache", ".venv", "__pycache__", "node_modules"
+                ),
+            )
 
 
 def run_init(
@@ -162,7 +109,10 @@ def run_init(
 ) -> subprocess.CompletedProcess:
     copy_to = working_dir / generated_folder / test_name
     project_name = str(copy_to.stem)
-    shutil.rmtree(copy_to, ignore_errors=True)
+    shutil.rmtree(
+        copy_to,
+        ignore_errors=True,
+    )
     if template_url is None:
         template_url = str(working_dir)
 
@@ -189,7 +139,15 @@ def run_init(
         "--no-bootstrap",
         "--no-workspace",
     ]
-    answers = {**DEFAULT_PARAMETERS, **(answers or {})}
+
+    contract_template = (answers or {}).get("contract_template", "default")
+    answers = {
+        **DEFAULT_PARAMETERS,
+        **(answers or {}),
+        "contract_name": (
+            "Calculator" if contract_template == "tealscript" else "hello_world"
+        ),
+    }
 
     for question, answer in answers.items():
         init_args.extend(["-a", question, answer])
@@ -214,7 +172,7 @@ def run_init(
             output, end=""
         )  # print stdout in real-time, without adding an extra newline
 
-        if "y/n" in output:  # adjust this as needed based on the exact prompt text
+        if "y/n" in output.lower():  # adjust this as needed based on the exact prompt
             answer = (
                 "y" if "continue anyway?" in output else child_template_default_answer
             )
@@ -237,23 +195,21 @@ def run_init(
     if result.returncode:
         return result
 
-    package_json_path = copy_to / "projects" / f"{project_name}-app" / "package.json"
-    _update_package_json_paths(package_json_path, project_name)
+    check_args = [INSTALL_ARGS, BUILD_ARGS]
 
-    command_checks = generate_fullstack_get_args(project_name, answers)
+    if answers["preset_name"] == "production":
+        check_args.extend([TEST_ARGS, LINT_ARGS])
 
-    for folder, commands in command_checks.items():
-        for command in commands:
-            print(f"Running {' '.join(command)} in {folder}")
-            result = subprocess.run(
-                command,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                cwd=copy_to / folder,
-            )
-            if result.returncode:
-                break
+    for check_arg in check_args:
+        result = subprocess.run(
+            check_arg,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            cwd=copy_to,
+        )
+        if result.returncode:
+            break
 
     # if successful, normalize .copier-answers.yml to make observing diffs easier
     copier_answers = Path(copy_to / ".copier-answers.yml")
@@ -271,7 +227,6 @@ def get_answered_questions_from_copier_yaml(
     preset_name: str = "starter",
     deployment_language: str = "python",
     ide_vscode: bool = True,
-    ide_jetbrains: bool = False,
     allowed_questions: list[str] | None = None,
 ) -> dict[str, str]:
     copier_yaml = root / "copier.yaml"
@@ -309,12 +264,11 @@ def get_answered_questions_from_copier_yaml(
     answers["deployment_language"] = deployment_language
     answers["contract_template"] = contract_template
     answers["ide_vscode"] = "yes" if ide_vscode else "no"
-    answers["ide_jetbrains"] = "yes" if ide_jetbrains else "no"
 
     return answers
 
 
-@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+@pytest.mark.parametrize("contract_template", ["python", "beaker", "tealscript"])
 def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
@@ -322,7 +276,6 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
         answers=get_answered_questions_from_copier_yaml(
             preset_name="production",
             deployment_language="python",
-            ide_jetbrains=False,
             contract_template=contract_template,
         ),
         child_template_default_answer="y",
@@ -331,7 +284,7 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-@pytest.mark.parametrize("contract_template", ["tealscript", "puya", "beaker"])
+@pytest.mark.parametrize("contract_template", ["python", "beaker", "tealscript"])
 def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,

@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  production_python_react-contracts-validate:
+    name: Run production_python_react-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/production_python_react-contracts-ci.yaml
+
+  production_python_react-contracts-release:
+    name: Run production_python_react-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/production_python_react-contracts-cd.yaml
+    needs: production_python_react-contracts-validate
+
+  production_python_react-frontend-validate:
+    name: Run production_python_react-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/production_python_react-frontend-ci.yaml
+
+  production_python_react-frontend-release:
+    name: Run production_python_react-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/production_python_react-frontend-cd.yaml
+    needs: production_python_react-frontend-validate

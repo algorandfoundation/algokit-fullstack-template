@@ -3,7 +3,7 @@ _commit: <commit>
 _src_path: <src>
 author_email: None
 author_name: None
-contract_name: hello_world
+contract_name: Calculator
 preset_name: starter
 project_name: starter_tealscript_react
 

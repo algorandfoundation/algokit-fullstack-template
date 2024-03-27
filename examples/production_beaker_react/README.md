@@ -16,7 +16,7 @@ This starter full stack project has been generated using AlgoKit. See below for 
    - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
 3. Open the project and start debugging / developing on:
    - [production_beaker_react-contracts](projects/production_beaker_react-contracts/README.md) - Refer to the README for more information on how to work with smart contracts.
-   - [production_beaker_react-app](projects/production_beaker_react-app/README.md) - Refer to the README for more information on how to work with the frontend application.
+   - [production_beaker_react-frontend](projects/production_beaker_react-frontend/README.md) - Refer to the README for more information on how to work with the frontend application.
 
 
 ### Subsequently
@@ -48,10 +48,10 @@ It has also been configured to have a productive dev experience out of the box i
 
 ## Integrating with smart contracts and application clients
 
-Refer to the [production_beaker_react-contracts](projects/production_beaker_react-contracts/README.md) folder for overview of working with smart contracts, [projects/production_beaker_react-app](projects/production_beaker_react-app/README.md) for overview of the React project and the [projects/production_beaker_react-app/contracts](projects/production_beaker_react-app/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
-When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/production_beaker_react-app/package.json). Afterwards, you are free to import and use them in your frontend application.
+Refer to the [production_beaker_react-contracts](projects/production_beaker_react-contracts/README.md) folder for overview of working with smart contracts, [projects/production_beaker_react-frontend](projects/production_beaker_react-frontend/README.md) for overview of the React project and the [projects/production_beaker_react-frontend/contracts](projects/production_beaker_react-frontend/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
+When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/production_beaker_react-frontend/package.json). Afterwards, you are free to import and use them in your frontend application.
 
-The frontend starter also provides an example of interactions with your HelloWorldClient in [`AppCalls.tsx`](projects/production_beaker_react-app/src/components/AppCalls.tsx) component by default.
+The frontend starter also provides an example of interactions with your HelloWorldClient in [`AppCalls.tsx`](projects/production_beaker_react-frontend/src/components/AppCalls.tsx) component by default.
 
 ## Next Steps
 

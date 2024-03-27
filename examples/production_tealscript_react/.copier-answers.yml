@@ -3,7 +3,8 @@ _commit: <commit>
 _src_path: <src>
 author_email: None
 author_name: None
-contract_name: hello_world
+cloud_provider: netlify
+contract_name: Calculator
 preset_name: production
 project_name: production_tealscript_react
 

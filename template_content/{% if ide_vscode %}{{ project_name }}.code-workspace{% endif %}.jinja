@@ -8,7 +8,7 @@
       "path": "./projects/{{ project_name }}-contracts"
     },
     {
-      "path": "./projects/{{ project_name }}-app"
+      "path": "./projects/{{ project_name }}-frontend"
     }
   ],
   "settings": {
@@ -27,13 +27,10 @@
     "tasks": [
       {
         "label": "Build artifacts (+ LocalNet)",
-        "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/bin/python",
-        "windows": {
-          "command": "${workspaceFolder}/projects/{{ project_name }}-contracts/.venv/Scripts/python.exe"
-        },
-        "args": ["-m", "smart_contracts", "build"],
+        "command": "algokit",
+        "args": ["project", "run", "build"],
         "options": {
-          "cwd": "${workspaceFolder}/projects/{{ project_name }}-contracts"
+          "cwd": "${workspaceFolder}"
         },
         "dependsOn": "Start AlgoKit LocalNet",
         "problemMatcher": []
@@ -61,7 +58,7 @@
             "name": "Deploy contracts",
             "folder": "{{ project_name }}-contracts"
           },
-          { "name": "Run dApp", "folder": "{{ project_name }}-app" }
+          { "name": "Run dApp", "folder": "{{ project_name }}-frontend" }
         ],
         "presentation": {
           "hidden": false,

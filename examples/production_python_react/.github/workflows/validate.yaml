@@ -1,0 +1,14 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+
+jobs:
+  production_python_react-contracts-ci:
+    name: Run production_python_react-contracts validation
+    uses: ./.github/workflows/production_python_react-contracts-ci.yaml
+
+  production_python_react-frontend-ci:
+    name: Run production_python_react-frontend validation
+    uses: ./.github/workflows/production_python_react-frontend-ci.yaml
+

@@ -2,32 +2,41 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== Checking compatibility with the cli ==='"
-  - '{{ python_path if python_path else _copier_python }} check_algokit_version.py'
+  - '{{ python_path if python_path else _copier_python }} pre_init.py'
 
   - "echo '==== 1/4 - Initializing base template ===='"
-  - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap -a include_readme false -a include_algokit_toml false'
+  - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace
+    -a include_readme "no"
+    -a include_algokit_toml "no"
+    -a include_vscode_code_workspace "no"
+    -a include_github_workflow_template "no"'
+    # CLI auto sets include_github_workflow_template to false for any blessed template
+    # however still defining explicitly for clarity
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
-  - 'algokit init -t react -n {{ project_name }}-app --no-git --no-ide --no-bootstrap
+  - 'algokit init -t react -n {{ project_name }}-frontend --no-git --no-ide --no-bootstrap
     -a author_email "{{ author_email }}"
     -a author_name "{{ author_name }}"
-    -a preset_name {{ preset_name }}
+    -a preset_name "{{ preset_name }}"
     -a ide_vscode "{{ ide_vscode }}"
-    -a use_github_actions "no"'
+    -a ide_jetbrains "{{ ide_jetbrains }}"
+    -a cloud_provider "{{ cloud_provider }}"
+    -a use_github_actions "{{ use_github_actions }}"'
 
   - "echo '==== 3/4 - Initializing backend template ===='"
   - 'algokit init -t {{ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email "{{ author_email }}"
     -a author_name "{{ author_name }}"
-    -a preset_name {{ preset_name }}
-    -a contract_name {{ contract_name }}
-    -a deployment_language {{ deployment_language }}
+    -a preset_name "{{ preset_name }}"
+    -a contract_name "{{ contract_name }}"
+    -a deployment_language "{{ deployment_language }}"
     -a ide_vscode "{{ ide_vscode }}"
-    -a use_github_actions "no"
+    -a ide_jetbrains "{{ ide_jetbrains }}"
+    -a use_github_actions "{{ use_github_actions }}"
     -a use_pre_commit "no"'
 
   - "echo '==== 4/4 - Finalizing setup ===='"
-  - '{{ python_path if python_path else _copier_python }} inject.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-app"'
+  - '{{ python_path if python_path else _copier_python }} post_init.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-frontend"'
   # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
 # questions
@@ -36,16 +45,16 @@ contract_template:
   help: Choose the contract template.
   when: false
   choices:
-    Puya: puya
+    Python: python
     TealScript: tealscript
     Beaker: beaker
-  default: puya
+  default: python
 
 # project_name should never get prompted, AlgoKit should always pass it by convention
 project_name:
   type: str
   help: Name for this project.
-  placeholder: 'algorand-app'
+  placeholder: 'algorand-frontend'
   default: 'myproject'
 
 # Auto determined by algokit-cli from v1.11.3 to allow execution of python script
@@ -67,11 +76,17 @@ preset_name:
 contract_name:
   type: str
   help: Name of the default smart contract app.
-  placeholder: 'hello_world'
-  default: 'hello_world'
+  placeholder: '{{ "HelloWorld" if contract_template == "tealscript" else "hello_world" }}'
+  default: '{{ "HelloWorld" if contract_template == "tealscript" else "hello_world" }}'
   validator: >-
-    {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
-    contract_name must be formatted in snake case.
+    {% if contract_template == 'tealscript' %}
+      {% if not (contract_name | regex_search('^[A-Z][a-zA-Z]*(?:[A-Z][a-zA-Z]*)*$')) %}
+        contract_name must be formatted in PascalCase.
+      {% endif %}
+    {% else %}
+      {% if not (contract_name | regex_search('^[a-z]+(?:_[a-z]+)*$')) %}
+        contract_name must be formatted in snake case.
+      {% endif %}
     {% endif %}
 
 author_name:
@@ -107,62 +122,16 @@ ide_jetbrains:
   when: "{{ preset_name == 'custom' }}"
   default: no
 
-use_python_pytest:
-  type: bool
-  when: "{{ deployment_language == 'python' and preset_name == 'custom' }}"
-  help: Do you want to include unit tests for smart contracts (via pytest)?
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
-python_linter:
-  type: str
-  help: Do you want to use a Python linter on smart contracts codebase?
-  when: "{{ preset_name == 'custom' }}"
-  choices:
-    Ruff: 'ruff'
-    Flake8: 'flake8'
-    No thanks: 'none'
-  default: "{{ 'ruff' if preset_name == 'production' else 'none' }}"
-
-use_python_black:
-  type: bool
-  help: Do you want to use a Python formatter (via Black) on smart contracts codebase?
-  when: "{{ preset_name == 'custom' }}"
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
-use_python_mypy:
-  type: bool
-  help: Do you want to use a Python type checker (via mypy) on smart contracts codebase?
-  when: "{{ preset_name == 'custom' }}"
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
-use_python_pip_audit:
-  type: bool
-  help: Do you want to include Python dependency vulnerability scanning for smart contracts (via pip-audit)?
-  when: "{{ preset_name == 'custom' }}"
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
-use_dispenser:
-  type: bool
-  when: "{{ preset_name == 'custom' }}"
-  help: Do you want to fund your deployment account using an optional dispenser account?
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
 use_github_actions:
   type: bool
   help: Do you want to include Github Actions workflows for build and testnet deployment?
   when: "{{ preset_name == 'custom' }}"
   default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
 
-use_pre_commit:
-  type: bool
-  when: "{{ preset_name == 'custom' }}"
-  help: Do you want to include pre-commit for linting, type checking and formatting?
-  default: "{{ 'yes' if preset_name == 'production' else 'no' }}"
-
 cloud_provider:
   type: str
   help: Pick your website hosting provider for continuous delivery
-  when: "{{ use_github_actions != false and preset_name == 'custom' }}"
+  when: '{{ use_github_actions != false }}'
   choices:
     Netlify: 'netlify'
     Vercel: 'vercel'

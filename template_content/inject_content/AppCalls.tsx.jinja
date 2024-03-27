@@ -1,17 +1,22 @@
 import * as algokit from '@algorandfoundation/algokit-utils'
 import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
-import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-{% if contract_template == 'beaker' %}
+{%- if contract_template == 'beaker' %}
+import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
 import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name }}'
-{% elif contract_template == 'tealscript' %}
-import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ project_name.split('_')|map('capitalize')|join }}Contracts'
-{% else %}
-import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name.split('_')|map('capitalize')|join }}'
-{% endif %}
+import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+{%- elif contract_template == 'tealscript' %}
+import { {{ contract_name }}Client } from '../contracts/{{ contract_name }}'
+import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+{%- else %}
+import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
+import { {{ contract_name.split('_')|map('capitalize')|join }}Client } from '../contracts/{{ contract_name.split('_')|map('capitalize')|join }}'
+import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+{%- endif %}
 
 interface AppCallsInterface {
   openModal: boolean
@@ -29,12 +34,14 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     token: algodConfig.token,
   })
 
+  {%- if contract_template != 'tealscript' %}
   const indexerConfig = getIndexerConfigFromViteEnvironment()
   const indexer = algokit.getAlgoIndexerClient({
     server: indexerConfig.server,
     port: indexerConfig.port,
     token: indexerConfig.token,
   })
+  {%- endif %}
 
   const { enqueueSnackbar } = useSnackbar()
   const { signer, activeAddress } = useWallet()
@@ -42,6 +49,26 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const sendAppCall = async () => {
     setLoading(true)
 
+    // Please note, in typical production scenarios,
+    // you wouldn't want to use deploy directly from your frontend.
+    // Instead, you would deploy your contract on your backend and reference it by id.
+    // Given the simplicity of the starter contract, we are deploying it on the frontend
+    // for demonstration purposes.
+    {%- if contract_template == 'tealscript'%}
+    const appClient = new {{ contract_name.split('_')|map('capitalize')|join }}Client(
+      {
+        sender: { signer, addr: activeAddress } as TransactionSignerAccount,
+        resolveBy: 'id',
+        id: 0,
+      },
+      algodClient,
+    )
+    await appClient.create.createApplication({}).catch((e: Error) => {
+      enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
+    {%- elif preset_name == 'starter' or contract_template != 'beaker' %}
     const appDetails = {
       resolveBy: 'creatorAndName',
       sender: { signer, addr: activeAddress } as TransactionSignerAccount,
@@ -50,31 +77,37 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     } as AppDetails
 
     const appClient = new {{ contract_name.split('_')|map('capitalize')|join }}Client(appDetails, algodClient)
-
-    // Please note, in typical production scenarios,
-    // you wouldn't want to use deploy directly from your frontend.
-    // Instead, you would deploy your contract on your backend and reference it by id.
-    // Given the simplicity of the starter contract, we are deploying it on the frontend
-    // for demonstration purposes.
-    {%- if preset_name == 'starter' or contract_template != 'beaker' %}
     const deployParams = {
-      onSchemaBreak: 'append',
-      onUpdate: 'append',
+      onSchemaBreak: OnSchemaBreak.AppendApp,
+      onUpdate: OnUpdate.AppendApp,
     }
-    {%- elif preset_name == 'production' and contract_template == 'beaker' %}
-    const isLocal = await algokit.isLocalNet(algodClient)
-    const deployParams: Parameters<typeof appClient.deploy>[0] = {
-      allowDelete: isLocal,
-      allowUpdate: isLocal,
-      onSchemaBreak: isLocal ? 'replace' : 'fail',
-      onUpdate: isLocal ? 'update' : 'fail',
-    }
-    {%- endif %}
     await appClient.deploy(deployParams).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
       return
     })
+    {%- elif preset_name == 'production' and contract_template == 'beaker' %}
+    const appDetails = {
+      resolveBy: 'creatorAndName',
+      sender: { signer, addr: activeAddress } as TransactionSignerAccount,
+      creatorAddress: activeAddress,
+      findExistingUsing: indexer,
+    } as AppDetails
+
+    const appClient = new {{ contract_name.split('_')|map('capitalize')|join }}Client(appDetails, algodClient)
+    const isLocal = await algokit.isLocalNet(algodClient)
+    const deployParams: Parameters<typeof appClient.deploy>[0] = {
+      allowDelete: isLocal,
+      allowUpdate: isLocal,
+      onSchemaBreak: isLocal ? OnSchemaBreak.ReplaceApp : OnSchemaBreak.Fail,
+      onUpdate: isLocal ? OnUpdate.UpdateApp : OnUpdate.Fail,
+    }
+    await appClient.deploy(deployParams).catch((e: Error) => {
+      enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
+    {%- endif %}
 
     const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
