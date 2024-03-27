@@ -19,6 +19,7 @@ def build(output_dir: Path, contract_path: Path) -> Path:
     build_result = subprocess.run(
         [
             "algokit",
+            "--no-color",
             "compile",
             "python",
             contract_path.absolute(),

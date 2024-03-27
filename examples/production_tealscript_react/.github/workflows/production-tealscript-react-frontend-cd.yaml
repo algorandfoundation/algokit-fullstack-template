@@ -23,7 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install algokit
-        run: pipx install git+https://github.com/algorandfoundation/algokit-cli@feat/command_orchestration
+        run: pipx install algokit
 
       - name: Bootstrap dependencies
         run: algokit bootstrap all --project-name 'production_tealscript_react-frontend'
