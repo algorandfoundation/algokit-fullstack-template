@@ -1,9 +1,9 @@
 import beaker
 import pyteal as pt
-{% if preset_name == 'starter' %}
+{%- if preset_name == 'starter' %}
 
 app = beaker.Application("{{ contract_name }}")
-{% elif preset_name == 'production' -%}
+{%- elif preset_name == 'production' %}
 from algokit_utils import DELETABLE_TEMPLATE_NAME, UPDATABLE_TEMPLATE_NAME
 
 app = beaker.Application("{{ contract_name }}")
@@ -23,7 +23,8 @@ def delete() -> pt.Expr:
         pt.Tmpl.Int(DELETABLE_TEMPLATE_NAME),
         comment="Check app is deletable",
     )
-{% endif %}
+{%- endif %}
+
 
 @app.external
 def hello(name: pt.abi.String, *, output: pt.abi.String) -> pt.Expr:

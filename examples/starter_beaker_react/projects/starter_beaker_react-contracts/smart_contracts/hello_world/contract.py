@@ -1,7 +1,6 @@
 import beaker
 import pyteal as pt
 
-
 app = beaker.Application("hello_world")
 
 
