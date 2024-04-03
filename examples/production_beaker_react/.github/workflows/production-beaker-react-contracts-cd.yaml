@@ -25,7 +25,7 @@ jobs:
         run: pipx install algokit
 
       - name: Bootstrap dependencies
-        run: algokit bootstrap all --project-name 'production_beaker_react-contracts'
+        run: algokit project bootstrap all --project-name 'production_beaker_react-contracts'
 
       - name: Configure git
         shell: bash
