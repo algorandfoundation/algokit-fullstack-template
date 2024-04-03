@@ -26,7 +26,7 @@ jobs:
         run: pipx install algokit
 
       - name: Bootstrap dependencies
-        run: algokit bootstrap all --project-name 'production_python_react-frontend'
+        run: algokit project bootstrap all --project-name 'production_python_react-frontend'
     
       - name: Publish to Netlify
         env:

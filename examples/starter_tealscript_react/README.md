@@ -5,23 +5,19 @@ This starter full stack project has been generated using AlgoKit. See below for 
 ## Setup
 
 ### Initial setup
+1. Clone this repository to your local machine.
+2. Ensure [Docker](https://www.docker.com/) is installed and operational. Then, install `AlgoKit` following this [guide](https://github.com/algorandfoundation/algokit-cli#install).
+3. Run `algokit project bootstrap all` in the project directory. This command sets up your environment by installing necessary dependencies, setting up a Python virtual environment, and preparing your `.env` file.
+4. To build your project, execute `algokit project run build`. This compiles your project and prepares it for running.
+5. For project-specific instructions, refer to the READMEs of the child projects:
+   - Smart Contracts: [starter_tealscript_react-contracts](projects/starter_tealscript_react-contracts/README.md)
+   - Frontend Application: [starter_tealscript_react-frontend](projects/starter_tealscript_react-frontend/README.md)
 
-1. Clone this repository locally.
-2. Install pre-requisites:
-   - Make sure to have [Docker](https://www.docker.com/) installed and running on your machine.
-   - Install `AlgoKit` - [Link](https://github.com/algorandfoundation/algokit-cli#install)
-   - Bootstrap your local environment; run `algokit bootstrap all` within this folder, which will install Poetry, run `npm install` and `poetry install` in the root directory to install NPM and Python packages respectively, set up a `.venv` folder with a Python virtual environment and also install all Python dependencies.
-     - For TypeScript projects, it will also run `npm install` to install NPM packages.
-     - For all projects, it will copy `.env.template` to `.env`.
-   - Run `algokit localnet start` to start a local Algorand network in Docker. If you are using VS Code launch configurations provided by the template, this will be done automatically for you.
-3. Open the project and start debugging / developing on:
-   - [starter_tealscript_react-contracts](projects/starter_tealscript_react-contracts/README.md) - Refer to the README for more information on how to work with smart contracts.
-   - [starter_tealscript_react-frontend](projects/starter_tealscript_react-frontend/README.md) - Refer to the README for more information on how to work with the frontend application.
-
+> This project is structured as a monorepo, refer to the [documentation](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/run.md) to learn more about custom command orchestration via `algokit project run`.
 
 ### Subsequently
 
-1. If you update to the latest source code and there are new dependencies, you will need to run `algokit bootstrap all` again.
+1. If you update to the latest source code and there are new dependencies, you will need to run `algokit project bootstrap all` again.
 2. Follow step 3 above.
 
 ## Tools

@@ -32,7 +32,7 @@ jobs:
         run: pipx install algokit
 
       - name: Install dependencies
-        run: algokit bootstrap all --project-name 'production_beaker_react-frontend'
+        run: algokit project bootstrap all --project-name 'production_beaker_react-frontend'
 
       
       - name: Run linters
