@@ -1,7 +1,6 @@
 import { Contract } from '@algorandfoundation/tealscript';
 
-// eslint-disable-next-line no-unused-vars
-class Calculator extends Contract {
+export class Calculator extends Contract {
   /**
    * Calculates the sum of two numbers
    *

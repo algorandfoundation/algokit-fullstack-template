@@ -55,7 +55,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
     {%- if contract_template == 'tealscript'%}
-    const appClient = new {{ contract_name.split('_')|map('capitalize')|join }}Client(
+    const appClient = new {{ contract_name }}Client(
       {
         sender: { signer, addr: activeAddress } as TransactionSignerAccount,
         resolveBy: 'id',

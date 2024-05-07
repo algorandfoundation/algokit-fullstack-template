@@ -61,7 +61,7 @@ It has also been configured to have a productive dev experience out of the box i
 Refer to the [{{ project_name }}-contracts](projects/{{ project_name }}-contracts/README.md) folder for overview of working with smart contracts, [projects/{{ project_name }}-frontend](projects/{{ project_name }}-frontend/README.md) for overview of the React project and the [projects/{{ project_name }}-frontend/contracts](projects/{{ project_name }}-frontend/src/contracts/README.md) folder for README on adding new smart contracts from backend as application clients on your frontend. The templates provided in these folders will help you get started.
 When you compile and generate smart contract artifacts, your frontend component will automatically generate typescript application clients from smart contract artifacts and move them to `frontend/src/contracts` folder, see [`generate:app-clients` in package.json](projects/{{ project_name }}-frontend/package.json). Afterwards, you are free to import and use them in your frontend application.
 
-The frontend starter also provides an example of interactions with your {{ contract_name.split('_')|map('capitalize')|join }}Client in [`AppCalls.tsx`](projects/{{ project_name }}-frontend/src/components/AppCalls.tsx) component by default.
+The frontend starter also provides an example of interactions with your {{ contract_name if contract_template == 'tealscript' else contract_name.split('_')|map('capitalize')|join }}Client in [`AppCalls.tsx`](projects/{{ project_name }}-frontend/src/components/AppCalls.tsx) component by default.
 
 ## Next Steps
 

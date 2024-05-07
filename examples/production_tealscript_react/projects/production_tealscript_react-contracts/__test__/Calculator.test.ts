@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
-import { CalculatorClient } from '../contracts/clients/CalculatorClient';
 import * as algokit from '@algorandfoundation/algokit-utils';
+import { CalculatorClient } from '../contracts/clients/CalculatorClient';
 
 const fixture = algorandFixture();
 algokit.Config.configure({ populateAppCallResources: true });
@@ -13,7 +13,8 @@ describe('Calculator', () => {
 
   beforeAll(async () => {
     await fixture.beforeEach();
-    const { algod, testAccount } = fixture.context;
+    const { testAccount } = fixture.context;
+    const { algorand } = fixture;
 
     appClient = new CalculatorClient(
       {
@@ -21,7 +22,7 @@ describe('Calculator', () => {
         resolveBy: 'id',
         id: 0,
       },
-      algod
+      algorand.client.algod
     );
 
     await appClient.create.createApplication({});
