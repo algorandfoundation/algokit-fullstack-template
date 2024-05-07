@@ -23,7 +23,7 @@ _tasks:
     -a cloud_provider "{{ cloud_provider }}"
     -a use_github_actions "{{ use_github_actions }}"'
 
-  - "echo '==== 3/4 - Initializing backend template ===='"
+  - "echo '==== 3/4 - Initializing contract template ===='"
   - 'algokit init -t {{ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
     -a author_email "{{ author_email }}"
     -a author_name "{{ author_name }}"
