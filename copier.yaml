@@ -2,7 +2,7 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== Checking compatibility with the cli ==='"
-  - '{{ python_path if python_path else _copier_python }} pre_init.py'
+  - '"{{ python_path if python_path else _copier_python }}" pre_init.py'
 
   - "echo '==== 1/4 - Initializing base template ===='"
   - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace
@@ -36,7 +36,7 @@ _tasks:
     -a use_pre_commit "no"'
 
   - "echo '==== 4/4 - Finalizing setup ===='"
-  - '{{ python_path if python_path else _copier_python }} post_init.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-frontend"'
+  - '"{{ python_path if python_path else _copier_python }}" post_init.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-frontend"'
   # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
 
 # questions
