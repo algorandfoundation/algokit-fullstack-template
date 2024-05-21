@@ -32,8 +32,5 @@ jobs:
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          npm install --global netlify-cli@latest
-          netlify login
-          netlify deploy --build --prod
+        run: algokit project run ci-deploy-netlify
     
