@@ -8,8 +8,9 @@ This starter full stack project has been generated using AlgoKit. See below for 
 1. Clone this repository to your local machine.
 2. Ensure [Docker](https://www.docker.com/) is installed and operational. Then, install `AlgoKit` following this [guide](https://github.com/algorandfoundation/algokit-cli#install).
 3. Run `algokit project bootstrap all` in the project directory. This command sets up your environment by installing necessary dependencies, setting up a Python virtual environment, and preparing your `.env` file.
-4. To build your project, execute `algokit project run build`. This compiles your project and prepares it for running.
-5. For project-specific instructions, refer to the READMEs of the child projects:
+4. In the case of a smart contract project, execute `algokit generate env-file -a target_network localnet` from the `production_tealscript_react-contracts` directory to create a `.env.localnet` file with default configuration for `localnet`.
+5. To build your project, execute `algokit project run build`. This compiles your project and prepares it for running.
+6. For project-specific instructions, refer to the READMEs of the child projects:
    - Smart Contracts: [production_tealscript_react-contracts](projects/production_tealscript_react-contracts/README.md)
    - Frontend Application: [production_tealscript_react-frontend](projects/production_tealscript_react-frontend/README.md)
 
