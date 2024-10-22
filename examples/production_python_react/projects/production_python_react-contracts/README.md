@@ -35,8 +35,10 @@ Run the following commands within the project folder:
 #### Terminal
 Directly manage and interact with your project using AlgoKit commands:
 
-1. **Build Contracts**: `algokit project run build` compiles all smart contracts.
-2. **Deploy**: Use `algokit project deploy localnet` to deploy contracts to the local network.
+1. **Build Contracts**: `algokit project run build` compiles all smart contracts. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
+For example: `algokit project run build -- hello_world` will only build the `hello_world` contract.
+2. **Deploy**: Use `algokit project deploy localnet` to deploy contracts to the local network. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
+For example: `algokit project deploy localnet -- hello_world` will only deploy the `hello_world` contract.
 
 #### VS Code 
 For a seamless experience with breakpoint debugging and other features:
@@ -123,8 +125,10 @@ For pull requests and pushes to `main` branch against this repository the follow
 - - `Algorand Python` smart contract unit tests, that are run using [`algorand-python-testing`](https://pypi.org/project/algorand-python-testing/), which are executed in a Python intepreter emulating major AVM behaviour
 - - Python `ApplicationClient` tests that are run against `algokit localnet` and test the behaviour in a real network enviornment
  - Smart contract artifacts are built
- - Smart contract artifacts are checked for [output stability](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/articles/output_stability.md)
+ - Smart contract artifacts are checked for [output stability](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/articles/output_stability.md).
  - Smart contract is deployed to a AlgoKit LocalNet instance
+
+> NOTE: By default smart contract artifacts are compiled with `--debug-level` set to 0, to change this, modify the compiler invocation under `smart_contracts/_helpers/build.py`
 
 #### Continuous Deployment
 
