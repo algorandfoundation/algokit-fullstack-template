@@ -1,12 +1,10 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
-import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
-import { HelloWorldClient } from '../contracts/HelloWorld'
+import { HelloWorldFactory } from '../contracts/HelloWorld'
 import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -16,22 +14,16 @@ interface AppCallsInterface {
 const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
-
-  const algodConfig = getAlgodConfigFromViteEnvironment()
-  const algodClient = algokit.getAlgoClient({
-    server: algodConfig.server,
-    port: algodConfig.port,
-    token: algodConfig.token,
-  })
-  const indexerConfig = getIndexerConfigFromViteEnvironment()
-  const indexer = algokit.getAlgoIndexerClient({
-    server: indexerConfig.server,
-    port: indexerConfig.port,
-    token: indexerConfig.token,
-  })
-
   const { enqueueSnackbar } = useSnackbar()
   const { signer, activeAddress } = useWallet()
+
+  const algodConfig = getAlgodConfigFromViteEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
+  const algorand = AlgorandClient.fromConfig({
+    algodConfig,
+    indexerConfig,
+  })
+  algorand.setDefaultSigner(signer)
 
   const sendAppCall = async () => {
     setLoading(true)
@@ -41,31 +33,38 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
-    const appDetails = {
-      resolveBy: 'creatorAndName',
-      sender: { signer, addr: activeAddress } as TransactionSignerAccount,
-      creatorAddress: activeAddress,
-      findExistingUsing: indexer,
-    } as AppDetails
-
-    const appClient = new HelloWorldClient(appDetails, algodClient)
-    const deployParams = {
-      onSchemaBreak: OnSchemaBreak.AppendApp,
-      onUpdate: OnUpdate.AppendApp,
-    }
-    await appClient.deploy(deployParams).catch((e: Error) => {
-      enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
-      setLoading(false)
-      return
+    const factory = new HelloWorldFactory({
+      defaultSender: activeAddress,
+      algorand,
     })
+    const deployResult = await factory
+      .deploy({
+        onSchemaBreak: OnSchemaBreak.AppendApp,
+        onUpdate: OnUpdate.AppendApp,
+      })
+      .catch((e: Error) => {
+        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+        setLoading(false)
+        return undefined
+      })
 
-    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+    if (!deployResult) {
+      return
+    }
+
+    const { appClient } = deployResult
+
+    const response = await appClient.send.hello({ args: { name: contractInput } }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
-      return
+      return undefined
     })
 
-    enqueueSnackbar(`Response from the contract: ${response?.return}`, { variant: 'success' })
+    if (!response) {
+      return
+    }
+
+    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
     setLoading(false)
   }
 

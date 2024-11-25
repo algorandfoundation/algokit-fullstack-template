@@ -1,6 +1,5 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
+import { algo, AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet'
-import algosdk from 'algosdk'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
@@ -15,15 +14,11 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
   const [receiverAddress, setReceiverAddress] = useState<string>('')
 
   const algodConfig = getAlgodConfigFromViteEnvironment()
-  const algodClient = algokit.getAlgoClient({
-    server: algodConfig.server,
-    port: algodConfig.port,
-    token: algodConfig.token,
-  })
+  const algorand = AlgorandClient.fromConfig({ algodConfig })
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { signer, activeAddress, signTransactions, sendTransactions } = useWallet()
+  const { signer, activeAddress } = useWallet()
 
   const handleSubmitAlgo = async () => {
     setLoading(true)
@@ -33,25 +28,15 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
       return
     }
 
-    const suggestedParams = await algodClient.getTransactionParams().do()
-
-    const transaction = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-      from: activeAddress,
-      to: receiverAddress,
-      amount: 1e6,
-      suggestedParams,
-    })
-
-    const encodedTransaction = algosdk.encodeUnsignedTransaction(transaction)
-
-    const signedTransactions = await signTransactions([encodedTransaction])
-
-    const waitRoundsToConfirm = 4
-
     try {
       enqueueSnackbar('Sending transaction...', { variant: 'info' })
-      const { id } = await sendTransactions(signedTransactions, waitRoundsToConfirm)
-      enqueueSnackbar(`Transaction sent: ${id}`, { variant: 'success' })
+      const result = await algorand.send.payment({
+        signer,
+        sender: activeAddress,
+        receiver: receiverAddress,
+        amount: algo(1),
+      })
+      enqueueSnackbar(`Transaction sent: ${result.txIds[0]}`, { variant: 'success' })
       setReceiverAddress('')
     } catch (e) {
       enqueueSnackbar('Failed to send transaction', { variant: 'error' })
