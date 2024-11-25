@@ -1,10 +1,9 @@
-import * as algokit from '@algorandfoundation/algokit-utils'
-import { TransactionSignerAccount } from '@algorandfoundation/algokit-utils/types/account'
 import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-import { CalculatorClient } from '../contracts/Calculator'
-import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { CalculatorFactory } from '../contracts/Calculator'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
+import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -14,16 +13,16 @@ interface AppCallsInterface {
 const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
-
-  const algodConfig = getAlgodConfigFromViteEnvironment()
-  const algodClient = algokit.getAlgoClient({
-    server: algodConfig.server,
-    port: algodConfig.port,
-    token: algodConfig.token,
-  })
-
   const { enqueueSnackbar } = useSnackbar()
   const { signer, activeAddress } = useWallet()
+
+  const algodConfig = getAlgodConfigFromViteEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
+  const algorand = AlgorandClient.fromConfig({
+    algodConfig,
+    indexerConfig,
+  })
+  algorand.setDefaultSigner(signer)
 
   const sendAppCall = async () => {
     setLoading(true)
@@ -33,27 +32,33 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Instead, you would deploy your contract on your backend and reference it by id.
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
-    const appClient = new CalculatorClient(
-      {
-        sender: { signer, addr: activeAddress } as TransactionSignerAccount,
-        resolveBy: 'id',
-        id: 0,
-      },
-      algodClient,
-    )
-    await appClient.create.createApplication({}).catch((e: Error) => {
+    const factory = new CalculatorFactory({
+      defaultSender: activeAddress,
+      algorand,
+    })
+    const deployResult = await factory.send.create.createApplication().catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
-      return
+      return undefined
     })
 
-    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+    if (!deployResult) {
+      return
+    }
+
+    const { appClient } = deployResult
+
+    const response = await appClient.send.hello({ args: { name: contractInput } }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
-      return
+      return undefined
     })
 
-    enqueueSnackbar(`Response from the contract: ${response?.return}`, { variant: 'success' })
+    if (!response) {
+      return
+    }
+
+    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
     setLoading(false)
   }
 

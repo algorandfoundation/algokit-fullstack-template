@@ -1,7 +1,10 @@
-import { randomAccount } from '@algorandfoundation/algokit-utils'
+import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
 import { expect, test } from '@playwright/test'
 
+const localnet = algorandFixture()
+
 test.beforeEach(async ({ page }) => {
+  await localnet.beforeEach()
   await page.goto('http://localhost:5173/')
 })
 
@@ -27,8 +30,7 @@ test('authentication and dummy payment transaction', async ({ page }) => {
   // 2. Must be able to send a dummy payment transaction
   await page.getByTestId('transactions-demo').click()
 
-  const dummyAccount = randomAccount()
-  await page.getByTestId('receiver-address').fill(dummyAccount.addr)
+  await page.getByTestId('receiver-address').fill(localnet.context.testAccount.addr)
   await page.getByTestId('send-algo').click()
 
   // 3. Must be able to see a notification that the transaction was sent
