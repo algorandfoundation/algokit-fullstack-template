@@ -1,10 +1,10 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
-import * as algokit from '@algorandfoundation/algokit-utils';
-import { CalculatorClient } from '../contracts/clients/CalculatorClient';
+import { Config } from '@algorandfoundation/algokit-utils';
+import { CalculatorClient, CalculatorFactory } from '../contracts/clients/CalculatorClient';
 
 const fixture = algorandFixture();
-algokit.Config.configure({ populateAppCallResources: true });
+Config.configure({ populateAppCallResources: true });
 
 let appClient: CalculatorClient;
 
@@ -16,34 +16,31 @@ describe('Calculator', () => {
     const { testAccount } = fixture.context;
     const { algorand } = fixture;
 
-    appClient = new CalculatorClient(
-      {
-        sender: testAccount,
-        resolveBy: 'id',
-        id: 0,
-      },
-      algorand.client.algod
-    );
+    const factory = new CalculatorFactory({
+      algorand,
+      defaultSender: testAccount.addr,
+    });
 
-    await appClient.create.createApplication({});
+    const createResult = await factory.send.create.createApplication();
+    appClient = createResult.appClient;
   });
 
   test('sum', async () => {
     const a = 13;
     const b = 37;
-    const sum = await appClient.doMath({ a, b, operation: 'sum' });
-    expect(sum.return?.valueOf()).toBe(BigInt(a + b));
+    const sum = await appClient.send.doMath({ args: { a, b, operation: 'sum' } });
+    expect(sum.return).toBe(BigInt(a + b));
   });
 
   test('difference', async () => {
     const a = 13;
     const b = 37;
-    const diff = await appClient.doMath({ a, b, operation: 'difference' });
-    expect(diff.return?.valueOf()).toBe(BigInt(a >= b ? a - b : b - a));
+    const diff = await appClient.send.doMath({ args: { a, b, operation: 'difference' } });
+    expect(diff.return).toBe(BigInt(a >= b ? a - b : b - a));
   });
 
   test('hello', async () => {
-    const diff = await appClient.hello({ name: 'world!' });
-    expect(diff.return?.valueOf()).toBe('Hello, world!');
+    const hello = await appClient.send.hello({ args: { name: 'world!' } });
+    expect(hello.return).toBe('Hello, world!');
   });
 });

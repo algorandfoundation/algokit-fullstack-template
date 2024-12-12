@@ -34,7 +34,7 @@ jobs:
           git config --global user.email "actions@github.com" && git config --global user.name "github-actions"
 
       - name: Deploy to testnet
-        run: algokit deploy testnet --project-name 'production_python_react-contracts'
+        run: algokit project deploy testnet --project-name 'production_python_react-contracts'
         env:
           # This is the account that becomes the creator of the contract
           DEPLOYER_MNEMONIC: ${{ secrets.DEPLOYER_MNEMONIC }}
