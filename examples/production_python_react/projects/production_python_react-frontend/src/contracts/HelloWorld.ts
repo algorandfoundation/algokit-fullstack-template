@@ -8,7 +8,7 @@ import { AlgorandClientInterface } from '@algorandfoundation/algokit-utils/types
 import { ABIReturn, AppReturn, SendAppTransactionResult } from '@algorandfoundation/algokit-utils/types/app'
 import { Arc56Contract, getArc56ReturnValue, getABIStructFromABITuple } from '@algorandfoundation/algokit-utils/types/app-arc56'
 import {
-  AppClient,
+  AppClient as _AppClient,
   AppClientMethodCallParams,
   AppClientParams,
   AppClientBareCallParams,
@@ -18,8 +18,8 @@ import {
   ResolveAppClientByNetwork,
   CloneAppClientParams,
 } from '@algorandfoundation/algokit-utils/types/app-client'
-import { AppFactory, AppFactoryAppClientParams, AppFactoryResolveAppClientByCreatorAndNameParams, AppFactoryDeployParams, AppFactoryParams, CreateSchema } from '@algorandfoundation/algokit-utils/types/app-factory'
-import { TransactionComposer, AppCallMethodCall, AppMethodCallTransactionArgument, SimulateOptions } from '@algorandfoundation/algokit-utils/types/composer'
+import { AppFactory as _AppFactory, AppFactoryAppClientParams, AppFactoryResolveAppClientByCreatorAndNameParams, AppFactoryDeployParams, AppFactoryParams, CreateSchema } from '@algorandfoundation/algokit-utils/types/app-factory'
+import { TransactionComposer, AppCallMethodCall, AppMethodCallTransactionArgument, SimulateOptions, RawSimulateOptions, SkipSignaturesSimulateOptions } from '@algorandfoundation/algokit-utils/types/composer'
 import { SendParams, SendSingleTransactionResult, SendAtomicTransactionComposerResults } from '@algorandfoundation/algokit-utils/types/transaction'
 import { Address, encodeAddress, modelsv2, OnApplicationComplete, Transaction, TransactionSigner } from 'algosdk'
 import SimulateResponse = modelsv2.SimulateResponse
@@ -175,7 +175,7 @@ export class HelloWorldFactory {
   /**
    * The underlying `AppFactory` for when you want to have more flexibility
    */
-  public readonly appFactory: AppFactory
+  public readonly appFactory: _AppFactory
 
   /**
    * Creates a new instance of `HelloWorldFactory`
@@ -183,7 +183,7 @@ export class HelloWorldFactory {
    * @param params The parameters to initialise the app factory with
    */
   constructor(params: Omit<AppFactoryParams, 'appSpec'>) {
-    this.appFactory = new AppFactory({
+    this.appFactory = new _AppFactory({
       ...params,
       appSpec: APP_SPEC,
     })
@@ -277,10 +277,10 @@ export class HelloWorldFactory {
        * Creates a new instance of the HelloWorld smart contract using a bare call.
        *
        * @param params The params for the bare (raw) call
-       * @returns The params for a create call
+       * @returns The transaction for a create call
        */
       bare: (params?: Expand<AppClientBareCallParams & AppClientCompilationParams & CreateSchema & {onComplete?: OnApplicationComplete.NoOpOC}>) => {
-        return this.appFactory.params.bare.create(params)
+        return this.appFactory.createTransaction.bare.create(params)
       },
     },
 
@@ -316,22 +316,22 @@ export class HelloWorldClient {
   /**
    * The underlying `AppClient` for when you want to have more flexibility
    */
-  public readonly appClient: AppClient
+  public readonly appClient: _AppClient
 
   /**
    * Creates a new instance of `HelloWorldClient`
    *
    * @param appClient An `AppClient` instance which has been created with the HelloWorld app spec
    */
-  constructor(appClient: AppClient)
+  constructor(appClient: _AppClient)
   /**
    * Creates a new instance of `HelloWorldClient`
    *
    * @param params The parameters to initialise the app client with
    */
   constructor(params: Omit<AppClientParams, 'appSpec'>)
-  constructor(appClientOrParams: AppClient | Omit<AppClientParams, 'appSpec'>) {
-    this.appClient = appClientOrParams instanceof AppClient ? appClientOrParams : new AppClient({
+  constructor(appClientOrParams: _AppClient | Omit<AppClientParams, 'appSpec'>) {
+    this.appClient = appClientOrParams instanceof _AppClient ? appClientOrParams : new _AppClient({
       ...appClientOrParams,
       appSpec: APP_SPEC,
     })
@@ -351,7 +351,7 @@ export class HelloWorldClient {
    * @param params The parameters to create the app client
    */
   public static async fromCreatorAndName(params: Omit<ResolveAppClientByCreatorAndName, 'appSpec'>): Promise<HelloWorldClient> {
-    return new HelloWorldClient(await AppClient.fromCreatorAndName({...params, appSpec: APP_SPEC}))
+    return new HelloWorldClient(await _AppClient.fromCreatorAndName({...params, appSpec: APP_SPEC}))
   }
   
   /**
@@ -364,7 +364,7 @@ export class HelloWorldClient {
   static async fromNetwork(
     params: Omit<ResolveAppClientByNetwork, 'appSpec'>
   ): Promise<HelloWorldClient> {
-    return new HelloWorldClient(await AppClient.fromNetwork({...params, appSpec: APP_SPEC}))
+    return new HelloWorldClient(await _AppClient.fromNetwork({...params, appSpec: APP_SPEC}))
   }
   
   /** The ID of the app instance this client is linked to. */
@@ -518,7 +518,7 @@ export class HelloWorldClient {
       },
       async simulate(options?: SimulateOptions) {
         await promiseChain
-        const result = await composer.simulate(options)
+        const result = await (!options ? composer.simulate() : composer.simulate(options))
         return {
           ...result,
           returns: result.returns?.map((val, i) => resultMappers[i] !== undefined ? resultMappers[i]!(val) : val.returnValue)
@@ -567,7 +567,9 @@ export type HelloWorldComposer<TReturns extends [...any[]] = []> = {
   /**
    * Simulates the transaction group and returns the result
    */
-  simulate(options?: SimulateOptions): Promise<HelloWorldComposerResults<TReturns> & { simulateResponse: SimulateResponse }>
+  simulate(): Promise<HelloWorldComposerResults<TReturns> & { simulateResponse: SimulateResponse }>
+  simulate(options: SkipSignaturesSimulateOptions): Promise<HelloWorldComposerResults<TReturns> & { simulateResponse: SimulateResponse }>
+  simulate(options: RawSimulateOptions): Promise<HelloWorldComposerResults<TReturns> & { simulateResponse: SimulateResponse }>
   /**
    * Sends the transaction group to the network and returns the results
    */
