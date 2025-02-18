@@ -12,7 +12,7 @@
     "npm": ">=9.0"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-client-generator": "^4.0.0",
+    "@algorandfoundation/algokit-client-generator": "^4.0.6",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.11",
     "@types/react-dom": "^18.2.4",
@@ -35,12 +35,12 @@
     "vite-plugin-node-polyfills": "^0.22.0"
   },
   "dependencies": {
-    "@algorandfoundation/algokit-utils": "^7.0.0",
-    "@blockshake/defly-connect": "1.1.6",
-    "@daffiwallet/connect": "^1.0.3",
-    "@perawallet/connect": "1.3.5",
-    "@txnlab/use-wallet": "^2.8.2",
-    "algosdk": ">=2.9.0 <3.0",
+    "@algorandfoundation/algokit-utils": "^8.1.0",
+    "@blockshake/defly-connect": "^1.2.1",
+    "@perawallet/connect": "^1.4.1",
+    "@txnlab/use-wallet": "^4.0.0",
+    "@txnlab/use-wallet-react": "^4.0.0",
+    "algosdk": "^3.0.0",
     "daisyui": "^4.0.0",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
