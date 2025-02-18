@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test'
 const localnet = algorandFixture()
 
 test.beforeEach(async ({ page }) => {
-  await localnet.beforeEach()
+  await localnet.newScope()
   await page.goto('http://localhost:5173/')
 })
 
@@ -30,7 +30,7 @@ test('authentication and dummy payment transaction', async ({ page }) => {
   // 2. Must be able to send a dummy payment transaction
   await page.getByTestId('transactions-demo').click()
 
-  await page.getByTestId('receiver-address').fill(localnet.context.testAccount.addr)
+  await page.getByTestId('receiver-address').fill(localnet.context.testAccount.toString())
   await page.getByTestId('send-algo').click()
 
   // 3. Must be able to see a notification that the transaction was sent

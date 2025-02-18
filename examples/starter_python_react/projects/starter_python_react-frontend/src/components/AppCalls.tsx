@@ -1,4 +1,4 @@
-import { useWallet } from '@txnlab/use-wallet'
+import { useWallet } from '@txnlab/use-wallet-react'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { HelloWorldFactory } from '../contracts/HelloWorld'
@@ -15,7 +15,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
   const { enqueueSnackbar } = useSnackbar()
-  const { signer, activeAddress } = useWallet()
+  const { transactionSigner, activeAddress } = useWallet()
 
   const algodConfig = getAlgodConfigFromViteEnvironment()
   const indexerConfig = getIndexerConfigFromViteEnvironment()
@@ -23,7 +23,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     algodConfig,
     indexerConfig,
   })
-  algorand.setDefaultSigner(signer)
+  algorand.setDefaultSigner(transactionSigner)
 
   const sendAppCall = async () => {
     setLoading(true)
@@ -34,7 +34,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     // Given the simplicity of the starter contract, we are deploying it on the frontend
     // for demonstration purposes.
     const factory = new HelloWorldFactory({
-      defaultSender: activeAddress,
+      defaultSender: activeAddress ?? undefined,
       algorand,
     })
     const deployResult = await factory
