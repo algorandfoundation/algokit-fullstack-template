@@ -1,10 +1,7 @@
 import { useWallet } from '@txnlab/use-wallet-react'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
-{%- if contract_template == 'beaker' %}
-import { {{ contract_name.split('_')|map('capitalize')|join }}Factory } from '../contracts/{{ contract_name }}'
-import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
-{%- elif contract_template == 'tealscript' %}
+{%- if contract_template == 'tealscript' %}
 import { {{ contract_name }}Factory } from '../contracts/{{ contract_name }}'
 {%- else %}
 import { {{ contract_name.split('_')|map('capitalize')|join }}Factory } from '../contracts/{{ contract_name.split('_')|map('capitalize')|join }}'
@@ -50,7 +47,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       setLoading(false)
       return undefined
     })
-    {%- elif preset_name == 'starter' or contract_template != 'beaker' %}
+    {%- else %}
     const factory = new {{ contract_name.split('_')|map('capitalize')|join }}Factory({
       defaultSender: activeAddress ?? undefined,
       algorand,
@@ -59,24 +56,6 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       .deploy({
         onSchemaBreak: OnSchemaBreak.AppendApp,
         onUpdate: OnUpdate.AppendApp,
-      })
-      .catch((e: Error) => {
-        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
-        setLoading(false)
-        return undefined
-      })
-    {%- elif preset_name == 'production' and contract_template == 'beaker' %}
-    const isLocal = await algokit.isLocalNet(algodClient)
-    const factory = new {{ contract_name.split('_')|map('capitalize')|join }}Factory({
-      defaultSender: activeAddress ?? undefined,
-      algorand,
-    })
-    const deployResult = await factory
-      .deploy({
-        deletable: isLocal,
-        updatable: isLocal,
-        onSchemaBreak: isLocal ? OnSchemaBreak.ReplaceApp : OnSchemaBreak.Fail,
-        onUpdate: isLocal ? OnUpdate.UpdateApp : OnUpdate.Fail,
       })
       .catch((e: Error) => {
         enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
