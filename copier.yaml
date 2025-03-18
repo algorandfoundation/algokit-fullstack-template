@@ -2,7 +2,14 @@ _subdirectory: ./template_content
 
 _tasks:
   - "echo '==== Checking compatibility with the cli ==='"
-  - '"{{ python_path if python_path else _copier_python }}" pre_init.py'
+  # Execute OS-specific version check script (with self-destruction)
+  - command: |
+      chmod +x ./check_version.sh
+      ./check_version.sh
+    when: "{{ _copier_conf.os in ['linux', 'macos'] }}"
+  - command: |
+      powershell -File ./check_version.ps1
+    when: "{{ _copier_conf.os == 'windows' }}"
 
   - "echo '==== 1/4 - Initializing base template ===='"
   - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace
@@ -10,8 +17,6 @@ _tasks:
     -a include_algokit_toml "no"
     -a include_vscode_code_workspace "no"
     -a include_github_workflow_template "no"'
-    # CLI auto sets include_github_workflow_template to false for any blessed template
-    # however still defining explicitly for clarity
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
   - 'algokit init -t react -n {{ project_name }}-frontend --no-git --no-ide --no-bootstrap
@@ -36,10 +41,24 @@ _tasks:
     -a use_pre_commit "no"'
 
   - "echo '==== 4/4 - Finalizing setup ===='"
-  - '"{{ python_path if python_path else _copier_python }}" post_init.py "./projects/{{ project_name }}-contracts" "./projects/{{ project_name }}-frontend"'
-  # _copier_python above is used for backwards compatibility with versions < v1.11.3 of the algokit cli
+  # Execute OS-specific file copying script (with self-destruction)
+  - command: |
+      chmod +x ./copy_files.sh
+      ./copy_files.sh "{{ project_name }}"
+    when: "{{ _copier_conf.os in ['linux', 'macos'] }}"
+  - command: |
+      powershell -File ./copy_files.ps1 -project_name "{{ project_name }}"
+    when: "{{ _copier_conf.os == 'windows' }}"
 
-# questions
+_message_after_copy: >
+  ✅ Fullstack project successfully created!
+
+  You can now:
+  - cd into projects/{{ project_name }}-contracts and projects/{{ project_name }}-frontend to work on your project
+  - Run `algokit project bootstrap` to install dependencies
+  - Run `algokit project up` to start the local development environment
+  - Run `algokit project deploy localnet` to deploy to a local network
+
 contract_template:
   type: str
   help: Choose the contract template.
@@ -50,15 +69,12 @@ contract_template:
     TealScript: tealscript
   default: python
 
-# project_name should never get prompted, AlgoKit should always pass it by convention
 project_name:
   type: str
   help: Name for this project.
   placeholder: 'algorand-frontend'
   default: 'myproject'
 
-# Auto determined by algokit-cli from v1.11.3 to allow execution of python script
-# in binary mode.
 python_path:
   type: str
   help: Path to the sys.executable.

@@ -1,0 +1,49 @@
+{% if _copier_conf.os in ['linux', 'macos'] %}
+#!/bin/bash
+# Script to copy required files to the frontend project
+# Usage: ./copy_files.sh <project_name>
+
+{% raw %}
+project_name="$1"
+frontend_root="./projects/${project_name}-frontend"
+
+# Ensure directories exist
+mkdir -p "${frontend_root}/src/components"
+
+# Copy files
+cp "./inject_content/Home.tsx" "${frontend_root}/src/Home.tsx"
+cp "./inject_content/AppCalls.tsx" "${frontend_root}/src/components/AppCalls.tsx"
+
+echo "Template completed successfully!"
+# remove inject_content folder
+rm -rf "./inject_content"
+# self destruct the file
+rm -f "$0"
+{% endraw %}
+{% else %}
+# Script to copy required files to the frontend project
+# Usage: ./copy_files.ps1 <project_name>
+
+{% raw %}
+# Get arguments from command line
+param(
+  [Parameter(Mandatory = $true)]
+  [string]$project_name
+)
+
+$frontend_root = "./projects/$project_name-frontend"
+
+# Ensure directories exist
+New-Item -Path "$frontend_root/src/components" -ItemType Directory -Force
+
+# Copy files
+Copy-Item -Path "./inject_content/Home.tsx" -Destination "$frontend_root/src/Home.tsx" -Force
+Copy-Item -Path "./inject_content/AppCalls.tsx" -Destination "$frontend_root/src/components/AppCalls.tsx" -Force
+
+Write-Host "Template completed successfully!"
+# remove inject_content folder
+Remove-Item -Recurse -Force "./inject_content"
+# self destruct the file
+Remove-Item $MyInvocation.MyCommand.Path
+{% endraw %}
+{% endif %}
