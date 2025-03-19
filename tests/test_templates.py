@@ -19,7 +19,6 @@ generated_root = root / generated_folder
 DEFAULT_PARAMETERS = {
     "author_name": "None",
     "author_email": "None",
-    "python_path": "python",
 }
 INSTALL_ARGS = ["algokit", "project", "bootstrap", "all", "--no-ci"]
 BUILD_ARGS = ["algokit", "project", "run", "build"]

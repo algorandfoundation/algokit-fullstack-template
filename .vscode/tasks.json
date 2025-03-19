@@ -10,6 +10,7 @@
         "--name",
         "playground",
         "--no-git",
+        "--no-workspace",
         "--UNSAFE-SECURITY-accept-template-url",
         "--template-url",
         "${workspaceFolder}",
