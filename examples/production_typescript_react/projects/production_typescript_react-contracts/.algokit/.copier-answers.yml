@@ -1,8 +1,0 @@
-# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 0.2.0
-_src_path: gh:algorandfoundation/algokit-typescript-template
-author_email: None
-author_name: None
-contract_name: hello_world
-preset_name: production
-project_name: production_typescript_react-contracts
