@@ -46,8 +46,8 @@ contract_template:
   when: false
   choices:
     Python: python
+    TypeScript: typescript
     TealScript: tealscript
-    Beaker: beaker
   default: python
 
 # project_name should never get prompted, AlgoKit should always pass it by convention
@@ -104,7 +104,7 @@ author_email:
 deployment_language:
   type: str
   help: Pick language for deployment scripts in the backend?
-  when: "{{ contract_template != 'tealscript' }}"
+  when: "{{ contract_template == 'python' }}"
   choices:
     Python: 'python'
     TypeScript: 'typescript'
