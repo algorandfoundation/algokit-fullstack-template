@@ -22,6 +22,7 @@ DEFAULT_PARAMETERS = {
     "python_path": "python",
 }
 INSTALL_ARGS = ["algokit", "project", "bootstrap", "all", "--no-ci"]
+TEMP_ARGS = ["algokit", "compile", "ts", "--version"]
 BUILD_ARGS = ["algokit", "project", "run", "build"]
 TEST_ARGS = ["algokit", "project", "run", "test"]
 LINT_ARGS = ["algokit", "project", "run", "lint"]
@@ -195,7 +196,7 @@ def run_init(
     if result.returncode:
         return result
 
-    check_args = [INSTALL_ARGS, BUILD_ARGS]
+    check_args = [INSTALL_ARGS, TEMP_ARGS, BUILD_ARGS]
 
     if answers["preset_name"] == "production":
         check_args.extend([TEST_ARGS, LINT_ARGS])
@@ -208,6 +209,7 @@ def run_init(
             text=True,
             cwd=copy_to,
         )
+        print(result.stdout)
         if result.returncode:
             break
 
