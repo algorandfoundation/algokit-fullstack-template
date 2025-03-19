@@ -23,7 +23,6 @@ Ensure the following pre-requisites are installed and properly configured:
 
 - **Docker**: Required for running a local Algorand network.
 - **AlgoKit CLI**: Essential for project setup and operations. Verify installation with `algokit --version`, expecting `2.5.0` or later.
-- **Puya Compiler**: Can be installed from PyPi by running `pipx install puyapy`. Verify installation with `puyapy --version`, expecting `4.4.4` or later.
 
 #### 3. Bootstrap Your Local Environment
 Run the following commands within the project folder:
