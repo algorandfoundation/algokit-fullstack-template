@@ -268,7 +268,7 @@ def get_answered_questions_from_copier_yaml(
     return answers
 
 
-@pytest.mark.parametrize("contract_template", ["python", "tealscript"])
+@pytest.mark.parametrize("contract_template", ["python", "tealscript", "typescript"])
 def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
@@ -284,7 +284,7 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-@pytest.mark.parametrize("contract_template", ["python", "tealscript"])
+@pytest.mark.parametrize("contract_template", ["python", "tealscript", "typescript"])
 def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
