@@ -1,16 +1,6 @@
 _subdirectory: ./template_content
 
 _tasks:
-  - "echo '==== Checking compatibility with the cli ==='"
-  # Execute OS-specific version check script (with self-destruction)
-  - command: |
-      chmod +x ./check_version.sh
-      ./check_version.sh
-    when: "{{ _copier_conf.os in ['linux', 'macos'] }}"
-  - command: |
-      powershell -File ./check_version.ps1
-    when: "{{ _copier_conf.os == 'windows' }}"
-
   - "echo '==== 1/4 - Initializing base template ===='"
   - 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace
     -a include_readme "no"
@@ -50,15 +40,6 @@ _tasks:
       powershell -File ./copy_files.ps1 -project_name "{{ project_name }}"
     when: "{{ _copier_conf.os == 'windows' }}"
 
-_message_after_copy: >
-  ✅ Fullstack project successfully created!
-
-  You can now:
-  - cd into projects/{{ project_name }}-contracts and projects/{{ project_name }}-frontend to work on your project
-  - Run `algokit project bootstrap` to install dependencies
-  - Run `algokit project up` to start the local development environment
-  - Run `algokit project deploy localnet` to deploy to a local network
-
 contract_template:
   type: str
   help: Choose the contract template.
@@ -74,11 +55,6 @@ project_name:
   help: Name for this project.
   placeholder: 'algorand-frontend'
   default: 'myproject'
-
-python_path:
-  type: str
-  help: Path to the sys.executable.
-  when: false
 
 preset_name:
   type: str
