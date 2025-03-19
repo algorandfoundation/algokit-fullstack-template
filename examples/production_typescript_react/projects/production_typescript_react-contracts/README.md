@@ -24,7 +24,7 @@ Start by cloning this repository to your local machine.
 Ensure the following pre-requisites are installed and properly configured:
 
 - **Docker**: Required for running a local Algorand network.
-- **AlgoKit CLI**: Essential for project setup and operations. Verify installation with `algokit --version`, expecting `2.5.0` or later.
+- **AlgoKit CLI**: Essential for project setup and operations. Verify installation with `algokit --version`, expecting `2.6.0` or later.
 
 #### 3. Bootstrap Your Local Environment
 
