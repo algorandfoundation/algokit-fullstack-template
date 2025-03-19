@@ -21,7 +21,7 @@ DEFAULT_PARAMETERS = {
     "author_email": "None",
     "python_path": "python",
 }
-INSTALL_ARGS = ["algokit", "project", "bootstrap", "all"]
+INSTALL_ARGS = ["algokit", "project", "bootstrap", "all", "--no-ci"]
 BUILD_ARGS = ["algokit", "project", "run", "build"]
 TEST_ARGS = ["algokit", "project", "run", "test"]
 LINT_ARGS = ["algokit", "project", "run", "lint"]
