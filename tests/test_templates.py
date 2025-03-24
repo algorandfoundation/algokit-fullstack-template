@@ -26,34 +26,6 @@ TEST_ARGS = ["algokit", "project", "run", "test"]
 LINT_ARGS = ["algokit", "project", "run", "lint"]
 
 
-def generate_fullstack_get_args(
-    project_name: str,
-    copier_answers: dict[str, str],
-) -> dict[str, list[list[str]]]:
-    backend = f"projects/{project_name}-contracts"
-    frontend = f"projects/{project_name}-frontend"
-    check_args = {
-        backend: [
-            BUILD_ARGS,
-        ],
-        frontend: [
-            ["npm", "install"],
-        ],
-    }
-
-    if copier_answers["preset_name"] == "production":
-        check_args[backend].append(
-            [
-                "mypy",
-                "--ignore-missing-imports",
-                ".",
-            ]
-        )
-        check_args[frontend].append(["npm", "run", "lint"])
-
-    return check_args
-
-
 def _load_copier_yaml(path: Path) -> dict[str, str | bool | dict]:
     with path.open("r", encoding="utf-8") as stream:
         return yaml.safe_load(stream)
@@ -267,11 +239,19 @@ def get_answered_questions_from_copier_yaml(
     return answers
 
 
-@pytest.mark.parametrize("contract_template", ["python", "tealscript", "typescript"])
+contract_templates = ["python", "tealscript", "typescript"]
+short_contract_templates = {
+    "python": "py",
+    "tealscript": "tls",
+    "typescript": "ts",
+}
+
+
+@pytest.mark.parametrize("contract_template", contract_templates)
 def test_production_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        f"production_{contract_template}_react",
+        f"p-{short_contract_templates[contract_template]}",
         answers=get_answered_questions_from_copier_yaml(
             preset_name="production",
             deployment_language="python",
@@ -283,11 +263,11 @@ def test_production_preset(contract_template: str, working_dir: Path) -> None:
     assert response.returncode == 0, response.stdout
 
 
-@pytest.mark.parametrize("contract_template", ["python", "tealscript", "typescript"])
+@pytest.mark.parametrize("contract_template", contract_templates)
 def test_starter_preset(contract_template: str, working_dir: Path) -> None:
     response = run_init(
         working_dir,
-        f"starter_{contract_template}_react",
+        f"s-{short_contract_templates[contract_template]}",
         answers=get_answered_questions_from_copier_yaml(
             preset_name="starter",
             deployment_language="typescript",

@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  p-tls-contracts-validate:
+    name: Run p-tls-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/p-tls-contracts-ci.yaml
+
+  p-tls-contracts-release:
+    name: Run p-tls-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/p-tls-contracts-cd.yaml
+    needs: p-tls-contracts-validate
+
+  p-tls-frontend-validate:
+    name: Run p-tls-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/p-tls-frontend-ci.yaml
+
+  p-tls-frontend-release:
+    name: Run p-tls-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/p-tls-frontend-cd.yaml
+    needs: p-tls-frontend-validate

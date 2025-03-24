@@ -29,6 +29,16 @@ And the following backend templates:
 - [algokit-typescript-template](https://github.com/algorandfoundation/algokit-typescript-template) - An official starter for developing and deploying Algorand TypeScript smart contracts.
 - [algokit-tealscript-template](https://github.com/algorand-devrel/tealscript-algokit-template) - An official starter for developing and deploying TealScript smart contracts.
 
+The `examples` directory contains pre initialized examples.
+These are used for our snapshot tests, however can also be used as example projects:
+
+- `p-py` is a production fullstack template with Algorand Python smart contract.
+- `p-ts` is a production fullstack template with Algorand TypeScript smart contract.
+- `p-tls` is a production fullstack template with TEALScript smart contract.
+- `s-py` is a starter fullstack template with Algorand Python smart contract.
+- `s-ts` is a starter fullstack template with Algorand TypeScript smart contract.
+- `s-tls` is a starter fullstack template with TEALScript smart contract.
+
 ### Frontend
 
 - React web app with [Tailwind CSS](https://tailwindcss.com/) and [TypeScript](https://www.typescriptlang.org/)
@@ -55,7 +65,6 @@ And the following backend templates:
 - VS Code configuration (linting, formatting, breakpoint debugging).
 - dotenv (.env) file for configuration.
 - Automated testing of the compiled smart contracts.
-- [Output stability](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/articles/output_stability.md) tests of the TEAL output. Artifacts folder is also available as standalone `examples` for anyone curious to see default instances of preset projects.
 - CI/CD pipeline using GitHub Actions.
 
 > Refer to the respective backend repository mentioned in [features](#features) for up-to-date information.
