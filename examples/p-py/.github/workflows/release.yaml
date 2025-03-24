@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  p-py-contracts-validate:
+    name: Run p-py-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/p-py-contracts-ci.yaml
+
+  p-py-contracts-release:
+    name: Run p-py-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/p-py-contracts-cd.yaml
+    needs: p-py-contracts-validate
+
+  p-py-frontend-validate:
+    name: Run p-py-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/p-py-frontend-ci.yaml
+
+  p-py-frontend-release:
+    name: Run p-py-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/p-py-frontend-cd.yaml
+    needs: p-py-frontend-validate

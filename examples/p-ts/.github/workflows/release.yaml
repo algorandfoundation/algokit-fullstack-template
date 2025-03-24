@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  p-ts-contracts-validate:
+    name: Run p-ts-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/p-ts-contracts-ci.yaml
+
+  p-ts-contracts-release:
+    name: Run p-ts-contracts release
+    secrets: inherit
+    uses: ./.github/workflows/p-ts-contracts-cd.yaml
+    needs: p-ts-contracts-validate
+
+  p-ts-frontend-validate:
+    name: Run p-ts-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/p-ts-frontend-ci.yaml
+
+  p-ts-frontend-release:
+    name: Run p-ts-frontend release
+    secrets: inherit
+    uses: ./.github/workflows/p-ts-frontend-cd.yaml
+    needs: p-ts-frontend-validate

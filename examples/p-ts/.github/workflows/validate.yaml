@@ -1,0 +1,14 @@
+name: Pull Request validation
+
+on: [pull_request]
+
+
+jobs:
+  p-ts-contracts-ci:
+    name: Run p-ts-contracts validation
+    uses: ./.github/workflows/p-ts-contracts-ci.yaml
+
+  p-ts-frontend-ci:
+    name: Run p-ts-frontend validation
+    uses: ./.github/workflows/p-ts-frontend-ci.yaml
+

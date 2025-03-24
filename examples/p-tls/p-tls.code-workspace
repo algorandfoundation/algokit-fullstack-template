@@ -1,0 +1,32 @@
+{
+  "folders": [
+    {
+      "path": "./",
+      "name": "ROOT"
+    },
+    {
+      "path": "./projects/p-tls-contracts"
+    },
+    {
+      "path": "./projects/p-tls-frontend"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "projects/": true
+    },
+    "jest.disabledWorkspaceFolders": ["ROOT", "projects"],
+    "dotenv.enableAutocloaking": false
+  },
+  "extensions": {
+    "recommendations": ["joshx.workspace-terminals"]
+  },
+  
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": []
+  },
+  "launch": {
+    "configurations": []
+  }
+  }
