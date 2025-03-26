@@ -23,9 +23,9 @@
     "@algorandfoundation/algorand-typescript": "^1.0.0-beta.25"
   },
   "devDependencies": {
-    "@algorandfoundation/algokit-client-generator": "^4.0.9",
-    "@algorandfoundation/algokit-utils": "^8.2.2",
-    "@algorandfoundation/algokit-utils-debug": "^1.0.3",
+    "@algorandfoundation/algokit-client-generator": "^5.0.0",
+    "@algorandfoundation/algokit-utils": "^9.0.0",
+    "@algorandfoundation/algokit-utils-debug": "^1.0.4",
     "@algorandfoundation/puya-ts": "^1.0.0-beta.50",
     "@rollup/plugin-typescript": "^12.1.2",
     "@tsconfig/node22": "^22.0.0",
