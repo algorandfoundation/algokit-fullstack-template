@@ -32,9 +32,9 @@ _tasks:
 
   - "echo '==== 4/4 - Finalizing setup ===='"
   # Execute OS-specific file copying script (with self-destruction)
-  - command: |
-      chmod +x ./copy_files.sh
-      ./copy_files.sh "{{ project_name }}"
+  - command: chmod +x ./copy_files.sh
+    when: "{{ _copier_conf.os in ['linux', 'macos'] }}"
+  - command: ./copy_files.sh "{{ project_name }}"
     when: "{{ _copier_conf.os in ['linux', 'macos'] }}"
   - command: |
       powershell -File ./copy_files.ps1 -project_name "{{ project_name }}"
