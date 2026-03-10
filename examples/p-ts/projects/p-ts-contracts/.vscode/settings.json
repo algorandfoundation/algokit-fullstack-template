@@ -16,4 +16,4 @@
     "extensions": [".ts"]
   },
   "eslint.workingDirectories": ["./smart_contracts"]
-}
+  }

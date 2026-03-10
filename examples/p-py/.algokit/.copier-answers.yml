@@ -1,6 +1,6 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: <commit>
-_src_path: <src>
+_commit: 2.1.8-10-g72c45ae
+_src_path: /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpccp2c3vt/template
 author_email: None
 author_name: None
 cloud_provider: netlify

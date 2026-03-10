@@ -9,7 +9,10 @@ _tasks:
     -a include_github_workflow_template "no"'
 
   - "echo '==== 2/4 - Initializing frontend template ===='"
-  - 'algokit init -t react -n {{ project_name }}-frontend --no-git --no-ide --no-bootstrap
+  - 'algokit init {{ "--template-url \"" ~ (frontend_template_url if frontend_template_url else "gh:algorandfoundation/algokit-react-frontend-template") ~ "\" --UNSAFE-SECURITY-accept-template-url" if (frontend_template_url or frontend_template_ref) else "-t react" }} -n {{ project_name }}-frontend --no-git --no-ide --no-bootstrap
+    {% if frontend_template_ref %}
+    --template-url-ref "{{ frontend_template_ref }}"
+    {% endif %}
     -a author_email "{{ author_email }}"
     -a author_name "{{ author_name }}"
     -a preset_name "{{ preset_name }}"
@@ -19,7 +22,10 @@ _tasks:
     -a use_github_actions "{{ use_github_actions }}"'
 
   - "echo '==== 3/4 - Initializing contract template ===='"
-  - 'algokit init -t {{ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+  - 'algokit init {{ "--template-url \"" ~ (contract_template_url if contract_template_url else ("gh:algorandfoundation/algokit-python-template" if contract_template == "python" else "gh:algorandfoundation/algokit-typescript-template" if contract_template == "typescript" else "gh:algorand-devrel/tealscript-algokit-template")) ~ "\" --UNSAFE-SECURITY-accept-template-url" if (contract_template_url or contract_template_ref) else "-t " ~ contract_template }} -n {{ project_name }}-contracts --no-git --no-ide --no-bootstrap
+    {% if contract_template_ref %}
+    --template-url-ref "{{ contract_template_ref }}"
+    {% endif %}
     -a author_email "{{ author_email }}"
     -a author_name "{{ author_name }}"
     -a preset_name "{{ preset_name }}"
@@ -49,6 +55,30 @@ contract_template:
     TypeScript: typescript
     TealScript: tealscript
   default: python
+
+frontend_template_url:
+  type: str
+  help: Override source URL for frontend child template.
+  when: false
+  default: ''
+
+frontend_template_ref:
+  type: str
+  help: Override git ref (branch/tag) for frontend child template.
+  when: false
+  default: ''
+
+contract_template_url:
+  type: str
+  help: Override source URL for contract child template.
+  when: false
+  default: ''
+
+contract_template_ref:
+  type: str
+  help: Override git ref (branch/tag) for contract child template.
+  when: false
+  default: ''
 
 project_name:
   type: str

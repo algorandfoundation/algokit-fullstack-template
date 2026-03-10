@@ -23,7 +23,7 @@ export async function deploy() {
     })
   }
 
-  const method = 'hello'
+  const method = 'hello'  
   const response = await appClient.send.hello({
     args: { name: 'world' },
   })

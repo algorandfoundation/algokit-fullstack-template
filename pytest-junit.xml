@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="9.360" timestamp="2026-03-09T21:22:54.940625" hostname="Arthurs-MacBook-Pro.local"><testcase classname="tests.test_templates" name="test_production_preset[python]" time="1.788"><failure message="AssertionError: DEBUG: Running ['/usr/bin/git', '-C', '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template', 'rev-parse', '--is-shallow-repository']&#10;  DEBUG: Running ['/usr/bin/git', 'clone', '--no-checkout', '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template', '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.0pdwuvj0', '--filter=blob:none']&#10;  DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.0pdwuvj0&#10;  DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']&#10;  DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.0pdwuvj0&#10;  DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-py&#10;  ==== 1/4 - Initializing base template ====&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-py&#10;  WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.&#10;  WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.&#10;  Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-py...&#10;  Unhandled ProcessExecutionError: Unexpected exit code: 128&#10;  Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.yetmhf0g --filter=blob:none&#10;  Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.yetmhf0g'...&#10;                | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com&#10;  [PYI-59715:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme &quot;no&quot; -a include_algokit_toml &quot;no&quot; -a include_vscode_code_workspace &quot;no&quot; -a include_github_workflow_template &quot;no&quot;' returned non-zero exit status 1.&#10;  [PYI-59668:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 'p-py', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59668:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode">contract_template = 'python'
+working_dir = PosixPath('/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template')
+
+    @pytest.mark.parametrize("contract_template", contract_templates)
+    def test_production_preset(contract_template: str, working_dir: Path) -&gt; None:
+        response = run_init(
+            working_dir,
+            f"p-{short_contract_templates[contract_template]}",
+            answers=get_answered_questions_from_copier_yaml(
+                preset_name="production",
+                deployment_language="python",
+                contract_template=contract_template,
+            ),
+            child_template_default_answer="y",
+        )
+    
+&gt;       assert response.returncode == 0, response.stdout
+E       AssertionError: DEBUG: Running ['/usr/bin/git', '-C', '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template', 'rev-parse', '--is-shallow-repository']
+E         DEBUG: Running ['/usr/bin/git', 'clone', '--no-checkout', '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template', '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.0pdwuvj0', '--filter=blob:none']
+E         DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.0pdwuvj0
+E         DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']
+E         DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.0pdwuvj0
+E         DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-py
+E         ==== 1/4 - Initializing base template ====
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-py
+E         WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.
+E         WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.
+E         Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-py...
+E         Unhandled ProcessExecutionError: Unexpected exit code: 128
+E         Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.yetmhf0g --filter=blob:none
+E         Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.yetmhf0g'...
+E                       | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com
+E         [PYI-59715:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme "no" -a include_algokit_toml "no" -a include_vscode_code_workspace "no" -a include_github_workflow_template "no"' returned non-zero exit status 1.
+E         [PYI-59668:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 'p-py', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59668:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode
+
+tests/test_templates.py:288: AssertionError</failure></testcase><testcase classname="tests.test_templates" name="test_production_preset[tealscript]" time="1.551"><failure message="AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.v39cv6gu&#10;  DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']&#10;  DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.v39cv6gu&#10;  DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-tls&#10;  ==== 1/4 - Initializing base template ====&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-tls&#10;  WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.&#10;  WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.&#10;  Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-tls...&#10;  Unhandled ProcessExecutionError: Unexpected exit code: 128&#10;  Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.ghyu4ug8 --filter=blob:none&#10;  Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.ghyu4ug8'...&#10;                | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com&#10;  [PYI-59772:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme &quot;no&quot; -a include_algokit_toml &quot;no&quot; -a include_vscode_code_workspace &quot;no&quot; -a include_github_workflow_template &quot;no&quot;' returned non-zero exit status 1.&#10;  [PYI-59725:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 'p-tls', '--template-url', '/var/folders/96/k83m8nkj3...turned non-zero exit status 1.\n[PYI-59725:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode">contract_template = 'tealscript'
+working_dir = PosixPath('/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template')
+
+    @pytest.mark.parametrize("contract_template", contract_templates)
+    def test_production_preset(contract_template: str, working_dir: Path) -&gt; None:
+        response = run_init(
+            working_dir,
+            f"p-{short_contract_templates[contract_template]}",
+            answers=get_answered_questions_from_copier_yaml(
+                preset_name="production",
+                deployment_language="python",
+                contract_template=contract_template,
+            ),
+            child_template_default_answer="y",
+        )
+    
+&gt;       assert response.returncode == 0, response.stdout
+E       AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.v39cv6gu
+E         DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']
+E         DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.v39cv6gu
+E         DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-tls
+E         ==== 1/4 - Initializing base template ====
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-tls
+E         WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.
+E         WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.
+E         Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-tls...
+E         Unhandled ProcessExecutionError: Unexpected exit code: 128
+E         Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.ghyu4ug8 --filter=blob:none
+E         Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.ghyu4ug8'...
+E                       | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com
+E         [PYI-59772:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme "no" -a include_algokit_toml "no" -a include_vscode_code_workspace "no" -a include_github_workflow_template "no"' returned non-zero exit status 1.
+E         [PYI-59725:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 'p-tls', '--template-url', '/var/folders/96/k83m8nkj3...turned non-zero exit status 1.\n[PYI-59725:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode
+
+tests/test_templates.py:288: AssertionError</failure></testcase><testcase classname="tests.test_templates" name="test_production_preset[typescript]" time="1.462"><failure message="AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.i3ytp2qd&#10;  DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']&#10;  DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.i3ytp2qd&#10;  DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-ts&#10;  ==== 1/4 - Initializing base template ====&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-ts&#10;  WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.&#10;  WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.&#10;  Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-ts...&#10;  Unhandled ProcessExecutionError: Unexpected exit code: 128&#10;  Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.45rezklr --filter=blob:none&#10;  Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.45rezklr'...&#10;                | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com&#10;  [PYI-59829:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme &quot;no&quot; -a include_algokit_toml &quot;no&quot; -a include_vscode_code_workspace &quot;no&quot; -a include_github_workflow_template &quot;no&quot;' returned non-zero exit status 1.&#10;  [PYI-59782:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 'p-ts', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59782:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode">contract_template = 'typescript'
+working_dir = PosixPath('/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template')
+
+    @pytest.mark.parametrize("contract_template", contract_templates)
+    def test_production_preset(contract_template: str, working_dir: Path) -&gt; None:
+        response = run_init(
+            working_dir,
+            f"p-{short_contract_templates[contract_template]}",
+            answers=get_answered_questions_from_copier_yaml(
+                preset_name="production",
+                deployment_language="python",
+                contract_template=contract_template,
+            ),
+            child_template_default_answer="y",
+        )
+    
+&gt;       assert response.returncode == 0, response.stdout
+E       AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.i3ytp2qd
+E         DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']
+E         DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.i3ytp2qd
+E         DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-ts
+E         ==== 1/4 - Initializing base template ====
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-ts
+E         WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.
+E         WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.
+E         Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/p-ts...
+E         Unhandled ProcessExecutionError: Unexpected exit code: 128
+E         Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.45rezklr --filter=blob:none
+E         Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.45rezklr'...
+E                       | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com
+E         [PYI-59829:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme "no" -a include_algokit_toml "no" -a include_vscode_code_workspace "no" -a include_github_workflow_template "no"' returned non-zero exit status 1.
+E         [PYI-59782:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 'p-ts', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59782:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode
+
+tests/test_templates.py:288: AssertionError</failure></testcase><testcase classname="tests.test_templates" name="test_starter_preset[python]" time="1.428"><failure message="AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.z4wjkl5s&#10;  DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']&#10;  DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.z4wjkl5s&#10;  DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-py&#10;  ==== 1/4 - Initializing base template ====&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-py&#10;  WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.&#10;  WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.&#10;  Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-py...&#10;  Unhandled ProcessExecutionError: Unexpected exit code: 128&#10;  Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fanwhd7i --filter=blob:none&#10;  Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fanwhd7i'...&#10;                | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com&#10;  [PYI-59887:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme &quot;no&quot; -a include_algokit_toml &quot;no&quot; -a include_vscode_code_workspace &quot;no&quot; -a include_github_workflow_template &quot;no&quot;' returned non-zero exit status 1.&#10;  [PYI-59840:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 's-py', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59840:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode">contract_template = 'python'
+working_dir = PosixPath('/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template')
+
+    @pytest.mark.parametrize("contract_template", contract_templates)
+    def test_starter_preset(contract_template: str, working_dir: Path) -&gt; None:
+        response = run_init(
+            working_dir,
+            f"s-{short_contract_templates[contract_template]}",
+            answers=get_answered_questions_from_copier_yaml(
+                preset_name="starter",
+                deployment_language="typescript",
+                contract_template=contract_template,
+            ),
+            child_template_default_answer="n",
+        )
+    
+&gt;       assert response.returncode == 0, response.stdout
+E       AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.z4wjkl5s
+E         DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']
+E         DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.z4wjkl5s
+E         DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-py
+E         ==== 1/4 - Initializing base template ====
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-py
+E         WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.
+E         WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.
+E         Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-py...
+E         Unhandled ProcessExecutionError: Unexpected exit code: 128
+E         Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fanwhd7i --filter=blob:none
+E         Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fanwhd7i'...
+E                       | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com
+E         [PYI-59887:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme "no" -a include_algokit_toml "no" -a include_vscode_code_workspace "no" -a include_github_workflow_template "no"' returned non-zero exit status 1.
+E         [PYI-59840:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 's-py', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59840:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode
+
+tests/test_templates.py:304: AssertionError</failure></testcase><testcase classname="tests.test_templates" name="test_starter_preset[tealscript]" time="1.446"><failure message="AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.xfp1u9ig&#10;  DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']&#10;  DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.xfp1u9ig&#10;  DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-tls&#10;  ==== 1/4 - Initializing base template ====&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-tls&#10;  WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.&#10;  WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.&#10;  Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-tls...&#10;  Unhandled ProcessExecutionError: Unexpected exit code: 128&#10;  Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.mnwppdyj --filter=blob:none&#10;  Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.mnwppdyj'...&#10;                | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com&#10;  [PYI-59944:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme &quot;no&quot; -a include_algokit_toml &quot;no&quot; -a include_vscode_code_workspace &quot;no&quot; -a include_github_workflow_template &quot;no&quot;' returned non-zero exit status 1.&#10;  [PYI-59897:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 's-tls', '--template-url', '/var/folders/96/k83m8nkj3...turned non-zero exit status 1.\n[PYI-59897:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode">contract_template = 'tealscript'
+working_dir = PosixPath('/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template')
+
+    @pytest.mark.parametrize("contract_template", contract_templates)
+    def test_starter_preset(contract_template: str, working_dir: Path) -&gt; None:
+        response = run_init(
+            working_dir,
+            f"s-{short_contract_templates[contract_template]}",
+            answers=get_answered_questions_from_copier_yaml(
+                preset_name="starter",
+                deployment_language="typescript",
+                contract_template=contract_template,
+            ),
+            child_template_default_answer="n",
+        )
+    
+&gt;       assert response.returncode == 0, response.stdout
+E       AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.xfp1u9ig
+E         DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']
+E         DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.xfp1u9ig
+E         DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-tls
+E         ==== 1/4 - Initializing base template ====
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-tls
+E         WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.
+E         WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.
+E         Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-tls...
+E         Unhandled ProcessExecutionError: Unexpected exit code: 128
+E         Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.mnwppdyj --filter=blob:none
+E         Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.mnwppdyj'...
+E                       | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com
+E         [PYI-59944:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme "no" -a include_algokit_toml "no" -a include_vscode_code_workspace "no" -a include_github_workflow_template "no"' returned non-zero exit status 1.
+E         [PYI-59897:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 's-tls', '--template-url', '/var/folders/96/k83m8nkj3...turned non-zero exit status 1.\n[PYI-59897:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode
+
+tests/test_templates.py:304: AssertionError</failure></testcase><testcase classname="tests.test_templates" name="test_starter_preset[typescript]" time="1.513"><failure message="AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.bc0xynky&#10;  DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']&#10;  DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.bc0xynky&#10;  DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-ts&#10;  ==== 1/4 - Initializing base template ====&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-ts&#10;  WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.&#10;  WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.&#10;  Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-ts...&#10;  Unhandled ProcessExecutionError: Unexpected exit code: 128&#10;  Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fz6jg14s --filter=blob:none&#10;  Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fz6jg14s'...&#10;                | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com&#10;  [PYI-60002:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples&#10;  Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme &quot;no&quot; -a include_algokit_toml &quot;no&quot; -a include_vscode_code_workspace &quot;no&quot; -a include_github_workflow_template &quot;no&quot;' returned non-zero exit status 1.&#10;  [PYI-59954:ERROR] Failed to execute script '__main__' due to unhandled exception!&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 's-ts', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59954:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode">contract_template = 'typescript'
+working_dir = PosixPath('/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template')
+
+    @pytest.mark.parametrize("contract_template", contract_templates)
+    def test_starter_preset(contract_template: str, working_dir: Path) -&gt; None:
+        response = run_init(
+            working_dir,
+            f"s-{short_contract_templates[contract_template]}",
+            answers=get_answered_questions_from_copier_yaml(
+                preset_name="starter",
+                deployment_language="typescript",
+                contract_template=contract_template,
+            ),
+            child_template_default_answer="n",
+        )
+    
+&gt;       assert response.returncode == 0, response.stdout
+E       AssertionError: DEBUG: Chdir to /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.bc0xynky
+E         DEBUG: Running ['/usr/bin/git', '-c', 'core.fsmonitor=false', 'checkout', '-f', 'prep/beta-release']
+E         DEBUG: Running ['/usr/bin/git', 'submodule', 'update', '--checkout', '--init', '--recursive', '--force']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.bc0xynky
+E         DEBUG: Running ['/usr/bin/git', 'describe', '--tags', '--always']
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: final clone URL = /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-ts
+E         ==== 1/4 - Initializing base template ====
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-ts
+E         WARNING: Failed to get user info from git, please input your 'name' manually or use default placeholder.
+E         WARNING: Failed to get user info from git, please input your 'email' manually or use default placeholder.
+E         Starting template copy and render at /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples/s-ts...
+E         Unhandled ProcessExecutionError: Unexpected exit code: 128
+E         Command line: | /usr/bin/git clone --no-checkout https://github.com/algorandfoundation/algokit-base-template.git /var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fz6jg14s --filter=blob:none
+E         Stderr:       | Cloning into '/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/copier._vcs.clone.fz6jg14s'...
+E                       | fatal: unable to access 'https://github.com/algorandfoundation/algokit-base-template.git/': Could not resolve host: github.com
+E         [PYI-60002:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         DEBUG: Chdir to /private/var/folders/96/k83m8nkj3ts72l4jw7378sm80000gn/T/tmpmq4qoksj/template/examples
+E         Unhandled TaskError: Command 'algokit init -t base -n . --no-git --no-ide --no-bootstrap --no-workspace -a include_readme "no" -a include_algokit_toml "no" -a include_vscode_code_workspace "no" -a include_github_workflow_template "no"' returned non-zero exit status 1.
+E         [PYI-59954:ERROR] Failed to execute script '__main__' due to unhandled exception!
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['algokit', '--verbose', 'init', '--name', 's-ts', '--template-url', '/var/folders/96/k83m8nkj3t...turned non-zero exit status 1.\n[PYI-59954:ERROR] Failed to execute script \'__main__\' due to unhandled exception!\n').returncode
+
+tests/test_templates.py:304: AssertionError</failure></testcase></testsuite></testsuites>

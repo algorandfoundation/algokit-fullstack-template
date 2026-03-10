@@ -1,4 +1,5 @@
 import { algo, AlgorandClient } from '@algorandfoundation/algokit-utils'
+import { encodeTransactionRaw } from '@algorandfoundation/algokit-utils/transact'
 import { useWallet } from '@txnlab/use-wallet-react'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
@@ -18,12 +19,12 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const { transactionSigner, activeAddress } = useWallet()
+  const { signTransactions, activeAddress } = useWallet()
 
   const handleSubmitAlgo = async () => {
     setLoading(true)
 
-    if (!transactionSigner || !activeAddress) {
+    if (!signTransactions || !activeAddress) {
       enqueueSnackbar('Please connect wallet first', { variant: 'warning' })
       return
     }
@@ -31,7 +32,11 @@ const Transact = ({ openModal, setModalState }: TransactInterface) => {
     try {
       enqueueSnackbar('Sending transaction...', { variant: 'info' })
       const result = await algorand.send.payment({
-        signer: transactionSigner,
+        signer: async (txnGroup, indexesToSign) => {
+          const encoded = txnGroup.map((txn) => encodeTransactionRaw(txn))
+          const signed = await signTransactions(encoded, indexesToSign)
+          return signed.filter((s): s is Uint8Array => s !== null)
+        },
         sender: activeAddress,
         receiver: receiverAddress,
         amount: algo(1),
