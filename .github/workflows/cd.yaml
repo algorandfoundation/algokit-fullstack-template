@@ -23,7 +23,8 @@ jobs:
         id: tag
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
-          skip-commit: 'true'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip-commit: 'false'
           tag-prefix: ''
           skip-on-empty: 'false'
 

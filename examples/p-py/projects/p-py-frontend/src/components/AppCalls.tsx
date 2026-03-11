@@ -5,6 +5,7 @@ import { HelloWorldFactory } from '../contracts/HelloWorld'
 import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
+import { encodeTransactionRaw } from '@algorandfoundation/algokit-utils/transact'
 
 interface AppCallsInterface {
   openModal: boolean
@@ -15,7 +16,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [contractInput, setContractInput] = useState<string>('')
   const { enqueueSnackbar } = useSnackbar()
-  const { transactionSigner, activeAddress } = useWallet()
+  const { signTransactions, activeAddress } = useWallet()
 
   const algodConfig = getAlgodConfigFromViteEnvironment()
   const indexerConfig = getIndexerConfigFromViteEnvironment()
@@ -23,7 +24,11 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
     algodConfig,
     indexerConfig,
   })
-  algorand.setDefaultSigner(transactionSigner)
+  algorand.setDefaultSigner(async (txnGroup, indexesToSign) => {
+    const encoded = txnGroup.map((txn) => encodeTransactionRaw(txn))
+    const signed = await signTransactions(encoded, indexesToSign)
+    return signed.filter((s): s is Uint8Array => s !== null)
+  })
 
   const sendAppCall = async () => {
     setLoading(true)
